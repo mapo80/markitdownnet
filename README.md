@@ -48,9 +48,12 @@ All build and test commands must use the locally installed `dotnet`:
 sudo apt-get update
 sudo apt-get install -y tesseract-ocr libleptonica-dev
 
-# provide friendly names expected by TesseractOCR
-sudo ln -sf /usr/lib/x86_64-linux-gnu/liblept.so.5 /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
+# create stable symlinks
+sudo ln -sf /usr/lib/x86_64-linux-gnu/liblept.so /usr/lib/x86_64-linux-gnu/libleptonica.so
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract5.so
+# legacy names required by the TesseractOCR wrapper
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libleptonica.so /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libtesseract5.so /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
 sudo ln -sf /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
 
 # check versions
@@ -64,7 +67,7 @@ tesseract --version
 `tests/MarkItDownNet.Tests/TesseractOcrTests.cs` generates a small image containing the text "hi" and verifies that the Tesseract engine extracts the text correctly.
 
 ```csharp
-[DllImport("libleptonica-1.85.0.dll.so", CallingConvention = CallingConvention.Cdecl)]
+[DllImport("libleptonica.so", CallingConvention = CallingConvention.Cdecl)]
 static extern IntPtr pixCreate(int width, int height, int depth);
 ```
 

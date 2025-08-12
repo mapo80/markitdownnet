@@ -6,7 +6,7 @@ namespace MarkItDownNet.Tests;
 
 public class LeptonicaTests
 {
-    private const string LeptonicaDll = "libleptonica-1.85.0.dll.so";
+    private const string LeptonicaDll = "libleptonica.so";
 
     [DllImport(LeptonicaDll, CallingConvention = CallingConvention.Cdecl)]
     private static extern IntPtr pixCreate(int width, int height, int depth);
