@@ -24,3 +24,4 @@
 - Requires Tesseract binaries and language data (`TESSDATA_PREFIX`).
 - Fully CPU based; no GPU dependencies.
 - Build and tests must use `~/.dotnet/dotnet` from `dotnet-install.sh`.
+- On Ubuntu 24.04 obtain Tesseract 5.x and Leptonica 1.85 binaries (e.g. from the [jitesoft/docker-tesseract-ocr](https://github.com/jitesoft/docker-tesseract-ocr/pkgs/container/tesseract/) packages). The `TesseractOCR` wrapper looks for `libtesseract55.dll.so` and `libleptonica-1.85.0.dll.so`; creating symlinks to system libraries is sufficient.
