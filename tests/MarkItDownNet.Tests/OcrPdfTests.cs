@@ -13,38 +13,11 @@ namespace MarkItDownNet.Tests;
 
 public class OcrPdfTests
 {
-    private static void EnsureOcrLibraries()
-    {
-        var libPath = Path.Combine(AppContext.BaseDirectory, "ocrlibs");
-        var archPath = Path.Combine(libPath, "x64");
-        Directory.CreateDirectory(archPath);
-        // paths in arch directory
-        var lept1 = Path.Combine(archPath, "libleptonica-1.85.0.dll.so");
-        var lept2 = Path.Combine(archPath, "libleptonica-1.82.0.so");
-        var lept3 = Path.Combine(archPath, "libleptonica-1.82.0.dll.so");
-        var tess = Path.Combine(archPath, "libtesseract55.dll.so");
-        var dl = Path.Combine(archPath, "libdl.so");
-        foreach (var p in new[]{lept1, lept2, lept3, tess, dl}) File.Delete(p);
-        File.CreateSymbolicLink(lept1, "/usr/lib/x86_64-linux-gnu/liblept.so.5");
-        File.CreateSymbolicLink(lept2, "/usr/lib/x86_64-linux-gnu/liblept.so.5");
-        File.CreateSymbolicLink(lept3, "/usr/lib/x86_64-linux-gnu/liblept.so.5");
-        File.CreateSymbolicLink(tess, "/usr/lib/x86_64-linux-gnu/libtesseract.so.5");
-        File.CreateSymbolicLink(dl, "/usr/lib/x86_64-linux-gnu/libdl.so.2");
-        // duplicate in root for loader
-        foreach (var name in new[]{"libleptonica-1.85.0.dll.so","libleptonica-1.82.0.so","libleptonica-1.82.0.dll.so","libtesseract55.dll.so","libdl.so"})
-        {
-            var rootLink = Path.Combine(libPath, name);
-            File.Delete(rootLink);
-            File.CreateSymbolicLink(rootLink, Path.Combine(archPath, name));
-        }
-        LibraryLoader.Instance.CustomSearchPath = libPath;
-    }
-
     [Fact]
     public async Task OcrTestPdfMatchesGroundTruth()
     {
         try {
-        EnsureOcrLibraries();
+        OcrTestHelpers.EnsureOcrLibraries();
     } catch (Exception) {
         return;
     }
