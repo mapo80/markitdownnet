@@ -42,28 +42,33 @@ All build and test commands must use the locally installed `dotnet`:
 
 ## Ubuntu 24.04 dependencies
 
-The `TesseractOCR` package requires native **Tesseract** and **Leptonica** libraries. On Ubuntu 24.04 these are available via the standard packages, e.g. the [`libleptonica-dev_1.82.0-3build4` package](https://ubuntu.pkgs.org/24.04/ubuntu-universe-amd64/libleptonica-dev_1.82.0-3build4_amd64.deb.html):
+`TesseractOCR` 5.5.1 relies on native **Tesseract 5.x** and **Leptonica ≥ 1.74**. Ubuntu 24.04 packages provide suitable versions (`tesseract-ocr` 5.3.4 and `libleptonica-dev` 1.82.0):
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y tesseract-ocr libleptonica-dev
 
 # provide friendly names expected by TesseractOCR
-sudo ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
-sudo ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
-sudo ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
+sudo ln -sf /usr/lib/x86_64-linux-gnu/liblept.so.5 /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
+
+# check versions
+tesseract --version
 ```
 
-### Leptonica tests
+### Leptonica and Tesseract tests
 
-The `tests/MarkItDownNet.Tests/LeptonicaTests.cs` file contains two simple unit tests that call the native Leptonica API via `DllImport`. They create a `PIX` image and round-trip a pixel value to confirm the library is wired up correctly:
+`tests/MarkItDownNet.Tests/LeptonicaTests.cs` exercises the native Leptonica API via `DllImport`, creating a `PIX` image and round-tripping a pixel value.
+
+`tests/MarkItDownNet.Tests/TesseractOcrTests.cs` generates a small image containing the text "hi" and verifies that the Tesseract engine extracts the text correctly.
 
 ```csharp
 [DllImport("libleptonica-1.85.0.dll.so", CallingConvention = CallingConvention.Cdecl)]
 static extern IntPtr pixCreate(int width, int height, int depth);
 ```
 
-Ensure the `libleptonica-1.85.0.dll.so` symlink above exists before running the suite:
+Ensure the symlinks above exist before running the suite:
 
 ```bash
 ~/.dotnet/dotnet test

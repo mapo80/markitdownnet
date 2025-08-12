@@ -25,11 +25,20 @@
 - Requires Tesseract binaries and language data (`TESSDATA_PREFIX`).
 - Fully CPU based; no GPU dependencies.
 - Build and tests must use `~/.dotnet/dotnet` from `dotnet-install.sh`.
-- On Ubuntu 24.04 install Tesseract 5.x and the [`libleptonica-dev_1.82.0-3build4` package](https://ubuntu.pkgs.org/24.04/ubuntu-universe-amd64/libleptonica-dev_1.82.0-3build4_amd64.deb.html). The `TesseractOCR` wrapper expects `libtesseract55.dll.so` and `libleptonica-1.85.0.dll.so`; create symlinks to the system libraries:
+- The `TesseractOCR` 5.5.1 wrapper is built for **Tesseract 5.x** and needs **Leptonica ≥ 1.74**.
+- On Ubuntu 24.04 the `tesseract-ocr` (5.3.4 at time of writing) and `libleptonica-dev` (1.82.0) packages satisfy these requirements.
+- The wrapper looks for `libtesseract55.dll.so` and `libleptonica-1.85.0.dll.so`; provide them as symlinks to the system libraries:
 
 ```
+sudo apt-get update
 sudo apt-get install -y tesseract-ocr libleptonica-dev
-sudo ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
-sudo ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
-sudo ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
+sudo ln -sf /usr/lib/x86_64-linux-gnu/liblept.so.5 /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
+sudo ln -sf /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
+```
+
+- Verify the installation:
+
+```
+tesseract --version  # should report leptonica 1.74+ and tesseract 5.x
 ```
