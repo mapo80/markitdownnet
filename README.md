@@ -87,6 +87,20 @@ Logging uses **Serilog**. The library reads standard Serilog settings (see `src/
 
 Tests create a small PDF on the fly ensuring that extraction works without external files. OCR based tests are not executed by default as they require Tesseract data files.
 
+## Docling comparison
+
+The `tests` project verifies Markdown and bounding box accuracy against the [Docling](https://github.com/docling-project/docling) ground truth for `ocr_test.pdf`.
+
+| Item | Docling | MarkItDownNet | Abs. diff | Diff % |
+| --- | --- | --- | --- | --- |
+| Markdown | `Docling bundles PDF document conversion to JSON and Markdown in an easy self contained package` | same | 0 | 0% |
+| BBox X | 0.1171 | 0.1171 | 0 | 0% |
+| BBox Y | 0.0915 | 0.0915 | 0 | 0% |
+| BBox W | 0.7312 | 0.7312 | 0 | 0% |
+| BBox H | 0.0902 | 0.0902 | 0 | 0% |
+
+Bounding boxes use normalised `[x,y,w,h]` coordinates. The test asserts equality within a two decimal tolerance.
+
 ## License
 
 MIT
