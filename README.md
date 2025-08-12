@@ -27,7 +27,7 @@ This repository does not rely on the system dotnet. Install the SDK locally usin
 
 ```bash
 chmod +x ./dotnet-install.sh
-./dotnet-install.sh --channel 8.0
+./dotnet-install.sh --channel 9.0
 ~/.dotnet/dotnet --version
 ```
 
