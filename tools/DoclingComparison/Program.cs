@@ -160,22 +160,18 @@ class Program
 
     static double Similarity(string a, string b)
     {
-        int dist = Levenshtein(a, b);
-        return (a.Length == 0 && b.Length == 0) ? 1.0 : 1.0 - (double)dist / Math.Max(a.Length, b.Length);
-    }
+        var tokensA = new HashSet<string>(a.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries));
+        var tokensB = new HashSet<string>(b.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries));
+        if (tokensA.Count == 0 && tokensB.Count == 0)
+            return 1.0;
 
-    static int Levenshtein(string s, string t)
-    {
-        var dp = new int[s.Length + 1, t.Length + 1];
-        for (int i = 0; i <= s.Length; i++) dp[i, 0] = i;
-        for (int j = 0; j <= t.Length; j++) dp[0, j] = j;
-        for (int i = 1; i <= s.Length; i++)
-            for (int j = 1; j <= t.Length; j++)
-            {
-                int cost = s[i - 1] == t[j - 1] ? 0 : 1;
-                dp[i, j] = Math.Min(Math.Min(dp[i - 1, j] + 1, dp[i, j - 1] + 1), dp[i - 1, j - 1] + cost);
-            }
-        return dp[s.Length, t.Length];
+        int intersection = 0;
+        foreach (var token in tokensA)
+            if (tokensB.Contains(token))
+                intersection++;
+
+        int union = tokensA.Count + tokensB.Count - intersection;
+        return union > 0 ? (double)intersection / union : 0.0;
     }
 }
 

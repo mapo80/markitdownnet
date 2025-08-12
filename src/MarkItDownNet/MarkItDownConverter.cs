@@ -46,7 +46,8 @@ public class MarkItDownConverter
 
     private MarkItDownResult ProcessPdf(string path, CancellationToken ct)
     {
-        using var document = PdfDocument.Open(path);
+        using var stream = File.OpenRead(path);
+        using var document = PdfDocument.Open(stream);
         var pages = new List<Page>();
         var lines = new List<Line>();
         var words = new List<Word>();
@@ -89,7 +90,8 @@ public class MarkItDownConverter
 
         // Rasterize PDF into images using PDFtoImage
         var renderOptions = new RenderOptions { Dpi = _options.PdfRasterDpi };
-        foreach (var bitmap in Conversion.ToImages(File.ReadAllBytes(path), null, renderOptions))
+        using var stream = File.OpenRead(path);
+        foreach (var bitmap in Conversion.ToImages(stream, leaveOpen: false, password: null, renderOptions))
         {
             ct.ThrowIfCancellationRequested();
             using (bitmap)
@@ -97,10 +99,8 @@ public class MarkItDownConverter
                 pages.Add(new Page(pages.Count + 1, bitmap.Width, bitmap.Height));
                 using var image = SKImage.FromBitmap(bitmap);
                 using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                using var ms = new MemoryStream();
-                data.SaveTo(ms);
-                ms.Position = 0;
-                var result = ProcessPix(Pix.LoadFromMemory(ms.ToArray()), pages.Count, ct);
+                using var pix = Pix.LoadFromMemory(data.ToArray());
+                var result = ProcessPix(pix, pages.Count, ct);
                 lines.AddRange(result.lines);
                 words.AddRange(result.words);
             }
