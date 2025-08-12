@@ -42,12 +42,11 @@ All build and test commands must use the locally installed `dotnet`:
 
 ## Ubuntu 24.04 dependencies
 
-The `TesseractOCR` package requires native **Tesseract** and **Leptonica** libraries. Prebuilt `.deb` archives for Ubuntu 24.04 are published with the [jitesoft/docker-tesseract-ocr](https://github.com/jitesoft/docker-tesseract-ocr/pkgs/container/tesseract/) container. Install them with `dpkg` or `apt`:
+The `TesseractOCR` package requires native **Tesseract** and **Leptonica** libraries. On Ubuntu 24.04 these are available via the standard packages, e.g. the [`libleptonica-dev_1.82.0-3build4` package](https://ubuntu.pkgs.org/24.04/ubuntu-universe-amd64/libleptonica-dev_1.82.0-3build4_amd64.deb.html):
 
 ```bash
-curl -LO https://github.com/jitesoft/docker-tesseract-ocr/pkgs/container/tesseract/latest/download?filename=libleptonica_1.85.0-1_amd64.deb
-curl -LO https://github.com/jitesoft/docker-tesseract-ocr/pkgs/container/tesseract/latest/download?filename=libtesseract_5.4.1-1_amd64.deb
-sudo apt install ./libleptonica_1.85.0-1_amd64.deb ./libtesseract_5.4.1-1_amd64.deb
+sudo apt-get update
+sudo apt-get install -y tesseract-ocr libleptonica-dev
 
 # provide friendly names expected by TesseractOCR
 sudo ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
@@ -86,6 +85,25 @@ Logging uses **Serilog**. The library reads standard Serilog settings (see `src/
 ## Testing assets
 
 Tests create a small PDF on the fly ensuring that extraction works without external files. OCR based tests are not executed by default as they require Tesseract data files.
+
+## Evaluation
+
+A comparison with Docling ground truth on sample PDFs and TIFFs is available in the [Docling comparison report](docs/docling_comparison.md).
+
+Docling's image samples are distributed as TIFF files. The comparison tool converts them to JPEG via [BitMiracle.LibTiff.NET](https://www.nuget.org/packages/BitMiracle.LibTiff.NET) and [SkiaSharp](https://www.nuget.org/packages/SkiaSharp) before passing them to MarkItDownNet:
+
+```bash
+~/.dotnet/dotnet run --project tools/DoclingComparison/DoclingComparison.csproj docling/tests/data/tiff/2206.01062.tif
+```
+
+| Metric | Docling | MarkItDownNet | Difference |
+| --- | --- | --- | --- |
+| Word count | 16 080 | 16 048 | −0.20% |
+| Word match rate | 100% | 99.20% | −0.80% |
+| Markdown similarity | – | 38% | – |
+| BBox mean absolute error | 0% | 5.27% | +5.27% |
+
+Overall, MarkItDownNet produced slightly fewer words than Docling, matched 99.20% of ground-truth words and showed a 5.27% bounding-box deviation.
 
 ## License
 

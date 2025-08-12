@@ -44,6 +44,9 @@ CodeCoverage/
 # MSBuild Binary and Structured Log
 *.binlog
 
+# Local copies of external evaluation data
+docling/
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
