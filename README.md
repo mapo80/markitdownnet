@@ -40,12 +40,27 @@ All build and test commands must use the locally installed `dotnet`:
 ~/.dotnet/dotnet test
 ```
 
+## Ubuntu 24.04 dependencies
+
+The `TesseractOCR` package requires native **Tesseract** and **Leptonica** libraries. Prebuilt `.deb` archives for Ubuntu 24.04 are published with the [jitesoft/docker-tesseract-ocr](https://github.com/jitesoft/docker-tesseract-ocr/pkgs/container/tesseract/) container. Install them with `dpkg` or `apt`:
+
+```bash
+curl -LO https://github.com/jitesoft/docker-tesseract-ocr/pkgs/container/tesseract/latest/download?filename=libleptonica_1.85.0-1_amd64.deb
+curl -LO https://github.com/jitesoft/docker-tesseract-ocr/pkgs/container/tesseract/latest/download?filename=libtesseract_5.4.1-1_amd64.deb
+sudo apt install ./libleptonica_1.85.0-1_amd64.deb ./libtesseract_5.4.1-1_amd64.deb
+
+# provide friendly names expected by TesseractOCR
+sudo ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
+sudo ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
+sudo ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
+```
+
 ## Usage
 
 ```csharp
 var options = new MarkItDownOptions
 {
-    OcrDataPath = "/usr/share/tesseract-ocr/4.00/tessdata",
+    OcrDataPath = "/usr/share/tesseract-ocr/5/tessdata",
     OcrLanguages = "eng",
     PdfRasterDpi = 300
 };
