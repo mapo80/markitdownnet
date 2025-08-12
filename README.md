@@ -113,12 +113,12 @@ Docling's image samples are distributed as TIFF files. The comparison tool conve
 
 | Metric | Docling | MarkItDownNet | Difference |
 | --- | --- | --- | --- |
-| Word count | 16 080 | 16 048 | −0.20% |
-| Word match rate | 100% | 99.20% | −0.80% |
-| Markdown similarity | – | 38% | – |
-| BBox mean absolute error | 0% | 5.27% | +5.27% |
+| Word count | 17 344 | 17 803 | +2.65% |
+| Word match rate | 100% | 99.37% | −0.63% |
+| Markdown similarity | – | 73% | – |
+| BBox mean absolute error | 0% | 10.74% | +10.74% |
 
-Overall, MarkItDownNet produced slightly fewer words than Docling, matched 99.20% of ground-truth words and showed a 5.27% bounding-box deviation.
+These large arXiv PDFs showed a 99.37% word match rate and a 10.74% mean absolute error in bounding boxes.
 
 ## Docling comparison
 
