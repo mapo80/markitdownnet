@@ -142,6 +142,43 @@ The `tests` project verifies Markdown and bounding box accuracy against the [Doc
 
 Bounding boxes use normalised `[x,y,w,h]` coordinates. The test asserts equality within a two decimal tolerance.
 
+## Docling data conversion timings
+
+The following timings were captured while converting the PDF samples from Docling's `tests/data` directory. Image samples (TIFF and PNG) could not be processed in this environment because the Leptonica runtime was unavailable.
+
+| File | Type | Markdown ms | BBox ms |
+| --- | --- | --- | --- |
+| 2203.01017v2.pdf | pdf | 1756.00 | 223.11 |
+| 2206.01062.pdf | pdf | 927.07 | 52.02 |
+| 2305.03393v1-pg9.pdf | pdf | 62.26 | 3.74 |
+| 2305.03393v1.pdf | pdf | 333.04 | 28.77 |
+| amt_handbook_sample.pdf | pdf | 167.56 | 4.37 |
+| code_and_formula.pdf | pdf | 55.00 | 7.73 |
+| multi_page.pdf | pdf | 95.89 | 10.01 |
+| picture_classification.pdf | pdf | 30.85 | 4.90 |
+| redp5110_sampled.pdf | pdf | 373.09 | 27.89 |
+| right_to_left_01.pdf | pdf | 34.93 | 1.57 |
+| right_to_left_02.pdf | pdf | 24.03 | 1.48 |
+| right_to_left_03.pdf | pdf | 45.60 | 1.25 |
+
+| Type | Avg Markdown ms | Avg BBox ms |
+| --- | --- | --- |
+| pdf | 325.44 | 30.57 |
+| **Overall** | 325.44 | 30.57 |
+
+### Comparison with markitdown timings
+
+The [markitdown](https://github.com/mapo80/markitdown) project reports Docling dataset timings in seconds. Comparing the published averages shows that MarkItDownNet processes the PDF samples substantially faster:
+
+| Type | markitdown MD&nbsp;s | markitdown BBox&nbsp;s | MarkItDownNet MD&nbsp;s | MarkItDownNet BBox&nbsp;s |
+| --- | --- | --- | --- | --- |
+| pdf | 3.29 | 5.14 | 0.33 | 0.03 |
+| png | 2.51 | 5.56 | – | – |
+| tiff | 2.57 | 4.19 | – | – |
+| **Overall** | 3.18 | 5.10 | 0.33 | 0.03 |
+
+On the PDF samples, MarkItDownNet completed Markdown conversion about **10×** faster and bounding box generation roughly **170×** faster than markitdown. Image timings are unavailable here because the Leptonica runtime was missing.
+
 ## License
 
 MIT
