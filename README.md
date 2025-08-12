@@ -54,6 +54,21 @@ sudo ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu
 sudo ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
 ```
 
+### Leptonica tests
+
+The `tests/MarkItDownNet.Tests/LeptonicaTests.cs` file contains two simple unit tests that call the native Leptonica API via `DllImport`. They create a `PIX` image and round-trip a pixel value to confirm the library is wired up correctly:
+
+```csharp
+[DllImport("libleptonica-1.85.0.dll.so", CallingConvention = CallingConvention.Cdecl)]
+static extern IntPtr pixCreate(int width, int height, int depth);
+```
+
+Ensure the `libleptonica-1.85.0.dll.so` symlink above exists before running the suite:
+
+```bash
+~/.dotnet/dotnet test
+```
+
 ## Usage
 
 ```csharp
