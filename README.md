@@ -9,6 +9,10 @@ MarkItDownNet is a lightweight .NET library that converts PDFs and images into n
 
 Bounding boxes use `[x,y,w,h]` normalised to `[0..1]` with a top left origin.
 
+## FUNSD dataset comparison
+
+Una descrizione del tool di confronto con il dataset FUNSD, il report delle differenze di bounding box e le istruzioni per l'esecuzione sono disponibili in [docs/funsd_comparison.md](docs/funsd_comparison.md).
+
 ## Pipeline
 
 ```
