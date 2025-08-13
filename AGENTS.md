@@ -22,22 +22,22 @@
 - Use `Serilog__MinimumLevel=Verbose` to enable detailed timings and counts.
 
 ## Operations
-- Requires Tesseract binaries and language data (`TESSDATA_PREFIX`).
-- Fully CPU based; no GPU dependencies.
-- Build and tests must use `~/.dotnet/dotnet` from `dotnet-install.sh`.
-- The `TesseractOCR` 5.5.1 wrapper is built for **Tesseract 5.x** and needs **Leptonica ≥ 1.74**.
-- On Ubuntu 24.04 the `tesseract-ocr` (5.3.4 at time of writing) and `libleptonica-dev` (1.82.0) packages satisfy these requirements.
-- Create stable symlinks so the SDK does not depend on exact package versions. The wrapper still probes legacy names, so link them to the stable ones:
+Per usare la libreria TesseractOCR con i pacchetti standard di Ubuntu senza modificare il codice sorgente:
 
-```
+Installare Tesseract e Leptonica
+
 sudo apt-get update
-sudo apt-get install -y tesseract-ocr libleptonica-dev
-sudo ln -sf /usr/lib/x86_64-linux-gnu/liblept.so /usr/lib/x86_64-linux-gnu/libleptonica.so
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libleptonica.so /usr/lib/x86_64-linux-gnu/libleptonica-1.82.0.so
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libleptonica.so /usr/lib/x86_64-linux-gnu/libleptonica-1.82.0.dll.so
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract5.so
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libtesseract5.so /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
+sudo apt-get install -y tesseract-ocr libtesseract-dev libleptonica-dev libc6-dev
+# install .NET SDK 8
+curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
+bash /tmp/dotnet-install.sh --version 8.0.401
+export PATH=$HOME/.dotnet:$PATH
+Creare i collegamenti simbolici richiesti La libreria cerca i file tesseract55.dll e leptonica-1.85.0.dll nella cartella x64. Con l'installazione di Ubuntu i file hanno nomi diversi (ad es. libtesseract.so.5 e liblept.so.5). Creare dei link nella cartella TesseractOCR/x64:
+
+sudo ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
+sudo ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
+sudo ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
+Assicurarsi che questi file siano copiati accanto ai binari compilati (ad es. bin/Debug/net8.0/x64). Se non vengono copiati automaticamente dal build, copiarli manualmente dopo la compilazione.
 ```
 
 - Verify the installation:
