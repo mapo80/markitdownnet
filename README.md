@@ -40,42 +40,23 @@ All build and test commands must use the locally installed `dotnet`:
 ~/.dotnet/dotnet test
 ```
 
-## Ubuntu 24.04 dependencies
+## Tesseract and leptonica
+Per usare la libreria TesseractOCR con i pacchetti standard di Ubuntu senza modificare il codice sorgente:
 
-`TesseractOCR` 5.5.1 relies on native **Tesseract 5.x** and **Leptonica ≥ 1.74**. Ubuntu 24.04 packages provide suitable versions (`tesseract-ocr` 5.3.4 and `libleptonica-dev` 1.82.0):
+Installare Tesseract e Leptonica
 
-```bash
 sudo apt-get update
-sudo apt-get install -y tesseract-ocr libleptonica-dev
+sudo apt-get install -y tesseract-ocr libtesseract-dev libleptonica-dev libc6-dev
+# install .NET SDK 8
+curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
+bash /tmp/dotnet-install.sh --version 8.0.401
+export PATH=$HOME/.dotnet:$PATH
+Creare i collegamenti simbolici richiesti La libreria cerca i file tesseract55.dll e leptonica-1.85.0.dll nella cartella x64. Con l'installazione di Ubuntu i file hanno nomi diversi (ad es. libtesseract.so.5 e liblept.so.5). Creare dei link nella cartella TesseractOCR/x64:
 
-# create stable symlinks
-sudo ln -sf /usr/lib/x86_64-linux-gnu/liblept.so /usr/lib/x86_64-linux-gnu/libleptonica.so
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract5.so
-# legacy names required by the TesseractOCR wrapper
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libleptonica.so /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libtesseract5.so /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
-sudo ln -sf /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
-
-# check versions
-tesseract --version
-```
-
-### Leptonica and Tesseract tests
-
-`tests/MarkItDownNet.Tests/LeptonicaTests.cs` exercises the native Leptonica API via `DllImport`, creating a `PIX` image and round-tripping a pixel value.
-
-`tests/MarkItDownNet.Tests/TesseractOcrTests.cs` generates a small image containing the text "hi" and verifies that the Tesseract engine extracts the text correctly.
-
-```csharp
-[DllImport("libleptonica.so", CallingConvention = CallingConvention.Cdecl)]
-static extern IntPtr pixCreate(int width, int height, int depth);
-```
-
-Ensure the symlinks above exist before running the suite:
-
-```bash
-~/.dotnet/dotnet test
-```
+sudo ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
+sudo ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
+sudo ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
+Assicurarsi che questi file siano copiati accanto ai binari compilati (ad es. bin/Debug/net8.0/x64). Se non vengono copiati automaticamente dal build, copiarli manualmente dopo la compilazione.
 
 ## Usage
 
