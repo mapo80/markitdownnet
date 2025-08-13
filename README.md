@@ -45,22 +45,10 @@ All build and test commands must use the locally installed `dotnet`:
 ```
 
 ## Tesseract and leptonica
-Per usare la libreria TesseractOCR con i pacchetti standard di Ubuntu senza modificare il codice sorgente:
 
-Installare Tesseract e Leptonica
+Le librerie native di **Tesseract** (`libtesseract.so.5`) e **Leptonica** (`liblept.so.5`) per Linux `x64` sono ora incluse nel repository sotto `src/MarkItDownNet/TesseractOCR/x64` e vengono copiate automaticamente vicino ai binari compilati. Non è quindi necessario installare pacchetti di sistema né creare collegamenti simbolici.
 
-sudo apt-get update
-sudo apt-get install -y tesseract-ocr libtesseract-dev libleptonica-dev libc6-dev
-# install .NET SDK 8
-curl -sSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh
-bash /tmp/dotnet-install.sh --version 8.0.401
-export PATH=$HOME/.dotnet:$PATH
-Creare i collegamenti simbolici richiesti La libreria cerca i file tesseract55.dll e leptonica-1.85.0.dll nella cartella x64. Con l'installazione di Ubuntu i file hanno nomi diversi (ad es. libtesseract.so.5 e liblept.so.5). Creare dei link nella cartella TesseractOCR/x64:
-
-sudo ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.5 /usr/lib/x86_64-linux-gnu/libtesseract55.dll.so
-sudo ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 /usr/lib/x86_64-linux-gnu/libleptonica-1.85.0.dll.so
-sudo ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/x86_64-linux-gnu/libdl.so
-Assicurarsi che questi file siano copiati accanto ai binari compilati (ad es. bin/Debug/net8.0/x64). Se non vengono copiati automaticamente dal build, copiarli manualmente dopo la compilazione.
+Per eseguire l'OCR è comunque richiesto il percorso ai file `tessdata` delle lingue. Impostare `OcrDataPath` nelle opzioni puntando a una cartella contenente i dati di lingua desiderati (ad es. scaricandoli da `https://github.com/tesseract-ocr/tessdata_fast`).
 
 ## Usage
 

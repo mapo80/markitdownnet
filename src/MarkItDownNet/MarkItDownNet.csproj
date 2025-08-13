@@ -17,4 +17,19 @@
     <PackageReference Include="UglyToad.PdfPig" Version="1.7.0-custom-5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="TesseractOCR/x64/libtesseract.so.5">
+      <Link>libtesseract.so.5</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TesseractOCR/x64/liblept.so.5">
+      <Link>liblept.so.5</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TesseractOCR/x64/libdl.so">
+      <Link>libdl.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -14,6 +14,8 @@
 [Rr]eleases/
 x64/
 x86/
+!src/MarkItDownNet/TesseractOCR/x64/
+!src/MarkItDownNet/TesseractOCR/x64/*
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
