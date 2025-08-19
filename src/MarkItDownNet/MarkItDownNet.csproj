@@ -13,36 +13,13 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageReference Include="TesseractOCR" Version="5.5.1" />
+    <PackageReference Include="Tesseract" Version="5.2.0" />
     <PackageReference Include="PdfPig" Version="0.1.11" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Bundled native libraries for Linux (x64) -->
-    <None Include="TesseractOCR/x64/libtesseract.so.5">
-      <Link>x64/libtesseract.so.5</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TesseractOCR/x64/libtesseract55.dll.so">
-      <Link>x64/libtesseract55.dll.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TesseractOCR/x64/liblept.so.5">
-      <Link>x64/liblept.so.5</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TesseractOCR/x64/libleptonica-1.85.0.dll.so">
-      <Link>x64/libleptonica-1.85.0.dll.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TesseractOCR/x64/libopenjp2.so.7">
-      <Link>x64/libopenjp2.so.7</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="TesseractOCR/x64/libdl.so">
-      <Link>runtimes/linux-x64/native/libdl.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="runtimes/linux-x64/native/*" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="runtimes/linux-x64/native" />
   </ItemGroup>
 
 </Project>
