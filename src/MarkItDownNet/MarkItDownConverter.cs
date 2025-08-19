@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Markdig;
 using Serilog;
-using Tesseract;
+using TesseractOCR;
+using TesseractOCR.Enums;
+using TesseractOCR.InteropDotNet;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.Content;
 using PDFtoImage;
@@ -19,6 +22,40 @@ public class MarkItDownConverter
 {
     private readonly MarkItDownOptions _options;
     private readonly ILogger _logger;
+
+    static MarkItDownConverter()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            var libDir = Path.Combine(AppContext.BaseDirectory, "x64");
+            var ldPath = Environment.GetEnvironmentVariable("LD_LIBRARY_PATH");
+            Environment.SetEnvironmentVariable("LD_LIBRARY_PATH", string.IsNullOrEmpty(ldPath) ? libDir : libDir + ":" + ldPath);
+            LibraryLoader.Instance.CustomSearchPath = libDir;
+            LoadNative("libopenjp2.so.7");
+            LoadNative("libleptonica-1.85.0.dll.so");
+            LoadNative("libtesseract.so.5");
+        }
+    }
+
+    private const int RTLD_NOW = 2;
+    private const int RTLD_GLOBAL = 0x100;
+
+    [DllImport("libdl.so.2")]
+    private static extern IntPtr dlopen(string fileName, int flags);
+
+    private static void LoadNative(string name)
+    {
+        var path = Path.Combine(AppContext.BaseDirectory, "x64", name);
+        if (!File.Exists(path))
+        {
+            throw new DllNotFoundException($"Unable to find '{name}' at '{path}'");
+        }
+        var handle = dlopen(path, RTLD_NOW | RTLD_GLOBAL);
+        if (handle == IntPtr.Zero)
+        {
+            throw new DllNotFoundException($"Unable to load '{name}' from '{path}'");
+        }
+    }
 
     public MarkItDownConverter(MarkItDownOptions? options = null, ILogger? logger = null)
     {
@@ -99,7 +136,7 @@ public class MarkItDownConverter
                 pages.Add(new Page(pages.Count + 1, bitmap.Width, bitmap.Height));
                 using var image = SKImage.FromBitmap(bitmap);
                 using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                using var pix = Pix.LoadFromMemory(data.ToArray());
+                using var pix = TesseractOCR.Pix.Image.LoadFromMemory(data.ToArray());
                 var result = ProcessPix(pix, pages.Count, ct);
                 lines.AddRange(result.lines);
                 words.AddRange(result.words);
@@ -112,50 +149,51 @@ public class MarkItDownConverter
 
     private MarkItDownResult ProcessImage(string path, CancellationToken ct)
     {
-        using var pix = Pix.LoadFromFile(path);
+        using var pix = TesseractOCR.Pix.Image.LoadFromFile(path);
         var (lines, words) = ProcessPix(pix, 1, ct);
         var pages = new List<Page> { new Page(1, pix.Width, pix.Height) };
         var markdown = BuildMarkdown(lines);
         return new MarkItDownResult(markdown, pages, lines, words);
     }
 
-    private (List<Line> lines, List<Word> words) ProcessPix(Pix pix, int pageNumber, CancellationToken ct)
+    private (List<Line> lines, List<Word> words) ProcessPix(TesseractOCR.Pix.Image pix, int pageNumber, CancellationToken ct)
     {
         var lines = new List<Line>();
         var words = new List<Word>();
-        using var engine = new TesseractEngine(_options.OcrDataPath ?? string.Empty, _options.OcrLanguages, EngineMode.Default);
+        using var engine = new Engine(_options.OcrDataPath ?? string.Empty, _options.OcrLanguages, EngineMode.Default);
         using var page = engine.Process(pix);
-        var iterator = page.GetIterator();
 
-        iterator.Begin();
-        do
+        foreach (var block in page.Layout)
         {
-            ct.ThrowIfCancellationRequested();
-            if (iterator.TryGetBoundingBox(PageIteratorLevel.TextLine, out var rect))
+            foreach (var paragraph in block.Paragraphs)
             {
-                var text = iterator.GetText(PageIteratorLevel.TextLine)?.Trim() ?? string.Empty;
-                if (!string.IsNullOrEmpty(text))
+                foreach (var textLine in paragraph.TextLines)
                 {
-                    lines.Add(new Line(pageNumber, text, Normalize(rect, pix.Width, pix.Height)));
+                    ct.ThrowIfCancellationRequested();
+                    if (textLine.BoundingBox is Rect rectLine)
+                    {
+                        var text = textLine.Text?.Trim() ?? string.Empty;
+                        if (!string.IsNullOrEmpty(text))
+                        {
+                            lines.Add(new Line(pageNumber, text, Normalize(rectLine, pix.Width, pix.Height)));
+                        }
+                    }
+
+                    foreach (var word in textLine.Words)
+                    {
+                        ct.ThrowIfCancellationRequested();
+                        if (word.BoundingBox is Rect rectWord)
+                        {
+                            var wText = word.Text?.Trim() ?? string.Empty;
+                            if (!string.IsNullOrEmpty(wText))
+                            {
+                                words.Add(new Word(pageNumber, wText, Normalize(rectWord, pix.Width, pix.Height)));
+                            }
+                        }
+                    }
                 }
             }
         }
-        while (iterator.Next(PageIteratorLevel.TextLine));
-
-        iterator.Begin();
-        do
-        {
-            ct.ThrowIfCancellationRequested();
-            if (iterator.TryGetBoundingBox(PageIteratorLevel.Word, out var rect))
-            {
-                var text = iterator.GetText(PageIteratorLevel.Word)?.Trim() ?? string.Empty;
-                if (!string.IsNullOrEmpty(text))
-                {
-                    words.Add(new Word(pageNumber, text, Normalize(rect, pix.Width, pix.Height)));
-                }
-            }
-        }
-        while (iterator.Next(PageIteratorLevel.Word));
 
         return (lines, words);
     }

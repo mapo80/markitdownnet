@@ -27,6 +27,19 @@
 - Use `Serilog__MinimumLevel=Verbose` to enable detailed timings and counts.
 
 ## Operations
-Le librerie native di Tesseract (`libtesseract.so.5`) e Leptonica (`liblept.so.5`) sono già presenti in `src/MarkItDownNet/TesseractOCR/x64` e vengono copiate automaticamente accanto ai binari. Non è quindi necessario installare pacchetti di sistema o creare collegamenti simbolici.
+Le librerie native minime per Linux `x64` sono disponibili in `src/MarkItDownNet/TesseractOCR/x64` e vengono copiate accanto ai binari (`x64`) ad eccezione di `libdl.so`, posizionata in `runtimes/linux-x64/native`:
 
-Per eseguire l'OCR è necessario fornire i file `tessdata` delle lingue e indicarli tramite `OcrDataPath`.
+* `libopenjp2.so.7`
+* `liblept.so.5` con il symlink `libleptonica-1.85.0.dll.so`
+* `libtesseract.so.5` con il symlink `libtesseract55.dll.so`
+* `libdl.so`
+
+Grazie a queste dipendenze la libreria è auto‑consistente e **non richiede l'installazione di Tesseract o Leptonica**.
+
+Per l'OCR servono solo i dati delle lingue. Su Ubuntu 24.04 possono essere installati con:
+
+```bash
+sudo apt-get install -y tesseract-ocr-eng tesseract-ocr-ita tesseract-ocr-osd
+```
+
+Indicare quindi il percorso tramite `OcrDataPath`.
