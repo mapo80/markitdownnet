@@ -46,9 +46,22 @@ All build and test commands must use the locally installed `dotnet`:
 
 ## Tesseract and leptonica
 
-Le librerie native di **Tesseract** (`libtesseract.so.5`) e **Leptonica** (`liblept.so.5`) per Linux `x64` sono ora incluse nel repository sotto `src/MarkItDownNet/TesseractOCR/x64` e vengono copiate automaticamente vicino ai binari compilati. Non è quindi necessario installare pacchetti di sistema né creare collegamenti simbolici.
+Per l'esecuzione su Linux `x64` il progetto include solo le librerie native strettamente necessarie. Tesseract e Leptonica risiedono nella sottocartella `x64` accanto ai binari, mentre `libdl.so` è collocata sotto `runtimes/linux-x64/native` per soddisfare il loader di `TesseractOCR`:
 
-Per eseguire l'OCR è comunque richiesto il percorso ai file `tessdata` delle lingue. Impostare `OcrDataPath` nelle opzioni puntando a una cartella contenente i dati di lingua desiderati (ad es. scaricandoli da `https://github.com/tesseract-ocr/tessdata_fast`).
+* `libopenjp2.so.7`
+* `liblept.so.5` e il symlink `libleptonica-1.85.0.dll.so`
+* `libtesseract.so.5` e il symlink `libtesseract55.dll.so`
+* `libdl.so`
+
+Grazie a queste dipendenze pre‑caricate la libreria è *auto‑consistente* e **non richiede l'installazione di Tesseract o Leptonica sul sistema**.
+
+Per eseguire l'OCR è necessario soltanto fornire i file `tessdata` delle lingue. Su Ubuntu 24.04 è sufficiente installare i pacchetti delle lingue desiderate, ad esempio:
+
+```bash
+sudo apt-get install -y tesseract-ocr-eng tesseract-ocr-ita tesseract-ocr-osd
+```
+
+Impostare quindi `OcrDataPath` nelle opzioni puntando alla cartella che contiene i dati di lingua (ad es. `/usr/share/tesseract-ocr/5/tessdata`).
 
 ## Usage
 

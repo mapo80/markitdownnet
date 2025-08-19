@@ -1,12 +1,19 @@
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 using Xunit;
+using MarkItDownNet;
 
 namespace MarkItDownNet.Tests;
 
 public class LeptonicaTests
 {
-    private const string LeptonicaDll = "libleptonica.so";
+    private const string LeptonicaDll = "x64/libleptonica-1.85.0.dll.so";
+
+    static LeptonicaTests()
+    {
+        RuntimeHelpers.RunClassConstructor(typeof(MarkItDownConverter).TypeHandle);
+    }
 
     [DllImport(LeptonicaDll, CallingConvention = CallingConvention.Cdecl)]
     private static extern IntPtr pixCreate(int width, int height, int depth);
