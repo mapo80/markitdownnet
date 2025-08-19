@@ -1,6 +1,5 @@
 using MarkItDownNet;
 using System.Diagnostics;
-using TesseractOCR.InteropDotNet;
 
 record TimingRecord(string FileName, string Type, double MarkdownMs, double BBoxMs);
 
@@ -12,7 +11,6 @@ class Program
         var repoRoot = Path.GetFullPath(Path.Combine(baseDir, "..", "..", "..", "..", ".."));
         var dataRoot = Path.Combine(repoRoot, "docling", "tests", "data");
 
-        LibraryLoader.Instance.CustomSearchPath = "/usr/lib/x86_64-linux-gnu";
         Environment.SetEnvironmentVariable("TESSDATA_PREFIX", "/usr/share/tesseract-ocr/5/tessdata");
 
         var pdfFiles = Directory.GetFiles(Path.Combine(dataRoot, "pdf"), "*.pdf");

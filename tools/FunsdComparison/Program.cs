@@ -2,7 +2,6 @@ using MarkItDownNet;
 using SkiaSharp;
 using System.Text;
 using System.Text.Json;
-using TesseractOCR.InteropDotNet;
 
 namespace FunsdComparison;
 
@@ -23,7 +22,7 @@ class Program
 
         Directory.CreateDirectory(outputRoot);
 
-        // TesseractOCR relies on system libraries; no custom search path required on Linux
+        // Tesseract relies on system libraries; no custom search path required on Linux
         Environment.SetEnvironmentVariable("TESSDATA_PREFIX", "/usr/share/tesseract-ocr/5/tessdata");
 
         var converter = new MarkItDownConverter(new MarkItDownOptions { NormalizeMarkdown = false });
@@ -119,7 +118,6 @@ class Program
         sb.AppendLine();
         sb.AppendLine("```bash");
         sb.AppendLine("export PATH=$HOME/.dotnet:$PATH");
-        sb.AppendLine("export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$PWD/tools/FunsdComparison/bin/Debug/net9.0/runtimes/linux-x64/native");
         sb.AppendLine("dotnet run --project tools/FunsdComparison");
         sb.AppendLine("```");
 
