@@ -57,3 +57,4 @@ docling/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+!Tesseract.5.2.0.nupkg
