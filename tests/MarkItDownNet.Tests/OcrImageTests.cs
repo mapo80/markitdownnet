@@ -11,15 +11,6 @@ public class OcrImageTests
     [Fact]
     public async Task Can_extract_text_from_simple_png()
     {
-        try
-        {
-            OcrTestHelpers.EnsureOcrLibraries();
-        }
-        catch (Exception)
-        {
-            return;
-        }
-
         using var surface = SKSurface.Create(new SKImageInfo(120, 40));
         var canvas = surface.Canvas;
         canvas.Clear(SKColors.White);

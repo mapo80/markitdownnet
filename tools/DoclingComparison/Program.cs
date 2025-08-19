@@ -3,7 +3,6 @@ using MarkItDownNet;
 using SkiaSharp;
 using System.Text;
 using System.Text.Json;
-using TesseractOCR.InteropDotNet;
 
 namespace DoclingComparison;
 
@@ -19,7 +18,6 @@ class Program
         var groundRoot = Path.Combine(dataRoot, "groundtruth", "docling_v2");
         var reportPath = Path.Combine(repoRoot, "docs", "docling_comparison.md");
 
-        LibraryLoader.Instance.CustomSearchPath = "/lib/x86_64-linux-gnu";
         Environment.SetEnvironmentVariable("TESSDATA_PREFIX", "/usr/share/tesseract-ocr/5/tessdata");
 
         var files = args.Length > 0 ? args : Directory.GetFiles(Path.Combine(dataRoot, "pdf"), "*.pdf")
