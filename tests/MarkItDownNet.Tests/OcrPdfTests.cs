@@ -5,8 +5,6 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using MarkItDownNet;
-using TesseractOCR;
-using TesseractOCR.InteropDotNet;
 using Xunit;
 
 namespace MarkItDownNet.Tests;
@@ -16,11 +14,6 @@ public class OcrPdfTests
     [Fact]
     public async Task OcrTestPdfMatchesGroundTruth()
     {
-        try {
-        OcrTestHelpers.EnsureOcrLibraries();
-    } catch (Exception) {
-        return;
-    }
         using var http = new HttpClient();
         var baseUrl = "https://raw.githubusercontent.com/docling-project/docling/main/tests/data_scanned";
 

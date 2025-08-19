@@ -27,14 +27,7 @@
 - Use `Serilog__MinimumLevel=Verbose` to enable detailed timings and counts.
 
 ## Operations
-Le librerie native minime per Linux `x64` sono disponibili in `src/MarkItDownNet/TesseractOCR/x64` e vengono copiate accanto ai binari (`x64`) ad eccezione di `libdl.so`, posizionata in `runtimes/linux-x64/native`:
-
-* `libopenjp2.so.7`
-* `liblept.so.5` con il symlink `libleptonica-1.85.0.dll.so`
-* `libtesseract.so.5` con il symlink `libtesseract55.dll.so`
-* `libdl.so`
-
-Grazie a queste dipendenze la libreria è auto‑consistente e **non richiede l'installazione di Tesseract o Leptonica**.
+Le dipendenze native minime per Linux `x64` (Tesseract e Leptonica) sono incluse nel repository in `runtimes/linux-x64/native` e vengono copiate accanto ai binari. Non è richiesta l'installazione separata di Tesseract.
 
 Per l'OCR servono solo i dati delle lingue. Su Ubuntu 24.04 possono essere installati con:
 
