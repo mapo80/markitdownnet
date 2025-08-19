@@ -22,8 +22,16 @@
       <Link>libtesseract.so.5</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TesseractOCR/x64/libtesseract.so">
+      <Link>libtesseract.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TesseractOCR/x64/liblept.so.5">
       <Link>liblept.so.5</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="TesseractOCR/x64/libleptonica.so">
+      <Link>libleptonica.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="TesseractOCR/x64/libdl.so">

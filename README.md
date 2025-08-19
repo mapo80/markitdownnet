@@ -16,7 +16,7 @@ Una descrizione del tool di confronto con il dataset FUNSD, il report delle diff
 ## Pipeline
 
 ```
-PDF -> PdfPig text extraction -> (optional) PDFtoImage rasterisation -> Tesseract OCR
+PDF -> UglyToad.PdfPig text extraction -> (optional) PDFtoImage rasterisation -> Tesseract OCR
 Image -> Tesseract OCR
                  |                 
                  v                 
