@@ -61,6 +61,5 @@ Confronto tra le bounding box delle parole annotate nel dataset di test FUNSD e 
 
 ```bash
 export PATH=$HOME/.dotnet:$PATH
-export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$PWD/tools/FunsdComparison/bin/Debug/net9.0/runtimes/linux-x64/native
 dotnet run --project tools/FunsdComparison
 ```
