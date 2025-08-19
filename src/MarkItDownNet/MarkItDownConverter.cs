@@ -6,7 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Markdig;
 using Serilog;
-using Tesseract;
+using TesseractOCR;
+using TesseractOCR.Enums;
+using TesseractOCR.Pix;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.Content;
 using PDFtoImage;
@@ -99,7 +101,7 @@ public class MarkItDownConverter
                 pages.Add(new Page(pages.Count + 1, bitmap.Width, bitmap.Height));
                 using var image = SKImage.FromBitmap(bitmap);
                 using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                using var pix = Pix.LoadFromMemory(data.ToArray());
+                using var pix = Image.LoadFromMemory(data.ToArray());
                 var result = ProcessPix(pix, pages.Count, ct);
                 lines.AddRange(result.lines);
                 words.AddRange(result.words);
@@ -112,50 +114,45 @@ public class MarkItDownConverter
 
     private MarkItDownResult ProcessImage(string path, CancellationToken ct)
     {
-        using var pix = Pix.LoadFromFile(path);
+        using var pix = Image.LoadFromFile(path);
         var (lines, words) = ProcessPix(pix, 1, ct);
         var pages = new List<Page> { new Page(1, pix.Width, pix.Height) };
         var markdown = BuildMarkdown(lines);
         return new MarkItDownResult(markdown, pages, lines, words);
     }
 
-    private (List<Line> lines, List<Word> words) ProcessPix(Pix pix, int pageNumber, CancellationToken ct)
+    private (List<Line> lines, List<Word> words) ProcessPix(Image pix, int pageNumber, CancellationToken ct)
     {
         var lines = new List<Line>();
         var words = new List<Word>();
-        using var engine = new TesseractEngine(_options.OcrDataPath ?? string.Empty, _options.OcrLanguages, EngineMode.Default);
+        using var engine = new Engine(_options.OcrDataPath ?? string.Empty, _options.OcrLanguages, EngineMode.Default);
         using var page = engine.Process(pix);
-        var iterator = page.GetIterator();
 
-        iterator.Begin();
-        do
+        foreach (var block in page.Layout)
         {
-            ct.ThrowIfCancellationRequested();
-            if (iterator.TryGetBoundingBox(PageIteratorLevel.TextLine, out var rect))
+            foreach (var paragraph in block.Paragraphs)
             {
-                var text = iterator.GetText(PageIteratorLevel.TextLine)?.Trim() ?? string.Empty;
-                if (!string.IsNullOrEmpty(text))
+                foreach (var textLine in paragraph.TextLines)
                 {
-                    lines.Add(new Line(pageNumber, text, Normalize(rect, pix.Width, pix.Height)));
+                    ct.ThrowIfCancellationRequested();
+                    var text = textLine.Text?.Trim() ?? string.Empty;
+                    if (!string.IsNullOrEmpty(text) && textLine.BoundingBox is Rect lineRect)
+                    {
+                        lines.Add(new Line(pageNumber, text, Normalize(lineRect, pix.Width, pix.Height)));
+                    }
+
+                    foreach (var word in textLine.Words)
+                    {
+                        ct.ThrowIfCancellationRequested();
+                        var wText = word.Text?.Trim() ?? string.Empty;
+                        if (!string.IsNullOrEmpty(wText) && word.BoundingBox is Rect wordRect)
+                        {
+                            words.Add(new Word(pageNumber, wText, Normalize(wordRect, pix.Width, pix.Height)));
+                        }
+                    }
                 }
             }
         }
-        while (iterator.Next(PageIteratorLevel.TextLine));
-
-        iterator.Begin();
-        do
-        {
-            ct.ThrowIfCancellationRequested();
-            if (iterator.TryGetBoundingBox(PageIteratorLevel.Word, out var rect))
-            {
-                var text = iterator.GetText(PageIteratorLevel.Word)?.Trim() ?? string.Empty;
-                if (!string.IsNullOrEmpty(text))
-                {
-                    words.Add(new Word(pageNumber, text, Normalize(rect, pix.Width, pix.Height)));
-                }
-            }
-        }
-        while (iterator.Next(PageIteratorLevel.Word));
 
         return (lines, words);
     }
