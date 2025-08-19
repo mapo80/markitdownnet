@@ -1,5 +1,10 @@
 # MarkItDownNet – agent notes
 
+## Install the .NET 9 SDK locally if needed:
+```bash
+  ./dotnet-install.sh --version 9.0.100 --install-dir "$HOME/dotnet"
+  export PATH="$HOME/dotnet:$PATH"
+```
 ## API contract
 - Entry point: `MarkItDownConverter.ConvertAsync(string path, string mimeType, CancellationToken)`
 - Response: `MarkItDownResult`
