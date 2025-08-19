@@ -30,6 +30,18 @@
       <Link>libdl.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="TesseractOCR/x64/libleptonica.so">
+      <Link>libleptonica.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>    
+    <None Include="TesseractOCR/x64/libtesseract.so">
+      <Link>libtesseract.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>   
+    <None Include="TesseractOCR/x64/libopenjp2.so.7">
+      <Link>libopenjp2.so.7</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>            
   </ItemGroup>
 
 </Project>
