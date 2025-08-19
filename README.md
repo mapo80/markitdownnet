@@ -46,14 +46,8 @@ All build and test commands must use the locally installed `dotnet`:
 
 ## Tesseract and leptonica
 
-Per l'esecuzione su Linux `x64` il progetto include solo le librerie native strettamente necessarie. Tesseract e Leptonica risiedono nella sottocartella `x64` accanto ai binari, mentre `libdl.so` è collocata sotto `runtimes/linux-x64/native` per soddisfare il loader di `TesseractOCR`:
-
-* `libopenjp2.so.7`
-* `liblept.so.5` e il symlink `libleptonica-1.85.0.dll.so`
-* `libtesseract.so.5` e il symlink `libtesseract55.dll.so`
-* `libdl.so`
-
-Grazie a queste dipendenze pre‑caricate la libreria è *auto‑consistente* e **non richiede l'installazione di Tesseract o Leptonica sul sistema**.
+La libreria include le dipendenze native minime per Linux `x64` in `runtimes/linux-x64/native` e non richiede l'installazione di Tesseract o Leptonica sul sistema.
+Il binding .NET di Tesseract è fornito tramite un pacchetto NuGet locale (`local-packages/Tesseract.5.2.0.nupkg`) derivato dal repository [charlesw/tesseract](https://github.com/charlesw/tesseract).
 
 Per eseguire l'OCR è necessario soltanto fornire i file `tessdata` delle lingue. Su Ubuntu 24.04 è sufficiente installare i pacchetti delle lingue desiderate, ad esempio:
 
