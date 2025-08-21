@@ -104,6 +104,7 @@ public static class TextModeConverter
     private static string Reflow(string text, TextModeConfig config, bool v02, bool v03)
     {
         var lines = text.Split('\n');
+        double avgLen = lines.Where(l => !string.IsNullOrWhiteSpace(l)).Select(l => l.Trim().Length).DefaultIfEmpty(0).Average();
         var sb = new StringBuilder();
         for (int i = 0; i < lines.Length; )
         {
@@ -130,14 +131,21 @@ public static class TextModeConverter
                 if ((v02 || v03) && IsKeyValueLine(nl)) return false;
                 if (paragraph.ToString().EndsWith(":")) return false;
                 var trimmed = nl.TrimStart();
-                if (IsTableLikeLine(nl, config) || IsProbableCode(nl, config) || trimmed.StartsWith("|") || trimmed.StartsWith("```") )
+                if (IsTableLikeLine(nl, config) || IsProbableCode(nl, config) ||
+                    trimmed.StartsWith("|") || trimmed.StartsWith("```") ||
+                    Regex.IsMatch(trimmed, @"^(https?://|www\.|[\w.+-]+@[\w.-]+)"))
                     return false;
                 return true;
             }
-            while (CanMerge(i))
+            bool OkMerge(int idx)
+            {
+                var current = lines[idx].TrimEnd();
+                return current.Length < 0.9 * avgLen || !Regex.IsMatch(current, "[.!?]$");
+            }
+            while (CanMerge(i) && OkMerge(i))
             {
                 var next = lines[i+1].TrimStart();
-                if (config.Dehyphenation && paragraph.ToString().EndsWith("-") && Regex.IsMatch(next, "^[a-z0-9].*") && !(v03 && Regex.IsMatch(paragraph.ToString(), @"[A-Z]{2,}\d+$")))
+                if (config.Dehyphenation && paragraph.ToString().EndsWith("-") && Regex.IsMatch(next, "^[a-z0-9].*") && !Regex.IsMatch(paragraph.ToString(), @"[A-Z]{2,}\d+$"))
                 {
                     paragraph.Length--;
                     paragraph.Append(next);
@@ -161,6 +169,7 @@ public static class TextModeConverter
         foreach (var b in config.BulletChars)
             if (trimmed.StartsWith(b + " ")) return true;
         if (Regex.IsMatch(trimmed, @"^[0-9]+[\.)]\s")) return true;
+        if (Regex.IsMatch(trimmed, @"^[ivxlcdm]+[\.)]\s", RegexOptions.IgnoreCase)) return true;
         return false;
     }
 
@@ -195,32 +204,25 @@ public static class TextModeConverter
                 {
                     var builder = new StringBuilder(content);
                     int j = i + 1;
-                    while (j < lines.Length && !TryParseBullet(lines[j], config, out _, out _, out _) )
+                    while (j < lines.Length && !TryParseBullet(lines[j], config, out _, out _, out _))
                     {
                         if (lines[j].StartsWith(new string(' ', indent + config.ListIndentWidth + 2)) ||
-                            ((v02 || v03) && lines[j].StartsWith(new string(' ', indent)) && builder.Length>0 && (builder[^1]==',' || builder[^1]==';')) )
+                            (lines[j].StartsWith(new string(' ', indent)) && builder.Length > 0 && (builder[^1] == ',' || builder[^1] == ';')))
                         {
                             builder.Append(' ').Append(lines[j].Trim());
                             j++;
                         }
                         else break;
                     }
-                    items.Add((indent,num,builder.ToString()));
+                    items.Add((indent, num, builder.ToString()));
                     i = j;
                 }
                 if (items.Count >= config.MinItemsForListBlock)
                 {
                     bool numeric = items.All(it => it.num.HasValue);
-                    if (numeric)
-                    {
-                        bool coherent = true;
-                        for (int k=0;k<items.Count;k++) if (items[k].num != k+1) { coherent=false; break; }
-                        if (!coherent)
-                            for (int k=0;k<items.Count;k++) items[k]= (items[k].indent,1,items[k].content);
-                    }
                     foreach (var it in items)
                     {
-                        string bullet = it.num.HasValue? $"{it.num}. ":"- ";
+                        string bullet = numeric ? "1. " : "- ";
                         sb.AppendLine(new string(' ', it.indent) + bullet + it.content);
                     }
                 }

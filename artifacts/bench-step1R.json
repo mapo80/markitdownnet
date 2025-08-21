@@ -1,0 +1,94 @@
+{
+  "environment": {
+    "os": "Ubuntu 24.04.2 LTS",
+    "dotnet": "9.0.0"
+  },
+  "results": [
+    {
+      "Mode": "pre",
+      "Trials": [
+        29.3025,
+        0.5726,
+        0.4999,
+        0.4919,
+        0.4872
+      ],
+      "AvgMs": 6.2708200000000005,
+      "StdMs": 11.515881981923918,
+      "Output": "artifacts/outputs/busta_paga_internet.pre.md",
+      "Similarity": {
+        "Cer": 0.0008431703204047217,
+        "Precision": 0.7839195979899497,
+        "Recall": 0.7839195979899497,
+        "F1": 0.7839195979899497,
+        "HeadingLevels": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "ListItems": 0,
+        "MaxListDepth": 0,
+        "CodeBlocks": 0,
+        "HorizontalRules": 0,
+        "Tables": 0,
+        "HeadingMatch": 1,
+        "TableCellF1": 1,
+        "LineCount": 36,
+        "LineRatio": 0.972972972972973
+      }
+    },
+    {
+      "Mode": "post-v0",
+      "Trials": [
+        23.508,
+        1.2829,
+        1.0952,
+        0.9878,
+        0.8837
+      ],
+      "AvgMs": 5.55152,
+      "StdMs": 8.979211128245064,
+      "Output": "artifacts/outputs/busta_paga_internet.post-v0.md",
+      "Similarity": {
+        "Cer": 0.006745362563237774,
+        "Precision": 0.7839195979899497,
+        "Recall": 0.7839195979899497,
+        "F1": 0.7839195979899497,
+        "HeadingLevels": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "ListItems": 0,
+        "MaxListDepth": 0,
+        "CodeBlocks": 0,
+        "HorizontalRules": 0,
+        "Tables": 0,
+        "HeadingMatch": 1,
+        "TableCellF1": 1,
+        "LineCount": 29,
+        "LineRatio": 0.7837837837837838
+      }
+    },
+    {
+      "Mode": "python",
+      "Trials": [
+        3812.3356,
+        3588.8372,
+        3446.6974,
+        3477.6277,
+        3653.5281
+      ],
+      "AvgMs": 3595.8052000000002,
+      "StdMs": 131.50281963491122,
+      "Output": "artifacts/outputs/busta_paga_internet.python.md",
+      "Similarity": null
+    }
+  ]
+}
