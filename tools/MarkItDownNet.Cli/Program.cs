@@ -44,7 +44,7 @@ static void ConvertCommand(string[] args)
 static void BenchCommand(string[] args)
 {
     string input = GetOption(args, "--input") ?? throw new ArgumentException("--input required");
-    string modes = GetOption(args, "--modes") ?? "pre,post-1R,post-1S,python-cold,python-hot";
+    string modes = GetOption(args, "--modes") ?? "pre,post-1S,post-2,python-cold,python-hot";
     string outJson = GetOption(args, "--out-json") ?? throw new ArgumentException("--out-json required");
     string outHtml = GetOption(args, "--out-html") ?? throw new ArgumentException("--out-html required");
     string summaryMd = GetOption(args, "--summary-md") ?? "";
@@ -176,34 +176,34 @@ static string HtmlReport(List<BenchResult> results)
         sb.AppendLine($"<tr><td>{r.Mode}</td><td>{r.AvgMs:F1}</td><td>{r.StdMs:F1}</td></tr>");
     sb.AppendLine("</table>");
     var pre = results.FirstOrDefault(r=>r.Mode=="pre");
-    var post1R = results.FirstOrDefault(r=>r.Mode=="post-1R");
     var post1S = results.FirstOrDefault(r=>r.Mode=="post-1S");
+    var post2 = results.FirstOrDefault(r=>r.Mode=="post-2");
     var pyHot = results.FirstOrDefault(r=>r.Mode=="python-hot");
     var pyCold = results.FirstOrDefault(r=>r.Mode=="python-cold");
-    if (post1R!=null && pre!=null)
+    if (post1S!=null && pre!=null)
     {
-        var delta = (post1R.AvgMs - pre.AvgMs)/pre.AvgMs*100.0;
-        sb.AppendLine($"<p>post-1R vs pre: {delta:F1}%</p>");
+        var delta = (post1S.AvgMs - pre.AvgMs)/pre.AvgMs*100.0;
+        sb.AppendLine($"<p>post-1S vs pre: {delta:F1}%</p>");
     }
-    if (post1S!=null && post1R!=null)
+    if (post2!=null && post1S!=null)
     {
-        var delta = (post1S.AvgMs - post1R.AvgMs)/post1R.AvgMs*100.0;
-        sb.AppendLine($"<p>post-1S vs post-1R: {delta:F1}%</p>");
+        var delta = (post2.AvgMs - post1S.AvgMs)/post1S.AvgMs*100.0;
+        sb.AppendLine($"<p>post-2 vs post-1S: {delta:F1}%</p>");
     }
     if (pyHot!=null && pyCold!=null)
     {
         var delta = (pyHot.AvgMs - pyCold.AvgMs)/pyCold.AvgMs*100.0;
         sb.AppendLine($"<p>python-hot vs python-cold: {delta:F1}%</p>");
     }
-    if (pyHot!=null && post1S!=null)
+    if (pyHot!=null && post2!=null)
     {
-        var delta = (post1S.AvgMs - pyHot.AvgMs)/pyHot.AvgMs*100.0;
-        sb.AppendLine($"<p>post-1S vs python-hot: {delta:F1}%</p>");
+        var delta = (post2.AvgMs - pyHot.AvgMs)/pyHot.AvgMs*100.0;
+        sb.AppendLine($"<p>post-2 vs python-hot: {delta:F1}%</p>");
     }
     if (pyHot!=null)
     {
         sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th><th>line_count</th><th>list_items</th><th>pipes_lines</th><th>median_pipes</th><th>max_pipes</th></tr>");
-        foreach(var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1R" || r.Mode=="post-1S"))
+        foreach(var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
         {
             var s=r.Similarity;
             if (s!=null)
@@ -212,8 +212,8 @@ static string HtmlReport(List<BenchResult> results)
         sb.AppendLine("</table>");
         var pyNorm = File.ReadAllText(pyHot.NormOutput);
         var preNorm = pre?.NormOutput;
-        var postNorm = post1R?.NormOutput;
         var post1SNorm = post1S?.NormOutput;
+        var post2Norm = post2?.NormOutput;
         if (preNorm!=null)
         {
             sb.AppendLine("<h3>pre vs python-hot</h3><table border='1'><tr><td><pre>");
@@ -222,18 +222,18 @@ static string HtmlReport(List<BenchResult> results)
             sb.Append(WebUtility.HtmlEncode(pyNorm));
             sb.AppendLine("</pre></td></tr></table>");
         }
-        if (postNorm!=null)
-        {
-            sb.AppendLine("<h3>post-1R vs python-hot</h3><table border='1'><tr><td><pre>");
-            sb.Append(WebUtility.HtmlEncode(File.ReadAllText(postNorm)));
-            sb.AppendLine("</pre></td><td><pre>");
-            sb.Append(WebUtility.HtmlEncode(pyNorm));
-            sb.AppendLine("</pre></td></tr></table>");
-        }
         if (post1SNorm!=null)
         {
             sb.AppendLine("<h3>post-1S vs python-hot</h3><table border='1'><tr><td><pre>");
             sb.Append(WebUtility.HtmlEncode(File.ReadAllText(post1SNorm)));
+            sb.AppendLine("</pre></td><td><pre>");
+            sb.Append(WebUtility.HtmlEncode(pyNorm));
+            sb.AppendLine("</pre></td></tr></table>");
+        }
+        if (post2Norm!=null)
+        {
+            sb.AppendLine("<h3>post-2 vs python-hot</h3><table border='1'><tr><td><pre>");
+            sb.Append(WebUtility.HtmlEncode(File.ReadAllText(post2Norm)));
             sb.AppendLine("</pre></td><td><pre>");
             sb.Append(WebUtility.HtmlEncode(pyNorm));
             sb.AppendLine("</pre></td></tr></table>");
@@ -253,23 +253,23 @@ static string SummaryMarkdown(List<BenchResult> results)
         sb.AppendLine($"| {r.Mode} | {r.AvgMs:F1} | {r.StdMs:F1} |");
 
     var pre = results.FirstOrDefault(r=>r.Mode=="pre");
-    var post1R = results.FirstOrDefault(r=>r.Mode=="post-1R");
     var post1S = results.FirstOrDefault(r=>r.Mode=="post-1S");
+    var post2 = results.FirstOrDefault(r=>r.Mode=="post-2");
     var pyHot = results.FirstOrDefault(r=>r.Mode=="python-hot");
-    if (pre!=null && post1R!=null)
+    if (pre!=null && post1S!=null)
     {
-        var delta = (post1R.AvgMs - pre.AvgMs) / pre.AvgMs * 100.0;
-        sb.AppendLine($"\npost-1R vs pre: {delta:F1}%");
+        var delta = (post1S.AvgMs - pre.AvgMs) / pre.AvgMs * 100.0;
+        sb.AppendLine($"\npost-1S vs pre: {delta:F1}%");
     }
-    if (post1R!=null && post1S!=null)
+    if (post2!=null && post1S!=null)
     {
-        var delta = (post1S.AvgMs - post1R.AvgMs) / post1R.AvgMs * 100.0;
-        sb.AppendLine($"\npost-1S vs post-1R: {delta:F1}%");
+        var delta = (post2.AvgMs - post1S.AvgMs) / post1S.AvgMs * 100.0;
+        sb.AppendLine($"\npost-2 vs post-1S: {delta:F1}%");
     }
-    if (pyHot!=null && post1S!=null)
+    if (pyHot!=null && post2!=null)
     {
-        var delta = (post1S.AvgMs - pyHot.AvgMs) / pyHot.AvgMs * 100.0;
-        sb.AppendLine($"\npost-1S vs python-hot: {delta:F1}%");
+        var delta = (post2.AvgMs - pyHot.AvgMs) / pyHot.AvgMs * 100.0;
+        sb.AppendLine($"\npost-2 vs python-hot: {delta:F1}%");
     }
 
     sb.AppendLine("\n## Quality vs python-hot");
@@ -277,7 +277,7 @@ static string SummaryMarkdown(List<BenchResult> results)
     sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- | --- |");
     if (pyHot!=null)
     {
-        foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1R" || r.Mode=="post-1S"))
+        foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
         {
             var s = r.Similarity;
             if (s != null)
@@ -288,14 +288,16 @@ static string SummaryMarkdown(List<BenchResult> results)
     {
         sb.AppendLine("\n### Observations");
         var preS = results.FirstOrDefault(r=>r.Mode=="pre")?.Similarity;
-        var postS = results.FirstOrDefault(r=>r.Mode=="post-1S")?.Similarity;
-        if (preS!=null && postS!=null)
+        var post2S = results.FirstOrDefault(r=>r.Mode=="post-2")?.Similarity;
+        var post1SSim = results.FirstOrDefault(r=>r.Mode=="post-1S")?.Similarity;
+        if (preS!=null && post2S!=null)
         {
-            sb.AppendLine($"- CER pre {preS.Cer:F3} vs post-1S {postS.Cer:F3}");
-            sb.AppendLine($"- line_F1 post-1S {postS.LineF1:F3} vs post-1R {results.First(r=>r.Mode=="post-1R").Similarity?.LineF1:F3}");
+            sb.AppendLine($"- CER pre {preS.Cer:F3} vs post-2 {post2S.Cer:F3}");
+            if (post1SSim!=null)
+                sb.AppendLine($"- line_F1 post-2 {post2S.LineF1:F3} vs post-1S {post1SSim.LineF1:F3}");
             var preAvg = results.First(r=>r.Mode=="pre").AvgMs;
-            var postAvg = results.First(r=>r.Mode=="post-1S").AvgMs;
-            sb.AppendLine($"- post-1S overhead vs pre {((postAvg-preAvg)/preAvg*100):F1}%");
+            var postAvg = results.First(r=>r.Mode=="post-2").AvgMs;
+            sb.AppendLine($"- post-2 overhead vs pre {((postAvg-preAvg)/preAvg*100):F1}%");
         }
     }
     return sb.ToString();

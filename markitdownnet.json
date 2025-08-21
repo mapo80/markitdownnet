@@ -12,8 +12,13 @@
   "Dehyphenation": true,
   "MinKeyValueRows": 3,
   "KeyMaxLen": 40,
-  "MonoTableMinCols": 2,
-  "MonoTableMinRows": 3,
-  "MonoTableMinSpaceGap": 2,
-  "MonoTableColTolerance": 1
+  "KVMaxKeyEndPunctPct": 0.3,
+  "KVMaxPipePct": 0.2,
+  "MonoMinRows": 3,
+  "MonoMinGap": 2,
+  "MonoColTolerance": 1,
+  "MonoSameColPct": 0.7,
+  "MonoMinGapLinesPct": 0.6,
+  "MonoShortRowPctMax": 0.3,
+  "NumericColPct": 0.6
 }
