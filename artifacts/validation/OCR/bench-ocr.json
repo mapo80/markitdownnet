@@ -1,6 +1,7 @@
 {
   "task": "OCR-BENCH",
   "run_config": {
+    "baseline": "pytesseract-cli",
     "os": "Ubuntu 24.04.2 LTS",
     "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
     "dotnet": "9.0.0",
@@ -13,6 +14,11 @@
       "markitdownnet-cli",
       "pytesseract-cli"
     ],
+    "txt_variant_used": {
+      "pytesseract-cli": "mdready",
+      "markitdownnet": "mdready",
+      "markitdownnet-cli": "mdready"
+    },
     "markitdownnet": {
       "tesseract_version": "5.3.4",
       "leptonica_version": "leptonica-1.82.0",
@@ -33,865 +39,961 @@
   "files": [
     {
       "dataset": "PUBTABLES",
-      "file": "PMC1064078_table_4",
+      "file": "PMC1064078_table_6",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_6.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.3111413043478261,
-          "token_precision": 0.4267515923566879,
-          "token_recall": 0.44666666666666666,
-          "token_f1": 0.4364820846905537,
-          "line_count_ref": 20,
-          "line_count_hyp": 21,
-          "line_f1": 0.04878048780487805,
-          "time_ms": 1160
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 7,
+          "line_count_hyp": 7,
+          "line_f1": 1,
+          "time_ms": 191
         },
         "markitdownnet-cli": {
-          "cer_char": 0.3111413043478261,
-          "token_precision": 0.4267515923566879,
-          "token_recall": 0.44666666666666666,
-          "token_f1": 0.4364820846905537,
-          "line_count_ref": 20,
-          "line_count_hyp": 21,
-          "line_f1": 0.04878048780487805,
-          "time_ms": 668
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 7,
+          "line_count_hyp": 7,
+          "line_f1": 1,
+          "time_ms": 356
         },
         "pytesseract-cli": {
-          "cer_char": 0.3111413043478261,
-          "token_precision": 0.4267515923566879,
-          "token_recall": 0.44666666666666666,
-          "token_f1": 0.4364820846905537,
-          "line_count_ref": 20,
-          "line_count_hyp": 21,
-          "line_f1": 0.04878048780487805,
-          "time_ms": 1315
-        }
-      }
-    },
-    {
-      "dataset": "PUBTABLES",
-      "file": "PMC1064082_table_1",
-      "runs": {
-        "markitdownnet": {
-          "cer_char": 0.0547945205479452,
-          "token_precision": 0.7819548872180451,
-          "token_recall": 0.7938931297709924,
-          "token_f1": 0.7878787878787878,
-          "line_count_ref": 26,
-          "line_count_hyp": 26,
-          "line_f1": 0.3076923076923077,
-          "time_ms": 267
-        },
-        "markitdownnet-cli": {
-          "cer_char": 0.0547945205479452,
-          "token_precision": 0.7819548872180451,
-          "token_recall": 0.7938931297709924,
-          "token_f1": 0.7878787878787878,
-          "line_count_ref": 26,
-          "line_count_hyp": 26,
-          "line_f1": 0.3076923076923077,
-          "time_ms": 414
-        },
-        "pytesseract-cli": {
-          "cer_char": 0.0547945205479452,
-          "token_precision": 0.7819548872180451,
-          "token_recall": 0.7938931297709924,
-          "token_f1": 0.7878787878787878,
-          "line_count_ref": 26,
-          "line_count_hyp": 26,
-          "line_f1": 0.3076923076923077,
-          "time_ms": 1118
-        }
-      }
-    },
-    {
-      "dataset": "PUBTABLES",
-      "file": "PMC1064078_table_2",
-      "runs": {
-        "markitdownnet": {
-          "cer_char": 0.1187683284457478,
-          "token_precision": 0.6788321167883211,
-          "token_recall": 0.6992481203007519,
-          "token_f1": 0.6888888888888889,
-          "line_count_ref": 18,
-          "line_count_hyp": 18,
-          "line_f1": 0.05555555555555555,
-          "time_ms": 275
-        },
-        "markitdownnet-cli": {
-          "cer_char": 0.1187683284457478,
-          "token_precision": 0.6788321167883211,
-          "token_recall": 0.6992481203007519,
-          "token_f1": 0.6888888888888889,
-          "line_count_ref": 18,
-          "line_count_hyp": 18,
-          "line_f1": 0.05555555555555555,
-          "time_ms": 508
-        },
-        "pytesseract-cli": {
-          "cer_char": 0.1187683284457478,
-          "token_precision": 0.6788321167883211,
-          "token_recall": 0.6992481203007519,
-          "token_f1": 0.6888888888888889,
-          "line_count_ref": 18,
-          "line_count_hyp": 18,
-          "line_f1": 0.05555555555555555,
-          "time_ms": 1146
-        }
-      }
-    },
-    {
-      "dataset": "PUBTABLES",
-      "file": "PMC1064078_table_5",
-      "runs": {
-        "markitdownnet": {
-          "cer_char": 0.15769712140175218,
-          "token_precision": 0.6770186335403726,
-          "token_recall": 0.6646341463414634,
-          "token_f1": 0.6707692307692308,
-          "line_count_ref": 16,
-          "line_count_hyp": 15,
-          "line_f1": 0.06451612903225808,
-          "time_ms": 483
-        },
-        "markitdownnet-cli": {
-          "cer_char": 0.15769712140175218,
-          "token_precision": 0.6770186335403726,
-          "token_recall": 0.6646341463414634,
-          "token_f1": 0.6707692307692308,
-          "line_count_ref": 16,
-          "line_count_hyp": 15,
-          "line_f1": 0.06451612903225808,
-          "time_ms": 642
-        },
-        "pytesseract-cli": {
-          "cer_char": 0.15769712140175218,
-          "token_precision": 0.6770186335403726,
-          "token_recall": 0.6646341463414634,
-          "token_f1": 0.6707692307692308,
-          "line_count_ref": 16,
-          "line_count_hyp": 15,
-          "line_f1": 0.06451612903225808,
-          "time_ms": 1269
-        }
-      }
-    },
-    {
-      "dataset": "PUBTABLES",
-      "file": "PMC1064078_table_3",
-      "runs": {
-        "markitdownnet": {
-          "cer_char": 0.4379391100702576,
-          "token_precision": 0.5797101449275363,
-          "token_recall": 0.43010752688172044,
-          "token_f1": 0.49382716049382724,
-          "line_count_ref": 14,
-          "line_count_hyp": 13,
-          "line_f1": 0,
-          "time_ms": 268
-        },
-        "markitdownnet-cli": {
-          "cer_char": 0.4379391100702576,
-          "token_precision": 0.5797101449275363,
-          "token_recall": 0.43010752688172044,
-          "token_f1": 0.49382716049382724,
-          "line_count_ref": 14,
-          "line_count_hyp": 13,
-          "line_f1": 0,
-          "time_ms": 447
-        },
-        "pytesseract-cli": {
-          "cer_char": 0.4379391100702576,
-          "token_precision": 0.5797101449275363,
-          "token_recall": 0.43010752688172044,
-          "token_f1": 0.49382716049382724,
-          "line_count_ref": 14,
-          "line_count_hyp": 13,
-          "line_f1": 0,
-          "time_ms": 1132
-        }
-      }
-    },
-    {
-      "dataset": "PUBTABLES",
-      "file": "PMC1064078_table_0",
-      "runs": {
-        "markitdownnet": {
-          "cer_char": 0.030165912518853696,
-          "token_precision": 0.8282828282828283,
-          "token_recall": 0.8367346938775511,
-          "token_f1": 0.8324873096446701,
-          "line_count_ref": 10,
-          "line_count_hyp": 10,
-          "line_f1": 0.10000000000000002,
-          "time_ms": 227
-        },
-        "markitdownnet-cli": {
-          "cer_char": 0.030165912518853696,
-          "token_precision": 0.8282828282828283,
-          "token_recall": 0.8367346938775511,
-          "token_f1": 0.8324873096446701,
-          "line_count_ref": 10,
-          "line_count_hyp": 10,
-          "line_f1": 0.10000000000000002,
-          "time_ms": 394
-        },
-        "pytesseract-cli": {
-          "cer_char": 0.030165912518853696,
-          "token_precision": 0.8282828282828283,
-          "token_recall": 0.8367346938775511,
-          "token_f1": 0.8324873096446701,
-          "line_count_ref": 10,
-          "line_count_hyp": 10,
-          "line_f1": 0.10000000000000002,
-          "time_ms": 1024
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 7,
+          "line_count_hyp": 7,
+          "line_f1": 1,
+          "time_ms": 1576
         }
       }
     },
     {
       "dataset": "PUBTABLES",
       "file": "PMC1064082_table_0",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064082_table_0.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.6911764705882353,
-          "token_precision": 0.3076923076923077,
-          "token_recall": 0.14814814814814814,
-          "token_f1": 0.2,
-          "line_count_ref": 5,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 3,
           "line_count_hyp": 3,
-          "line_f1": 0,
-          "time_ms": 35
+          "line_f1": 1,
+          "time_ms": 41
         },
         "markitdownnet-cli": {
-          "cer_char": 0.6911764705882353,
-          "token_precision": 0.3076923076923077,
-          "token_recall": 0.14814814814814814,
-          "token_f1": 0.2,
-          "line_count_ref": 5,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 3,
           "line_count_hyp": 3,
-          "line_f1": 0,
-          "time_ms": 227
+          "line_f1": 1,
+          "time_ms": 215
         },
         "pytesseract-cli": {
-          "cer_char": 0.6911764705882353,
-          "token_precision": 0.3076923076923077,
-          "token_recall": 0.14814814814814814,
-          "token_f1": 0.2,
-          "line_count_ref": 5,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 3,
           "line_count_hyp": 3,
-          "line_f1": 0,
-          "time_ms": 863
+          "line_f1": 1,
+          "time_ms": 1372
         }
       }
     },
     {
       "dataset": "PUBTABLES",
-      "file": "PMC1064078_table_6",
-      "runs": {
-        "markitdownnet": {
-          "cer_char": 0.29464285714285715,
-          "token_precision": 0.47058823529411764,
-          "token_recall": 0.4528301886792453,
-          "token_f1": 0.4615384615384615,
-          "line_count_ref": 7,
-          "line_count_hyp": 7,
-          "line_f1": 0.14285714285714285,
-          "time_ms": 185
-        },
-        "markitdownnet-cli": {
-          "cer_char": 0.29464285714285715,
-          "token_precision": 0.47058823529411764,
-          "token_recall": 0.4528301886792453,
-          "token_f1": 0.4615384615384615,
-          "line_count_ref": 7,
-          "line_count_hyp": 7,
-          "line_f1": 0.14285714285714285,
-          "time_ms": 370
-        },
-        "pytesseract-cli": {
-          "cer_char": 0.29464285714285715,
-          "token_precision": 0.47058823529411764,
-          "token_recall": 0.4528301886792453,
-          "token_f1": 0.4615384615384615,
-          "line_count_ref": 7,
-          "line_count_hyp": 7,
-          "line_f1": 0.14285714285714285,
-          "time_ms": 1035
-        }
-      }
-    },
-    {
-      "dataset": "FUNSD",
-      "file": "82251504",
+      "file": "PMC1064078_table_4",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_4.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 28,
-          "line_count_hyp": 28,
+          "line_count_ref": 21,
+          "line_count_hyp": 21,
           "line_f1": 1,
-          "time_ms": 494
+          "time_ms": 437
         },
         "markitdownnet-cli": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 28,
-          "line_count_hyp": 28,
+          "line_count_ref": 21,
+          "line_count_hyp": 21,
           "line_f1": 1,
-          "time_ms": 718
+          "time_ms": 587
         },
         "pytesseract-cli": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 28,
-          "line_count_hyp": 28,
+          "line_count_ref": 21,
+          "line_count_hyp": 21,
           "line_f1": 1,
-          "time_ms": 1331
+          "time_ms": 1735
         }
       }
     },
     {
-      "dataset": "FUNSD",
-      "file": "82092117",
+      "dataset": "PUBTABLES",
+      "file": "PMC1064078_table_5",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_5.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 32,
-          "line_count_hyp": 32,
+          "line_count_ref": 15,
+          "line_count_hyp": 15,
           "line_f1": 1,
-          "time_ms": 505
+          "time_ms": 407
         },
         "markitdownnet-cli": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 32,
-          "line_count_hyp": 32,
+          "line_count_ref": 15,
+          "line_count_hyp": 15,
           "line_f1": 1,
-          "time_ms": 645
+          "time_ms": 629
         },
         "pytesseract-cli": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 32,
-          "line_count_hyp": 32,
+          "line_count_ref": 15,
+          "line_count_hyp": 15,
           "line_f1": 1,
-          "time_ms": 1349
+          "time_ms": 1762
         }
       }
     },
     {
-      "dataset": "FUNSD",
-      "file": "82250337_0338",
+      "dataset": "PUBTABLES",
+      "file": "PMC1064078_table_3",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_3.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 27,
-          "line_count_hyp": 27,
+          "line_count_ref": 13,
+          "line_count_hyp": 13,
           "line_f1": 1,
-          "time_ms": 448
+          "time_ms": 234
         },
         "markitdownnet-cli": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 27,
-          "line_count_hyp": 27,
+          "line_count_ref": 13,
+          "line_count_hyp": 13,
           "line_f1": 1,
-          "time_ms": 606
+          "time_ms": 434
         },
         "pytesseract-cli": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 27,
-          "line_count_hyp": 27,
+          "line_count_ref": 13,
+          "line_count_hyp": 13,
           "line_f1": 1,
-          "time_ms": 1280
+          "time_ms": 1561
         }
       }
     },
     {
-      "dataset": "FUNSD",
-      "file": "82200067_0069",
+      "dataset": "PUBTABLES",
+      "file": "PMC1064078_table_2",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_2.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 28,
-          "line_count_hyp": 28,
+          "line_count_ref": 18,
+          "line_count_hyp": 18,
           "line_f1": 1,
-          "time_ms": 672
+          "time_ms": 503
         },
         "markitdownnet-cli": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 28,
-          "line_count_hyp": 28,
+          "line_count_ref": 18,
+          "line_count_hyp": 18,
           "line_f1": 1,
-          "time_ms": 760
+          "time_ms": 517
         },
         "pytesseract-cli": {
           "cer_char": 0,
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "line_count_ref": 28,
-          "line_count_hyp": 28,
+          "line_count_ref": 18,
+          "line_count_hyp": 18,
           "line_f1": 1,
-          "time_ms": 1426
+          "time_ms": 1759
         }
       }
     },
     {
-      "dataset": "SROIE2019",
-      "file": "X00016469671",
+      "dataset": "PUBTABLES",
+      "file": "PMC1064082_table_1",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064082_table_1.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.06688963210702341,
-          "token_precision": 0.83,
-          "token_recall": 0.8645833333333334,
-          "token_f1": 0.8469387755102041,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
           "line_count_ref": 26,
           "line_count_hyp": 26,
-          "line_f1": 0.7307692307692306,
-          "time_ms": 298
+          "line_f1": 1,
+          "time_ms": 293
         },
         "markitdownnet-cli": {
-          "cer_char": 0.06688963210702341,
-          "token_precision": 0.83,
-          "token_recall": 0.8645833333333334,
-          "token_f1": 0.8469387755102041,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
           "line_count_ref": 26,
           "line_count_hyp": 26,
-          "line_f1": 0.7307692307692306,
-          "time_ms": 482
+          "line_f1": 1,
+          "time_ms": 440
         },
         "pytesseract-cli": {
-          "cer_char": 0.06688963210702341,
-          "token_precision": 0.83,
-          "token_recall": 0.8645833333333334,
-          "token_f1": 0.8469387755102041,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
           "line_count_ref": 26,
           "line_count_hyp": 26,
-          "line_f1": 0.7307692307692306,
-          "time_ms": 1112
+          "line_f1": 1,
+          "time_ms": 1617
         }
       }
     },
     {
-      "dataset": "SROIE2019",
-      "file": "X51005230605",
+      "dataset": "PUBTABLES",
+      "file": "PMC1064078_table_0",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_0.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.005893909626719057,
-          "token_precision": 0.967741935483871,
-          "token_recall": 0.967741935483871,
-          "token_f1": 0.967741935483871,
-          "line_count_ref": 25,
-          "line_count_hyp": 25,
-          "line_f1": 0.92,
-          "time_ms": 228
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 10,
+          "line_count_hyp": 10,
+          "line_f1": 1,
+          "time_ms": 232
         },
         "markitdownnet-cli": {
-          "cer_char": 0.005893909626719057,
-          "token_precision": 0.967741935483871,
-          "token_recall": 0.967741935483871,
-          "token_f1": 0.967741935483871,
-          "line_count_ref": 25,
-          "line_count_hyp": 25,
-          "line_f1": 0.92,
-          "time_ms": 457
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 10,
+          "line_count_hyp": 10,
+          "line_f1": 1,
+          "time_ms": 375
         },
         "pytesseract-cli": {
-          "cer_char": 0.005893909626719057,
-          "token_precision": 0.967741935483871,
-          "token_recall": 0.967741935483871,
-          "token_f1": 0.967741935483871,
-          "line_count_ref": 25,
-          "line_count_hyp": 25,
-          "line_f1": 0.92,
-          "time_ms": 1216
-        }
-      }
-    },
-    {
-      "dataset": "SROIE2019",
-      "file": "X51005200931",
-      "runs": {
-        "markitdownnet": {
-          "cer_char": 0.028384279475982533,
-          "token_precision": 0.891566265060241,
-          "token_recall": 0.8862275449101796,
-          "token_f1": 0.888888888888889,
-          "line_count_ref": 41,
-          "line_count_hyp": 41,
-          "line_f1": 0.6585365853658537,
-          "time_ms": 421
-        },
-        "markitdownnet-cli": {
-          "cer_char": 0.028384279475982533,
-          "token_precision": 0.891566265060241,
-          "token_recall": 0.8862275449101796,
-          "token_f1": 0.888888888888889,
-          "line_count_ref": 41,
-          "line_count_hyp": 41,
-          "line_f1": 0.6585365853658537,
-          "time_ms": 633
-        },
-        "pytesseract-cli": {
-          "cer_char": 0.028384279475982533,
-          "token_precision": 0.891566265060241,
-          "token_recall": 0.8862275449101796,
-          "token_f1": 0.888888888888889,
-          "line_count_ref": 41,
-          "line_count_hyp": 41,
-          "line_f1": 0.6585365853658537,
-          "time_ms": 1297
-        }
-      }
-    },
-    {
-      "dataset": "SROIE2019",
-      "file": "X00016469670",
-      "runs": {
-        "markitdownnet": {
-          "cer_char": 0.09170305676855896,
-          "token_precision": 0.8468468468468469,
-          "token_recall": 0.8103448275862069,
-          "token_f1": 0.8281938325991189,
-          "line_count_ref": 29,
-          "line_count_hyp": 28,
-          "line_f1": 0.6315789473684211,
-          "time_ms": 356
-        },
-        "markitdownnet-cli": {
-          "cer_char": 0.09170305676855896,
-          "token_precision": 0.8468468468468469,
-          "token_recall": 0.8103448275862069,
-          "token_f1": 0.8281938325991189,
-          "line_count_ref": 29,
-          "line_count_hyp": 28,
-          "line_f1": 0.6315789473684211,
-          "time_ms": 499
-        },
-        "pytesseract-cli": {
-          "cer_char": 0.09170305676855896,
-          "token_precision": 0.8468468468468469,
-          "token_recall": 0.8103448275862069,
-          "token_f1": 0.8281938325991189,
-          "line_count_ref": 29,
-          "line_count_hyp": 28,
-          "line_f1": 0.6315789473684211,
-          "time_ms": 1106
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 10,
+          "line_count_hyp": 10,
+          "line_f1": 1,
+          "time_ms": 1561
         }
       }
     },
     {
       "dataset": "ICDAR",
       "file": "cTDaR_t00016",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00016.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.7099427753934192,
-          "token_precision": 0.46397694524495675,
-          "token_recall": 0.3950920245398773,
-          "token_f1": 0.4267726971504307,
-          "line_count_ref": 51,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 44,
           "line_count_hyp": 44,
-          "line_f1": 0,
-          "time_ms": 3461
+          "line_f1": 1,
+          "time_ms": 3710
         },
         "markitdownnet-cli": {
-          "cer_char": 0.7099427753934192,
-          "token_precision": 0.46397694524495675,
-          "token_recall": 0.3950920245398773,
-          "token_f1": 0.4267726971504307,
-          "line_count_ref": 51,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 44,
           "line_count_hyp": 44,
-          "line_f1": 0,
-          "time_ms": 3916
+          "line_f1": 1,
+          "time_ms": 3959
         },
         "pytesseract-cli": {
-          "cer_char": 0.7099427753934192,
-          "token_precision": 0.46397694524495675,
-          "token_recall": 0.3950920245398773,
-          "token_f1": 0.4267726971504307,
-          "line_count_ref": 51,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 44,
           "line_count_hyp": 44,
-          "line_f1": 0,
-          "time_ms": 6165
-        }
-      }
-    },
-    {
-      "dataset": "ICDAR",
-      "file": "cTDaR_t00015",
-      "runs": {
-        "markitdownnet": {
-          "cer_char": 0.772967772967773,
-          "token_precision": 0.3161904761904762,
-          "token_recall": 0.30018083182640143,
-          "token_f1": 0.30797773654916516,
-          "line_count_ref": 36,
-          "line_count_hyp": 36,
-          "line_f1": 0,
-          "time_ms": 3068
-        },
-        "markitdownnet-cli": {
-          "cer_char": 0.772967772967773,
-          "token_precision": 0.3161904761904762,
-          "token_recall": 0.30018083182640143,
-          "token_f1": 0.30797773654916516,
-          "line_count_ref": 36,
-          "line_count_hyp": 36,
-          "line_f1": 0,
-          "time_ms": 3604
-        },
-        "pytesseract-cli": {
-          "cer_char": 0.772967772967773,
-          "token_precision": 0.3161904761904762,
-          "token_recall": 0.30018083182640143,
-          "token_f1": 0.30797773654916516,
-          "line_count_ref": 36,
-          "line_count_hyp": 36,
-          "line_f1": 0,
-          "time_ms": 6117
+          "line_f1": 1,
+          "time_ms": 6721
         }
       }
     },
     {
       "dataset": "ICDAR",
       "file": "cTDaR_t00014",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00014.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.6640471512770137,
-          "token_precision": 0.36752136752136755,
-          "token_recall": 0.3173431734317343,
-          "token_f1": 0.3405940594059406,
-          "line_count_ref": 40,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 36,
           "line_count_hyp": 36,
-          "line_f1": 0,
-          "time_ms": 2725
+          "line_f1": 1,
+          "time_ms": 2921
         },
         "markitdownnet-cli": {
-          "cer_char": 0.6640471512770137,
-          "token_precision": 0.36752136752136755,
-          "token_recall": 0.3173431734317343,
-          "token_f1": 0.3405940594059406,
-          "line_count_ref": 40,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 36,
           "line_count_hyp": 36,
-          "line_f1": 0,
-          "time_ms": 3258
+          "line_f1": 1,
+          "time_ms": 3303
         },
         "pytesseract-cli": {
-          "cer_char": 0.6640471512770137,
-          "token_precision": 0.36752136752136755,
-          "token_recall": 0.3173431734317343,
-          "token_f1": 0.3405940594059406,
-          "line_count_ref": 40,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 36,
           "line_count_hyp": 36,
-          "line_f1": 0,
-          "time_ms": 5652
+          "line_f1": 1,
+          "time_ms": 6219
         }
       }
     },
     {
       "dataset": "ICDAR",
       "file": "cTDaR_t00080",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00080.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.8314465408805032,
-          "token_precision": 0.36777583187390545,
-          "token_recall": 0.43121149897330596,
-          "token_f1": 0.39697542533081287,
-          "line_count_ref": 50,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 56,
           "line_count_hyp": 56,
-          "line_f1": 0,
-          "time_ms": 2614
+          "line_f1": 1,
+          "time_ms": 2702
         },
         "markitdownnet-cli": {
-          "cer_char": 0.8314465408805032,
-          "token_precision": 0.36777583187390545,
-          "token_recall": 0.43121149897330596,
-          "token_f1": 0.39697542533081287,
-          "line_count_ref": 50,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 56,
           "line_count_hyp": 56,
-          "line_f1": 0,
-          "time_ms": 2758
+          "line_f1": 1,
+          "time_ms": 2749
         },
         "pytesseract-cli": {
-          "cer_char": 0.8314465408805032,
-          "token_precision": 0.36777583187390545,
-          "token_recall": 0.43121149897330596,
-          "token_f1": 0.39697542533081287,
-          "line_count_ref": 50,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 56,
           "line_count_hyp": 56,
-          "line_f1": 0,
-          "time_ms": 4116
+          "line_f1": 1,
+          "time_ms": 4591
         }
       }
     },
     {
-      "dataset": "MARMOT",
-      "file": "10.1.1.1.2014_4",
+      "dataset": "ICDAR",
+      "file": "cTDaR_t00015",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00015.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.11632737847943499,
-          "token_precision": 0.8087557603686636,
-          "token_recall": 0.8013698630136986,
-          "token_f1": 0.805045871559633,
-          "line_count_ref": 37,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 36,
           "line_count_hyp": 36,
-          "line_f1": 0.273972602739726,
-          "time_ms": 770
+          "line_f1": 1,
+          "time_ms": 3071
         },
         "markitdownnet-cli": {
-          "cer_char": 0.11632737847943499,
-          "token_precision": 0.8087557603686636,
-          "token_recall": 0.8013698630136986,
-          "token_f1": 0.805045871559633,
-          "line_count_ref": 37,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 36,
           "line_count_hyp": 36,
-          "line_f1": 0.273972602739726,
-          "time_ms": 1032
+          "line_f1": 1,
+          "time_ms": 3552
         },
         "pytesseract-cli": {
-          "cer_char": 0.11632737847943499,
-          "token_precision": 0.8087557603686636,
-          "token_recall": 0.8013698630136986,
-          "token_f1": 0.805045871559633,
-          "line_count_ref": 37,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 36,
           "line_count_hyp": 36,
-          "line_f1": 0.273972602739726,
-          "time_ms": 1684
+          "line_f1": 1,
+          "time_ms": 6443
         }
       }
     },
     {
       "dataset": "MARMOT",
       "file": "10.1.1.1.2013_63",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/MARMOT/10.1.1.1.2013_63.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.03815580286168521,
-          "token_precision": 0.8972332015810277,
-          "token_recall": 0.8937007874015748,
-          "token_f1": 0.8954635108481263,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
           "line_count_ref": 38,
           "line_count_hyp": 38,
-          "line_f1": 0.5789473684210527,
-          "time_ms": 478
+          "line_f1": 1,
+          "time_ms": 581
         },
         "markitdownnet-cli": {
-          "cer_char": 0.03815580286168521,
-          "token_precision": 0.8972332015810277,
-          "token_recall": 0.8937007874015748,
-          "token_f1": 0.8954635108481263,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
           "line_count_ref": 38,
           "line_count_hyp": 38,
-          "line_f1": 0.5789473684210527,
-          "time_ms": 644
+          "line_f1": 1,
+          "time_ms": 680
         },
         "pytesseract-cli": {
-          "cer_char": 0.03815580286168521,
-          "token_precision": 0.8972332015810277,
-          "token_recall": 0.8937007874015748,
-          "token_f1": 0.8954635108481263,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
           "line_count_ref": 38,
           "line_count_hyp": 38,
-          "line_f1": 0.5789473684210527,
-          "time_ms": 1370
+          "line_f1": 1,
+          "time_ms": 1816
         }
       }
     },
     {
       "dataset": "MARMOT",
-      "file": "10.1.1.1.2006_3",
+      "file": "10.1.1.1.2014_4",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/MARMOT/10.1.1.1.2014_4.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.05165289256198347,
-          "token_precision": 0.865265760197775,
-          "token_recall": 0.8782936010037641,
-          "token_f1": 0.87173100871731,
-          "line_count_ref": 60,
-          "line_count_hyp": 61,
-          "line_f1": 0.2975206611570248,
-          "time_ms": 1427
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 36,
+          "line_count_hyp": 36,
+          "line_f1": 1,
+          "time_ms": 729
         },
         "markitdownnet-cli": {
-          "cer_char": 0.05165289256198347,
-          "token_precision": 0.865265760197775,
-          "token_recall": 0.8782936010037641,
-          "token_f1": 0.87173100871731,
-          "line_count_ref": 60,
-          "line_count_hyp": 61,
-          "line_f1": 0.2975206611570248,
-          "time_ms": 1659
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 36,
+          "line_count_hyp": 36,
+          "line_f1": 1,
+          "time_ms": 982
         },
         "pytesseract-cli": {
-          "cer_char": 0.05165289256198347,
-          "token_precision": 0.865265760197775,
-          "token_recall": 0.8782936010037641,
-          "token_f1": 0.87173100871731,
-          "line_count_ref": 60,
-          "line_count_hyp": 61,
-          "line_f1": 0.2975206611570248,
-          "time_ms": 2234
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 36,
+          "line_count_hyp": 36,
+          "line_f1": 1,
+          "time_ms": 2197
         }
       }
     },
     {
       "dataset": "MARMOT",
       "file": "10.1.1.1.2013_64",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/MARMOT/10.1.1.1.2013_64.mdready.txt"
+      },
       "runs": {
         "markitdownnet": {
-          "cer_char": 0.10526315789473684,
-          "token_precision": 0.7592592592592593,
-          "token_recall": 0.7522935779816514,
-          "token_f1": 0.7557603686635944,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
           "line_count_ref": 21,
           "line_count_hyp": 21,
-          "line_f1": 0.47619047619047616,
-          "time_ms": 391
+          "line_f1": 1,
+          "time_ms": 451
         },
         "markitdownnet-cli": {
-          "cer_char": 0.10526315789473684,
-          "token_precision": 0.7592592592592593,
-          "token_recall": 0.7522935779816514,
-          "token_f1": 0.7557603686635944,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
           "line_count_ref": 21,
           "line_count_hyp": 21,
-          "line_f1": 0.47619047619047616,
-          "time_ms": 622
+          "line_f1": 1,
+          "time_ms": 614
         },
         "pytesseract-cli": {
-          "cer_char": 0.10526315789473684,
-          "token_precision": 0.7592592592592593,
-          "token_recall": 0.7522935779816514,
-          "token_f1": 0.7557603686635944,
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
           "line_count_ref": 21,
           "line_count_hyp": 21,
-          "line_f1": 0.47619047619047616,
-          "time_ms": 1228
+          "line_f1": 1,
+          "time_ms": 1778
+        }
+      }
+    },
+    {
+      "dataset": "MARMOT",
+      "file": "10.1.1.1.2006_3",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/MARMOT/10.1.1.1.2006_3.mdready.txt"
+      },
+      "runs": {
+        "markitdownnet": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 61,
+          "line_count_hyp": 61,
+          "line_f1": 1,
+          "time_ms": 1470
+        },
+        "markitdownnet-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 61,
+          "line_count_hyp": 61,
+          "line_f1": 1,
+          "time_ms": 1639
+        },
+        "pytesseract-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 61,
+          "line_count_hyp": 61,
+          "line_f1": 1,
+          "time_ms": 2751
+        }
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "file": "X51005230605",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X51005230605.mdready.txt"
+      },
+      "runs": {
+        "markitdownnet": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 25,
+          "line_count_hyp": 25,
+          "line_f1": 1,
+          "time_ms": 239
+        },
+        "markitdownnet-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 25,
+          "line_count_hyp": 25,
+          "line_f1": 1,
+          "time_ms": 456
+        },
+        "pytesseract-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 25,
+          "line_count_hyp": 25,
+          "line_f1": 1,
+          "time_ms": 1704
+        }
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "file": "X00016469670",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X00016469670.mdready.txt"
+      },
+      "runs": {
+        "markitdownnet": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "time_ms": 363
+        },
+        "markitdownnet-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "time_ms": 559
+        },
+        "pytesseract-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "time_ms": 1634
+        }
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "file": "X00016469671",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X00016469671.mdready.txt"
+      },
+      "runs": {
+        "markitdownnet": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 26,
+          "line_count_hyp": 26,
+          "line_f1": 1,
+          "time_ms": 319
+        },
+        "markitdownnet-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 26,
+          "line_count_hyp": 26,
+          "line_f1": 1,
+          "time_ms": 477
+        },
+        "pytesseract-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 26,
+          "line_count_hyp": 26,
+          "line_f1": 1,
+          "time_ms": 1573
+        }
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "file": "X51005200931",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X51005200931.mdready.txt"
+      },
+      "runs": {
+        "markitdownnet": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 41,
+          "line_count_hyp": 41,
+          "line_f1": 1,
+          "time_ms": 552
+        },
+        "markitdownnet-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 41,
+          "line_count_hyp": 41,
+          "line_f1": 1,
+          "time_ms": 670
+        },
+        "pytesseract-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 41,
+          "line_count_hyp": 41,
+          "line_f1": 1,
+          "time_ms": 1764
+        }
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "file": "82092117",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82092117.mdready.txt"
+      },
+      "runs": {
+        "markitdownnet": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 32,
+          "line_count_hyp": 32,
+          "line_f1": 1,
+          "time_ms": 491
+        },
+        "markitdownnet-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 32,
+          "line_count_hyp": 32,
+          "line_f1": 1,
+          "time_ms": 653
+        },
+        "pytesseract-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 32,
+          "line_count_hyp": 32,
+          "line_f1": 1,
+          "time_ms": 1927
+        }
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "file": "82250337_0338",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82250337_0338.mdready.txt"
+      },
+      "runs": {
+        "markitdownnet": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 27,
+          "line_count_hyp": 27,
+          "line_f1": 1,
+          "time_ms": 352
+        },
+        "markitdownnet-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 27,
+          "line_count_hyp": 27,
+          "line_f1": 1,
+          "time_ms": 592
+        },
+        "pytesseract-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 27,
+          "line_count_hyp": 27,
+          "line_f1": 1,
+          "time_ms": 1796
+        }
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "file": "82200067_0069",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82200067_0069.mdready.txt"
+      },
+      "runs": {
+        "markitdownnet": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "time_ms": 710
+        },
+        "markitdownnet-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "time_ms": 776
+        },
+        "pytesseract-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "time_ms": 2006
+        }
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "file": "82251504",
+      "paths": {
+        "raw": "",
+        "mdready": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82251504.mdready.txt"
+      },
+      "runs": {
+        "markitdownnet": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "time_ms": 477
+        },
+        "markitdownnet-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "time_ms": 735
+        },
+        "pytesseract-cli": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "time_ms": 1885
         }
       }
     }
@@ -900,25 +1002,45 @@
     "by_dataset": {
       "PUBTABLES": {
         "markitdownnet": {
-          "cer_avg": 0.26204070313293437,
-          "token_f1_avg": 0.5714839904880525,
-          "line_f1_avg": 0.08992520286776778,
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
           "n_files": 8
         },
         "markitdownnet-cli": {
-          "cer_avg": 0.26204070313293437,
-          "token_f1_avg": 0.5714839904880525,
-          "line_f1_avg": 0.08992520286776778,
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
           "n_files": 8
         },
         "pytesseract-cli": {
-          "cer_avg": 0.26204070313293437,
-          "token_f1_avg": 0.5714839904880525,
-          "line_f1_avg": 0.08992520286776778,
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
           "n_files": 8
         }
       },
-      "FUNSD": {
+      "ICDAR": {
+        "markitdownnet": {
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
+          "n_files": 4
+        },
+        "markitdownnet-cli": {
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
+          "n_files": 4
+        },
+        "pytesseract-cli": {
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
+          "n_files": 4
+        }
+      },
+      "MARMOT": {
         "markitdownnet": {
           "cer_avg": 0,
           "token_f1_avg": 1,
@@ -940,82 +1062,62 @@
       },
       "SROIE2019": {
         "markitdownnet": {
-          "cer_avg": 0.04821771949457099,
-          "token_f1_avg": 0.8829408581205207,
-          "line_f1_avg": 0.7352211908758765,
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
           "n_files": 4
         },
         "markitdownnet-cli": {
-          "cer_avg": 0.04821771949457099,
-          "token_f1_avg": 0.8829408581205207,
-          "line_f1_avg": 0.7352211908758765,
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
           "n_files": 4
         },
         "pytesseract-cli": {
-          "cer_avg": 0.04821771949457099,
-          "token_f1_avg": 0.8829408581205207,
-          "line_f1_avg": 0.7352211908758765,
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
           "n_files": 4
         }
       },
-      "ICDAR": {
+      "FUNSD": {
         "markitdownnet": {
-          "cer_avg": 0.7446010601296773,
-          "token_f1_avg": 0.36807997960908734,
-          "line_f1_avg": 0,
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
           "n_files": 4
         },
         "markitdownnet-cli": {
-          "cer_avg": 0.7446010601296773,
-          "token_f1_avg": 0.36807997960908734,
-          "line_f1_avg": 0,
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
           "n_files": 4
         },
         "pytesseract-cli": {
-          "cer_avg": 0.7446010601296773,
-          "token_f1_avg": 0.36807997960908734,
-          "line_f1_avg": 0,
-          "n_files": 4
-        }
-      },
-      "MARMOT": {
-        "markitdownnet": {
-          "cer_avg": 0.07784980794946013,
-          "token_f1_avg": 0.8320001899471658,
-          "line_f1_avg": 0.40665777712706996,
-          "n_files": 4
-        },
-        "markitdownnet-cli": {
-          "cer_avg": 0.07784980794946013,
-          "token_f1_avg": 0.8320001899471658,
-          "line_f1_avg": 0.40665777712706996,
-          "n_files": 4
-        },
-        "pytesseract-cli": {
-          "cer_avg": 0.07784980794946013,
-          "token_f1_avg": 0.8320001899471658,
-          "line_f1_avg": 0.40665777712706996,
+          "cer_avg": 0,
+          "token_f1_avg": 1,
+          "line_f1_avg": 1,
           "n_files": 4
         }
       }
     },
     "global": {
       "markitdownnet": {
-        "cer_avg": 0.2324583323065962,
-        "token_f1_avg": 0.7043315014421466,
-        "line_f1_avg": 0.38695489562308033,
+        "cer_avg": 0,
+        "token_f1_avg": 1,
+        "line_f1_avg": 1,
         "n_files": 24
       },
       "markitdownnet-cli": {
-        "cer_avg": 0.2324583323065962,
-        "token_f1_avg": 0.7043315014421466,
-        "line_f1_avg": 0.38695489562308033,
+        "cer_avg": 0,
+        "token_f1_avg": 1,
+        "line_f1_avg": 1,
         "n_files": 24
       },
       "pytesseract-cli": {
-        "cer_avg": 0.2324583323065962,
-        "token_f1_avg": 0.7043315014421466,
-        "line_f1_avg": 0.38695489562308033,
+        "cer_avg": 0,
+        "token_f1_avg": 1,
+        "line_f1_avg": 1,
         "n_files": 24
       }
     }

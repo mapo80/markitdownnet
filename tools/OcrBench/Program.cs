@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Globalization;
 using Tesseract;
 using SkiaSharp;
 using System.Security.Cryptography;
@@ -57,6 +58,9 @@ static void Extract(Dictionary<string, string> o)
     var engineOpt = o.GetValueOrDefault("--engine", "markitdownnet");
     var refresh = o.GetValueOrDefault("--refresh", engineOpt);
     var pyExe = o.GetValueOrDefault("--python-exe", "python3");
+    var txtVar = o.GetValueOrDefault("--txt-variant", "both");
+    bool outRaw = txtVar == "both" || txtVar == "raw";
+    bool outMd = txtVar == "both" || txtVar == "mdready";
     bool Has(string opt, string val) => opt == "all" || opt.Split(',', StringSplitOptions.RemoveEmptyEntries).Contains(val);
     var doNet = Has(engineOpt, "markitdownnet");
     var doCli = Has(engineOpt, "markitdownnet-cli");
@@ -104,8 +108,8 @@ static void Extract(Dictionary<string, string> o)
             .Where(f => exts.Contains(Path.GetExtension(f)));
         foreach (var file in files)
         {
-            var name = Path.GetFileNameWithoutExtension(file) + ".txt";
-            var rel = dataset + "/" + name;
+            var baseName = Path.GetFileNameWithoutExtension(file);
+            var rel = dataset + "/" + baseName + ".txt";
             var images = GetImages(file).ToList();
             var rasterDir = Path.Combine(rasterRoot, dataset);
             Directory.CreateDirectory(rasterDir);
@@ -119,17 +123,27 @@ static void Extract(Dictionary<string, string> o)
             {
                 var sw = Stopwatch.StartNew();
                 using var page = engine!.Process(rpix);
-                var text = page.GetText().Trim();
+                var text = page.GetText();
                 sw.Stop();
                 tNet = sw.ElapsedMilliseconds;
                 var outNetDir = Path.Combine(outDir, "markitdownnet", dataset);
                 Directory.CreateDirectory(outNetDir);
-                File.WriteAllText(Path.Combine(outNetDir, name), text);
+                var outList = new List<string>();
+                if (outRaw)
+                {
+                    File.WriteAllText(Path.Combine(outNetDir, baseName + ".raw.txt"), text);
+                    outList.Add("raw");
+                }
+                if (outMd)
+                {
+                    File.WriteAllText(Path.Combine(outNetDir, baseName + ".mdready.txt"), MdReady(text));
+                    outList.Add("mdready");
+                }
                 totalNet += tNet;
                 var entryNet = timings.ContainsKey(rel) ? timings[rel] : new Dictionary<string, long>();
                 entryNet["markitdownnet"] = tNet;
                 timings[rel] = entryNet;
-                Console.WriteLine($"engine=net file={dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} psm=6 oem=1 preserve_spaces=1 time_ms={tNet} raster={rasterPath}");
+                Console.WriteLine($"engine=markitdownnet file={dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} psm=6 oem=1 preserve_spaces=1 out=[{string.Join(',', outList)}] time_ms={tNet} raster={rasterPath}");
             }
 
             if (doCli)
@@ -157,18 +171,28 @@ static void Extract(Dictionary<string, string> o)
                 tCli = sw.ElapsedMilliseconds;
                 var outCliDir = Path.Combine(outDir, "markitdownnet-cli", dataset);
                 Directory.CreateDirectory(outCliDir);
-                File.WriteAllText(Path.Combine(outCliDir, name), output.Trim());
+                var outList = new List<string>();
+                if (outRaw)
+                {
+                    File.WriteAllText(Path.Combine(outCliDir, baseName + ".raw.txt"), output);
+                    outList.Add("raw");
+                }
+                if (outMd)
+                {
+                    File.WriteAllText(Path.Combine(outCliDir, baseName + ".mdready.txt"), MdReady(output));
+                    outList.Add("mdready");
+                }
                 totalCli += tCli;
                 var entryCli = timings.ContainsKey(rel) ? timings[rel] : new Dictionary<string, long>();
                 entryCli["markitdownnet-cli"] = tCli;
                 timings[rel] = entryCli;
-                Console.WriteLine($"engine=cli file={dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} psm=6 oem=1 preserve_spaces=1 time_ms={tCli} raster={rasterPath}");
+                Console.WriteLine($"engine=markitdownnet-cli file={dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} psm=6 oem=1 preserve_spaces=1 out=[{string.Join(',', outList)}] time_ms={tCli} raster={rasterPath}");
             }
 
             if (doPy)
             {
                 var sw = Stopwatch.StartNew();
-                var script = $"from PIL import Image; import pytesseract; p=r'''{rasterPath}'''; print(pytesseract.image_to_string(Image.open(p), lang='{langs}', config='--psm {psm} -c preserve_interword_spaces=1 -c user_defined_dpi=300'))";
+                var script = $"from PIL import Image; import pytesseract; p=r'''{rasterPath}'''; print(pytesseract.image_to_string(Image.open(p), lang='{langs}', config='--psm {psm} -c preserve_interword_spaces=1 -c user_defined_dpi=300'), end='')";
                 var tmpPy = Path.GetTempFileName();
                 File.WriteAllText(tmpPy, script);
                 var psi = new ProcessStartInfo(pyExe)
@@ -185,12 +209,22 @@ static void Extract(Dictionary<string, string> o)
                 tPy = sw.ElapsedMilliseconds;
                 var outPyDir = Path.Combine(outDir, "pytesseract-cli", dataset);
                 Directory.CreateDirectory(outPyDir);
-                File.WriteAllText(Path.Combine(outPyDir, name), output.Trim());
+                var outList = new List<string>();
+                if (outRaw)
+                {
+                    File.WriteAllText(Path.Combine(outPyDir, baseName + ".raw.txt"), output);
+                    outList.Add("raw");
+                }
+                if (outMd)
+                {
+                    File.WriteAllText(Path.Combine(outPyDir, baseName + ".mdready.txt"), MdReady(output));
+                    outList.Add("mdready");
+                }
                 totalPy += tPy;
                 var entryPy = timings.ContainsKey(rel) ? timings[rel] : new Dictionary<string, long>();
                 entryPy["pytesseract-cli"] = tPy;
                 timings[rel] = entryPy;
-                Console.WriteLine($"engine=pycli file={dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} psm=6 oem=1 preserve_spaces=1 time_ms={tPy} raster={rasterPath}");
+                Console.WriteLine($"engine=pytesseract-cli file={dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} psm=6 oem=1 preserve_spaces=1 out=[{string.Join(',', outList)}] time_ms={tPy} raster={rasterPath}");
             }
         }
     }
@@ -232,27 +266,72 @@ static void Compare(Dictionary<string, string> o)
     var outMd = o["--out-md"];
     var runCliSanity = o.ContainsKey("--run-cli-sanity");
     var pyExe = o.GetValueOrDefault("--python-exe", "python3");
+    var baseline = o.GetValueOrDefault("--baseline", "pytesseract-cli");
 
     var netDir = Path.Combine(ocrDir, "markitdownnet");
     var cliDir = Path.Combine(ocrDir, "markitdownnet-cli");
     var pyDir = Path.Combine(ocrDir, "pytesseract-cli");
-    var gtDir = Path.Combine(ocrDir, "pytesseract");
+    var gtDir = baseline == "pytesseract-legacy" ? Path.Combine(ocrDir, "pytesseract") : Path.Combine(ocrDir, "pytesseract-cli");
+    var legacyDir = Path.Combine(ocrDir, "pytesseract");
     var timings = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, long>>>(File.ReadAllText(Path.Combine(ocrDir, "timings.json")))!;
 
     var files = new List<FileMetrics>();
+    var txtVariantUsed = new Dictionary<string, string>();
+    void Note(string eng, string v)
+    {
+        if (!txtVariantUsed.TryGetValue(eng, out var cur)) txtVariantUsed[eng] = v; else if (cur != v) txtVariantUsed[eng] = "mixed";
+    }
+    var legacyByDataset = new Dictionary<string, Dictionary<string, Aggregate>>();
+    var legacyGlobal = new Dictionary<string, Aggregate>();
+    bool doLegacy = baseline == "pytesseract-cli" && Directory.Exists(legacyDir);
+
     foreach (var dataset in Directory.GetDirectories(gtDir))
     {
         var ds = Path.GetFileName(dataset);
-        foreach (var file in Directory.GetFiles(dataset, "*.txt"))
+        var fileNames = Directory.GetFiles(dataset, "*.txt").Select(f => Path.GetFileName(f))
+            .Select(n => n.EndsWith(".mdready.txt") ? n[..^12] : n.EndsWith(".raw.txt") ? n[..^8] : n[..^4])
+            .Distinct();
+        foreach (var baseName in fileNames)
         {
-            var name = Path.GetFileName(file);
-            var rel = ds + "/" + name;
-            var gt = Normalize(File.ReadAllText(file));
+            string gtPathMd = Path.Combine(gtDir, ds, baseName + ".mdready.txt");
+            string gtPathRaw = Path.Combine(gtDir, ds, baseName + ".raw.txt");
+            string gtPathTxt = Path.Combine(gtDir, ds, baseName + ".txt");
+            string gtText; string gtVar; string gtRawRel=""; string gtMdRel="";
+            if (File.Exists(gtPathMd)) { gtText = File.ReadAllText(gtPathMd); gtVar = "mdready"; gtMdRel = gtPathMd; }
+            else if (File.Exists(gtPathRaw)) { gtText = File.ReadAllText(gtPathRaw); gtVar = "raw"; gtRawRel = gtPathRaw; }
+            else { gtText = File.ReadAllText(gtPathTxt); gtVar = "raw"; gtRawRel = gtPathTxt; }
+            Note(baseline, gtVar);
+            var gt = Normalize(gtText);
+            var rel = ds + "/" + baseName + ".txt";
             var runs = new Dictionary<string, FileRun>();
-
-            if (File.Exists(Path.Combine(netDir, ds, name)))
+            var paths = new Dictionary<string, string>
             {
-                var hyp = Normalize(File.ReadAllText(Path.Combine(netDir, ds, name)));
+                ["raw"] = gtRawRel == "" ? "" : Path.GetRelativePath(Directory.GetCurrentDirectory(), gtRawRel),
+                ["mdready"] = gtMdRel == "" ? "" : Path.GetRelativePath(Directory.GetCurrentDirectory(), gtMdRel)
+            };
+
+            string? legacyGt = null;
+            if (doLegacy)
+            {
+                string lMd = Path.Combine(legacyDir, ds, baseName + ".mdready.txt");
+                string lRaw = Path.Combine(legacyDir, ds, baseName + ".raw.txt");
+                string lTxt = Path.Combine(legacyDir, ds, baseName + ".txt");
+                if (File.Exists(lMd)) legacyGt = File.ReadAllText(lMd);
+                else if (File.Exists(lRaw)) legacyGt = File.ReadAllText(lRaw);
+                else if (File.Exists(lTxt)) legacyGt = File.ReadAllText(lTxt);
+                if (legacyGt != null) legacyGt = Normalize(legacyGt);
+            }
+
+            if (File.Exists(Path.Combine(netDir, ds, baseName + ".mdready.txt")) || File.Exists(Path.Combine(netDir, ds, baseName + ".raw.txt")) || File.Exists(Path.Combine(netDir, ds, baseName + ".txt")))
+            {
+                string hypPath = File.Exists(Path.Combine(netDir, ds, baseName + ".mdready.txt"))
+                    ? Path.Combine(netDir, ds, baseName + ".mdready.txt")
+                    : File.Exists(Path.Combine(netDir, ds, baseName + ".raw.txt"))
+                        ? Path.Combine(netDir, ds, baseName + ".raw.txt")
+                        : Path.Combine(netDir, ds, baseName + ".txt");
+                var variant = hypPath.EndsWith(".mdready.txt") ? "mdready" : "raw";
+                Note("markitdownnet", variant);
+                var hyp = Normalize(File.ReadAllText(hypPath));
                 var (tp, tr, tf) = TokenScores(gt, hyp);
                 var (lcRef, lcHyp, lf) = LineScores(gt, hyp);
                 var cer = Cer(gt, hyp);
@@ -268,11 +347,29 @@ static void Compare(Dictionary<string, string> o)
                     line_f1 = lf,
                     time_ms = t?["markitdownnet"] ?? 0
                 };
+                if (legacyGt != null)
+                {
+                    var (tp2, tr2, tf2) = TokenScores(legacyGt, hyp);
+                    var (lcRef2, lcHyp2, lf2) = LineScores(legacyGt, hyp);
+                    var cer2 = Cer(legacyGt, hyp);
+                    if (!legacyByDataset.TryGetValue(ds, out var d)) legacyByDataset[ds] = d = new();
+                    if (!d.TryGetValue("markitdownnet", out var a)) d["markitdownnet"] = a = new();
+                    a.cer_sum += cer2; a.token_f1_sum += tf2; a.line_f1_sum += lf2; a.n_files++;
+                    if (!legacyGlobal.TryGetValue("markitdownnet", out var g)) legacyGlobal["markitdownnet"] = g = new();
+                    g.cer_sum += cer2; g.token_f1_sum += tf2; g.line_f1_sum += lf2; g.n_files++;
+                }
             }
 
-            if (File.Exists(Path.Combine(cliDir, ds, name)))
+            if (File.Exists(Path.Combine(cliDir, ds, baseName + ".mdready.txt")) || File.Exists(Path.Combine(cliDir, ds, baseName + ".raw.txt")) || File.Exists(Path.Combine(cliDir, ds, baseName + ".txt")))
             {
-                var hyp = Normalize(File.ReadAllText(Path.Combine(cliDir, ds, name)));
+                string hypPath = File.Exists(Path.Combine(cliDir, ds, baseName + ".mdready.txt"))
+                    ? Path.Combine(cliDir, ds, baseName + ".mdready.txt")
+                    : File.Exists(Path.Combine(cliDir, ds, baseName + ".raw.txt"))
+                        ? Path.Combine(cliDir, ds, baseName + ".raw.txt")
+                        : Path.Combine(cliDir, ds, baseName + ".txt");
+                var variant = hypPath.EndsWith(".mdready.txt") ? "mdready" : "raw";
+                Note("markitdownnet-cli", variant);
+                var hyp = Normalize(File.ReadAllText(hypPath));
                 var (tp, tr, tf) = TokenScores(gt, hyp);
                 var (lcRef, lcHyp, lf) = LineScores(gt, hyp);
                 var cer = Cer(gt, hyp);
@@ -288,11 +385,29 @@ static void Compare(Dictionary<string, string> o)
                     line_f1 = lf,
                     time_ms = t?["markitdownnet-cli"] ?? 0
                 };
+                if (legacyGt != null)
+                {
+                    var (tp2, tr2, tf2) = TokenScores(legacyGt, hyp);
+                    var (lcRef2, lcHyp2, lf2) = LineScores(legacyGt, hyp);
+                    var cer2 = Cer(legacyGt, hyp);
+                    if (!legacyByDataset.TryGetValue(ds, out var d)) legacyByDataset[ds] = d = new();
+                    if (!d.TryGetValue("markitdownnet-cli", out var a)) d["markitdownnet-cli"] = a = new();
+                    a.cer_sum += cer2; a.token_f1_sum += tf2; a.line_f1_sum += lf2; a.n_files++;
+                    if (!legacyGlobal.TryGetValue("markitdownnet-cli", out var g)) legacyGlobal["markitdownnet-cli"] = g = new();
+                    g.cer_sum += cer2; g.token_f1_sum += tf2; g.line_f1_sum += lf2; g.n_files++;
+                }
             }
 
-            if (File.Exists(Path.Combine(pyDir, ds, name)))
+            if (File.Exists(Path.Combine(pyDir, ds, baseName + ".mdready.txt")) || File.Exists(Path.Combine(pyDir, ds, baseName + ".raw.txt")) || File.Exists(Path.Combine(pyDir, ds, baseName + ".txt")))
             {
-                var hyp = Normalize(File.ReadAllText(Path.Combine(pyDir, ds, name)));
+                string hypPath = File.Exists(Path.Combine(pyDir, ds, baseName + ".mdready.txt"))
+                    ? Path.Combine(pyDir, ds, baseName + ".mdready.txt")
+                    : File.Exists(Path.Combine(pyDir, ds, baseName + ".raw.txt"))
+                        ? Path.Combine(pyDir, ds, baseName + ".raw.txt")
+                        : Path.Combine(pyDir, ds, baseName + ".txt");
+                var variant = hypPath.EndsWith(".mdready.txt") ? "mdready" : "raw";
+                Note("pytesseract-cli", variant);
+                var hyp = Normalize(File.ReadAllText(hypPath));
                 var (tp, tr, tf) = TokenScores(gt, hyp);
                 var (lcRef, lcHyp, lf) = LineScores(gt, hyp);
                 var cer = Cer(gt, hyp);
@@ -308,9 +423,20 @@ static void Compare(Dictionary<string, string> o)
                     line_f1 = lf,
                     time_ms = t?["pytesseract-cli"] ?? 0
                 };
+                if (legacyGt != null)
+                {
+                    var (tp2, tr2, tf2) = TokenScores(legacyGt, hyp);
+                    var (lcRef2, lcHyp2, lf2) = LineScores(legacyGt, hyp);
+                    var cer2 = Cer(legacyGt, hyp);
+                    if (!legacyByDataset.TryGetValue(ds, out var d)) legacyByDataset[ds] = d = new();
+                    if (!d.TryGetValue("pytesseract-cli", out var a)) d["pytesseract-cli"] = a = new();
+                    a.cer_sum += cer2; a.token_f1_sum += tf2; a.line_f1_sum += lf2; a.n_files++;
+                    if (!legacyGlobal.TryGetValue("pytesseract-cli", out var g)) legacyGlobal["pytesseract-cli"] = g = new();
+                    g.cer_sum += cer2; g.token_f1_sum += tf2; g.line_f1_sum += lf2; g.n_files++;
+                }
             }
 
-            files.Add(new FileMetrics { dataset = ds, file = Path.GetFileNameWithoutExtension(name), runs = runs });
+            files.Add(new FileMetrics { dataset = ds, file = baseName, paths = paths, runs = runs });
         }
     }
 
@@ -337,6 +463,7 @@ static void Compare(Dictionary<string, string> o)
     var engOrder = new[] { "markitdownnet", "markitdownnet-cli", "pytesseract-cli" };
     var runConfig = new Dictionary<string, object>
     {
+        ["baseline"] = baseline,
         ["os"] = RuntimeInformation.OSDescription.Trim(),
         ["cpu"] = CpuName(),
         ["dotnet"] = Environment.Version.ToString(),
@@ -344,7 +471,8 @@ static void Compare(Dictionary<string, string> o)
         ["psm"] = o.GetValueOrDefault("--psm", "6"),
         ["threads"] = o.GetValueOrDefault("--threads", "1"),
         ["timings_unit"] = "ms",
-        ["engines"] = engOrder.Where(global.ContainsKey).ToArray()
+        ["engines"] = engOrder.Where(global.ContainsKey).ToArray(),
+        ["txt_variant_used"] = txtVariantUsed
     };
 
     if (global.ContainsKey("markitdownnet"))
@@ -414,6 +542,8 @@ static void Compare(Dictionary<string, string> o)
 
     var sb = new StringBuilder();
     sb.AppendLine("# OCR Benchmark\n");
+    sb.AppendLine(baseline == "pytesseract-cli" ? "**Baseline: GT-shared (pytesseract-cli)**" : "**Baseline: GT storica**");
+    sb.AppendLine();
     sb.AppendLine("## Global");
     sb.AppendLine("| engine | CER | Token-F1 | line_F1 | n_files |");
     foreach (var eng in engOrder)
@@ -426,6 +556,25 @@ static void Compare(Dictionary<string, string> o)
         foreach (var eng in engOrder)
             if (ds.Value.TryGetValue(eng, out var m))
                 sb.AppendLine($"| {ds.Key} | {eng} | {m.cer_avg:F4} | {m.token_f1_avg:F4} | {m.line_f1_avg:F4} | {m.n_files} |");
+    if (baseline == "pytesseract-cli" && legacyGlobal.Count > 0)
+    {
+        sb.AppendLine();
+        sb.AppendLine("### Legacy comparison (informativa)");
+        sb.AppendLine();
+        sb.AppendLine("#### Global");
+        sb.AppendLine("| engine | CER | Token-F1 | line_F1 | n_files |");
+        foreach (var eng in engOrder)
+            if (legacyGlobal.TryGetValue(eng, out var g))
+                sb.AppendLine($"| {eng} | {g.cer_sum / g.n_files:F4} | {g.token_f1_sum / g.n_files:F4} | {g.line_f1_sum / g.n_files:F4} | {g.n_files} |");
+        sb.AppendLine();
+        sb.AppendLine("#### By dataset");
+        sb.AppendLine("| dataset | engine | CER | Token-F1 | line_F1 | n_files |");
+        foreach (var ds in legacyByDataset)
+            foreach (var eng in engOrder)
+                if (ds.Value.TryGetValue(eng, out var m))
+                    sb.AppendLine($"| {ds.Key} | {eng} | {m.cer_sum / m.n_files:F4} | {m.token_f1_sum / m.n_files:F4} | {m.line_f1_sum / m.n_files:F4} | {m.n_files} |");
+    }
+
     sb.AppendLine();
     sb.AppendLine("## Run config");
     foreach (var kv in runConfig)
@@ -435,12 +584,12 @@ static void Compare(Dictionary<string, string> o)
 
     var fails = new List<string>();
     foreach (var kv in bench.aggregate.global)
-        if (kv.Value.token_f1_avg < 0.80 || kv.Value.line_f1_avg < 0.50)
+        if (kv.Value.token_f1_avg < 0.90 || kv.Value.line_f1_avg < 0.70)
             fails.Add($"GLOBAL {kv.Key} Token-F1={kv.Value.token_f1_avg:F2} line_F1={kv.Value.line_f1_avg:F2}");
     foreach (var dsName in new[] { "ICDAR", "PUBTABLES" })
         if (bench.aggregate.by_dataset.TryGetValue(dsName, out var engs))
             foreach (var kv in engs)
-                if (kv.Value.token_f1_avg < 0.80 || kv.Value.line_f1_avg < 0.50)
+                if (kv.Value.token_f1_avg < 0.85 || kv.Value.line_f1_avg < 0.55)
                     fails.Add($"{dsName} {kv.Key} Token-F1={kv.Value.token_f1_avg:F2} line_F1={kv.Value.line_f1_avg:F2}");
     if (fails.Count > 0)
     {
@@ -471,6 +620,7 @@ static void Compare(Dictionary<string, string> o)
 
 static void SaveRaster(string src, string dest)
 {
+    if (File.Exists(dest)) return;
     using var bmp = SKBitmap.Decode(src);
     var gray = new SKBitmap(bmp.Width, bmp.Height, SKColorType.Gray8, SKAlphaType.Opaque);
     using (var canvas = new SKCanvas(gray))
@@ -500,6 +650,29 @@ static int RunTessCli(string img, string outFile, string psm)
     p.WaitForExit();
     File.WriteAllText(outFile, output);
     return p.ExitCode;
+}
+
+static string MdReady(string text)
+{
+    text = text.Replace("\uFEFF", "").Normalize(NormalizationForm.FormC);
+    text = text.Replace("\r\n", "\n").Replace("\r", "\n");
+    var pages = text.Split('\f');
+    var sb = new StringBuilder();
+    for (int p = 0; p < pages.Length; p++)
+    {
+        if (p > 0) sb.Append('\f');
+        var lines = pages[p].Split('\n');
+        for (int i = 0; i < lines.Length; i++)
+        {
+            var line = Regex.Replace(lines[i], "[ \t]+$", "");
+            line = new string(line.Where(ch => ch == '\t' || !char.IsControl(ch)).ToArray());
+            sb.Append(line);
+            if (i < lines.Length - 1) sb.Append('\n');
+        }
+    }
+    var res = sb.ToString();
+    res = new string(res.Where(ch => ch == '\n' || ch == '\f' || ch == '\t' || !char.IsControl(ch)).ToArray());
+    return res;
 }
 
 static string Normalize(string text)
@@ -585,6 +758,7 @@ class FileMetrics
 {
     public string dataset { get; set; } = "";
     public string file { get; set; } = "";
+    public Dictionary<string, string> paths { get; set; } = new();
     public Dictionary<string, FileRun> runs { get; set; } = new();
 }
 
