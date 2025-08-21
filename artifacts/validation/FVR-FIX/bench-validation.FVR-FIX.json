@@ -1,0 +1,3761 @@
+{
+  "task": "FVR-FIX",
+  "root": "dataset/validation/_ocr",
+  "modes": [
+    "pre",
+    "post-1S",
+    "post-2",
+    "python-hot"
+  ],
+  "run_config": {
+    "os": "Ubuntu 24.04.2 LTS",
+    "cpu": "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+    "dotnet": "9.0.0",
+    "python": "Python 3.12.10",
+    "markitdown": "0.1.2",
+    "threads": 1,
+    "tesseract": {
+      "langs": "eng+ita",
+      "psm": 6
+    },
+    "timings_unit": "ms"
+  },
+  "files": [
+    {
+      "dataset": "FUNSD",
+      "txt": "dataset/validation/_ocr/FUNSD/images/82092117.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0108
+            },
+            {
+              "md_ms": 0.011
+            },
+            {
+              "md_ms": 0.0112
+            },
+            {
+              "md_ms": 0.0114
+            },
+            {
+              "md_ms": 0.0123
+            }
+          ],
+          "avg_ms": 0.01134,
+          "std_ms": 0.0005200000000000001,
+          "p50_ms": 0.0112,
+          "p90_ms": 0.011940000000000001,
+          "p95_ms": 0.01212
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1981
+            },
+            {
+              "md_ms": 0.2093
+            },
+            {
+              "md_ms": 0.2122
+            },
+            {
+              "md_ms": 0.2187
+            },
+            {
+              "md_ms": 0.2958
+            }
+          ],
+          "avg_ms": 0.22682000000000002,
+          "std_ms": 0.03512750489288985,
+          "p50_ms": 0.2122,
+          "p90_ms": 0.26496000000000003,
+          "p95_ms": 0.28037999999999996
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2268
+            },
+            {
+              "md_ms": 0.2304
+            },
+            {
+              "md_ms": 0.26
+            },
+            {
+              "md_ms": 0.2721
+            },
+            {
+              "md_ms": 0.3201
+            }
+          ],
+          "avg_ms": 0.26188,
+          "std_ms": 0.033820549965960046,
+          "p50_ms": 0.26,
+          "p90_ms": 0.3009,
+          "p95_ms": 0.3105
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.442436999852362
+            },
+            {
+              "md_ms": 4.561364999972284
+            },
+            {
+              "md_ms": 4.90462200014008
+            },
+            {
+              "md_ms": 5.072472999927413
+            },
+            {
+              "md_ms": 5.912319999879401
+            }
+          ],
+          "avg_ms": 4.978643399954308,
+          "std_ms": 0.5191673566993786,
+          "p50_ms": 4.90462200014008,
+          "p90_ms": 5.576381199898606,
+          "p95_ms": 5.744350599889003
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.05602716468590832,
+          "token_precision": 0.8844444444444445,
+          "token_recall": 0.9802955665024631,
+          "token_f1": 0.9299065420560748
+        },
+        "structure": {
+          "line_count": 25,
+          "line_f1": 0.4827586206896552,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 1,
+            "table_cell_f1": null,
+            "pipes_lines_count": 9,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/FUNSD/images/82092117.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/FUNSD/images/82092117.post-2.md"
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "txt": "dataset/validation/_ocr/FUNSD/images/82200067_0069.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0095
+            },
+            {
+              "md_ms": 0.0099
+            },
+            {
+              "md_ms": 0.0103
+            },
+            {
+              "md_ms": 0.0112
+            },
+            {
+              "md_ms": 0.0119
+            }
+          ],
+          "avg_ms": 0.01056,
+          "std_ms": 0.0008754427451295717,
+          "p50_ms": 0.0103,
+          "p90_ms": 0.01162,
+          "p95_ms": 0.01176
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1601
+            },
+            {
+              "md_ms": 0.1861
+            },
+            {
+              "md_ms": 0.1877
+            },
+            {
+              "md_ms": 0.1918
+            },
+            {
+              "md_ms": 0.2005
+            }
+          ],
+          "avg_ms": 0.18524,
+          "std_ms": 0.013525620133657464,
+          "p50_ms": 0.1877,
+          "p90_ms": 0.19702,
+          "p95_ms": 0.19876000000000002
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2
+            },
+            {
+              "md_ms": 0.2163
+            },
+            {
+              "md_ms": 0.2265
+            },
+            {
+              "md_ms": 0.2305
+            },
+            {
+              "md_ms": 0.2395
+            }
+          ],
+          "avg_ms": 0.22256,
+          "std_ms": 0.013517928835439248,
+          "p50_ms": 0.2265,
+          "p90_ms": 0.2359,
+          "p95_ms": 0.2377
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.517940999699931
+            },
+            {
+              "md_ms": 3.78700100009155
+            },
+            {
+              "md_ms": 4.040054000142845
+            },
+            {
+              "md_ms": 4.414211999574036
+            },
+            {
+              "md_ms": 4.961542999808444
+            }
+          ],
+          "avg_ms": 4.144150199863361,
+          "std_ms": 0.5043002869577315,
+          "p50_ms": 4.040054000142845,
+          "p90_ms": 4.742610599714681,
+          "p95_ms": 4.852076799761562
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.020802377414561663,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 20,
+          "line_f1": 0.5555555555555556,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 6,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/FUNSD/images/82200067_0069.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/FUNSD/images/82200067_0069.post-2.md"
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "txt": "dataset/validation/_ocr/FUNSD/images/82250337_0338.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0143
+            },
+            {
+              "md_ms": 0.0148
+            },
+            {
+              "md_ms": 0.0154
+            },
+            {
+              "md_ms": 0.0205
+            },
+            {
+              "md_ms": 0.0224
+            }
+          ],
+          "avg_ms": 0.017480000000000002,
+          "std_ms": 0.0033150565606034532,
+          "p50_ms": 0.0154,
+          "p90_ms": 0.02164,
+          "p95_ms": 0.022019999999999998
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1368
+            },
+            {
+              "md_ms": 0.1565
+            },
+            {
+              "md_ms": 0.1571
+            },
+            {
+              "md_ms": 0.1711
+            },
+            {
+              "md_ms": 0.213
+            }
+          ],
+          "avg_ms": 0.1669,
+          "std_ms": 0.025507097051605067,
+          "p50_ms": 0.1571,
+          "p90_ms": 0.19624,
+          "p95_ms": 0.20462
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.1778
+            },
+            {
+              "md_ms": 0.1867
+            },
+            {
+              "md_ms": 0.1922
+            },
+            {
+              "md_ms": 0.1937
+            },
+            {
+              "md_ms": 0.211
+            }
+          ],
+          "avg_ms": 0.19227999999999998,
+          "std_ms": 0.010892823325474432,
+          "p50_ms": 0.1922,
+          "p90_ms": 0.20408,
+          "p95_ms": 0.20754
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 5.160577000424382
+            },
+            {
+              "md_ms": 5.3297399999792106
+            },
+            {
+              "md_ms": 5.460158000460069
+            },
+            {
+              "md_ms": 5.558685999858426
+            },
+            {
+              "md_ms": 6.1273139999684645
+            }
+          ],
+          "avg_ms": 5.5272950001381105,
+          "std_ms": 0.32833691268221715,
+          "p50_ms": 5.460158000460069,
+          "p90_ms": 5.899862799924449,
+          "p95_ms": 6.013588399946457
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0014727540500736377,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 49,
+          "line_f1": 0.9400000000000001,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/FUNSD/images/82250337_0338.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/FUNSD/images/82250337_0338.post-2.md"
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "txt": "dataset/validation/_ocr/FUNSD/images/82251504.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0117
+            },
+            {
+              "md_ms": 0.0121
+            },
+            {
+              "md_ms": 0.0128
+            },
+            {
+              "md_ms": 0.013
+            },
+            {
+              "md_ms": 0.0184
+            }
+          ],
+          "avg_ms": 0.013600000000000001,
+          "std_ms": 0.0024454038521274967,
+          "p50_ms": 0.0128,
+          "p90_ms": 0.01624,
+          "p95_ms": 0.01732
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.2055
+            },
+            {
+              "md_ms": 0.2135
+            },
+            {
+              "md_ms": 0.2242
+            },
+            {
+              "md_ms": 0.2385
+            },
+            {
+              "md_ms": 0.2425
+            }
+          ],
+          "avg_ms": 0.22483999999999998,
+          "std_ms": 0.01415282303994507,
+          "p50_ms": 0.2242,
+          "p90_ms": 0.2409,
+          "p95_ms": 0.2417
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2981
+            },
+            {
+              "md_ms": 0.3121
+            },
+            {
+              "md_ms": 0.3323
+            },
+            {
+              "md_ms": 0.3543
+            },
+            {
+              "md_ms": 0.3756
+            }
+          ],
+          "avg_ms": 0.33448,
+          "std_ms": 0.027974302493538605,
+          "p50_ms": 0.3323,
+          "p90_ms": 0.36708,
+          "p95_ms": 0.37134
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.131464999569289
+            },
+            {
+              "md_ms": 3.222549999918556
+            },
+            {
+              "md_ms": 3.3317069992335746
+            },
+            {
+              "md_ms": 3.3567939999556984
+            },
+            {
+              "md_ms": 3.7793699993926566
+            }
+          ],
+          "avg_ms": 3.364377199613955,
+          "std_ms": 0.222578938033769,
+          "p50_ms": 3.3317069992335746,
+          "p90_ms": 3.6103395996178733,
+          "p95_ms": 3.694854799505265
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.06608884073672806,
+          "token_precision": 0.8682634730538922,
+          "token_recall": 0.9731543624161074,
+          "token_f1": 0.9177215189873417
+        },
+        "structure": {
+          "line_count": 34,
+          "line_f1": 0.6756756756756757,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 1,
+            "table_cell_f1": null,
+            "pipes_lines_count": 6,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/FUNSD/images/82251504.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/FUNSD/images/82251504.post-2.md"
+      }
+    },
+    {
+      "dataset": "ICDAR",
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00014.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0123
+            },
+            {
+              "md_ms": 0.013
+            },
+            {
+              "md_ms": 0.0131
+            },
+            {
+              "md_ms": 0.0132
+            },
+            {
+              "md_ms": 0.0137
+            }
+          ],
+          "avg_ms": 0.013059999999999999,
+          "std_ms": 0.00044988887516807973,
+          "p50_ms": 0.0131,
+          "p90_ms": 0.0135,
+          "p95_ms": 0.013600000000000001
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.2003
+            },
+            {
+              "md_ms": 0.2027
+            },
+            {
+              "md_ms": 0.2197
+            },
+            {
+              "md_ms": 0.2231
+            },
+            {
+              "md_ms": 0.2569
+            }
+          ],
+          "avg_ms": 0.22054,
+          "std_ms": 0.02028414158893593,
+          "p50_ms": 0.2197,
+          "p90_ms": 0.24338,
+          "p95_ms": 0.25014000000000003
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.307
+            },
+            {
+              "md_ms": 0.3167
+            },
+            {
+              "md_ms": 0.3566
+            },
+            {
+              "md_ms": 0.3771
+            },
+            {
+              "md_ms": 9.6349
+            }
+          ],
+          "avg_ms": 2.1984600000000003,
+          "std_ms": 3.71830827156652,
+          "p50_ms": 0.3566,
+          "p90_ms": 5.93178,
+          "p95_ms": 7.783339999999997
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.264666999915789
+            },
+            {
+              "md_ms": 4.267006999725709
+            },
+            {
+              "md_ms": 5.120189999615832
+            },
+            {
+              "md_ms": 5.7844960001602885
+            },
+            {
+              "md_ms": 5.787045999568363
+            }
+          ],
+          "avg_ms": 5.044681199797196,
+          "std_ms": 0.6807837141264583,
+          "p50_ms": 5.120189999615832,
+          "p90_ms": 5.786025999805133,
+          "p95_ms": 5.786535999686748
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.001195457262402869,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 35,
+          "line_f1": 0.9166666666666667,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 31,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 6
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00014.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00014.post-2.md"
+      }
+    },
+    {
+      "dataset": "ICDAR",
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00015.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0139
+            },
+            {
+              "md_ms": 0.0143
+            },
+            {
+              "md_ms": 0.0157
+            },
+            {
+              "md_ms": 0.0189
+            },
+            {
+              "md_ms": 0.0193
+            }
+          ],
+          "avg_ms": 0.01642,
+          "std_ms": 0.0022719154913860688,
+          "p50_ms": 0.0157,
+          "p90_ms": 0.01914,
+          "p95_ms": 0.01922
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.2186
+            },
+            {
+              "md_ms": 0.2208
+            },
+            {
+              "md_ms": 0.255
+            },
+            {
+              "md_ms": 0.2694
+            },
+            {
+              "md_ms": 0.2944
+            }
+          ],
+          "avg_ms": 0.25164,
+          "std_ms": 0.028975410264567437,
+          "p50_ms": 0.255,
+          "p90_ms": 0.2844,
+          "p95_ms": 0.2894
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2651
+            },
+            {
+              "md_ms": 0.2669
+            },
+            {
+              "md_ms": 0.2762
+            },
+            {
+              "md_ms": 0.2966
+            },
+            {
+              "md_ms": 0.49
+            }
+          ],
+          "avg_ms": 0.31895999999999997,
+          "std_ms": 0.08624872404853302,
+          "p50_ms": 0.2762,
+          "p90_ms": 0.41264,
+          "p95_ms": 0.45131999999999994
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.85314199977438
+            },
+            {
+              "md_ms": 4.869597999459074
+            },
+            {
+              "md_ms": 4.914684999675956
+            },
+            {
+              "md_ms": 5.115742000270984
+            },
+            {
+              "md_ms": 5.208415999732097
+            }
+          ],
+          "avg_ms": 4.992316599782498,
+          "std_ms": 0.14310057276767402,
+          "p50_ms": 4.914684999675956,
+          "p90_ms": 5.171346399947652,
+          "p95_ms": 5.189881199839874
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.001087547580206634,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 35,
+          "line_f1": 0.9444444444444445,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 29,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 18
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00015.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00015.post-2.md"
+      }
+    },
+    {
+      "dataset": "ICDAR",
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00016.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0138
+            },
+            {
+              "md_ms": 0.0149
+            },
+            {
+              "md_ms": 0.017
+            },
+            {
+              "md_ms": 0.0176
+            },
+            {
+              "md_ms": 0.018
+            }
+          ],
+          "avg_ms": 0.01626,
+          "std_ms": 0.0016292329483533043,
+          "p50_ms": 0.017,
+          "p90_ms": 0.017839999999999998,
+          "p95_ms": 0.01792
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.2555
+            },
+            {
+              "md_ms": 0.2592
+            },
+            {
+              "md_ms": 0.2637
+            },
+            {
+              "md_ms": 0.2966
+            },
+            {
+              "md_ms": 0.31
+            }
+          ],
+          "avg_ms": 0.277,
+          "std_ms": 0.022041506300613845,
+          "p50_ms": 0.2637,
+          "p90_ms": 0.30463999999999997,
+          "p95_ms": 0.30732
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2912
+            },
+            {
+              "md_ms": 0.3144
+            },
+            {
+              "md_ms": 0.3317
+            },
+            {
+              "md_ms": 0.3372
+            },
+            {
+              "md_ms": 0.344
+            }
+          ],
+          "avg_ms": 0.3237,
+          "std_ms": 0.018979357207239644,
+          "p50_ms": 0.3317,
+          "p90_ms": 0.34128,
+          "p95_ms": 0.34264
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 5.0913149998450535
+            },
+            {
+              "md_ms": 5.140911000125925
+            },
+            {
+              "md_ms": 5.317090000062308
+            },
+            {
+              "md_ms": 5.323624999618914
+            },
+            {
+              "md_ms": 6.352052999318403
+            }
+          ],
+          "avg_ms": 5.444998799794121,
+          "std_ms": 0.46290413727809704,
+          "p50_ms": 5.317090000062308,
+          "p90_ms": 5.940681799438607,
+          "p95_ms": 6.146367399378505
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 45,
+          "line_f1": 1,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 40,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 7
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00016.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00016.post-2.md"
+      }
+    },
+    {
+      "dataset": "ICDAR",
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00080.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0134
+            },
+            {
+              "md_ms": 0.0144
+            },
+            {
+              "md_ms": 0.0145
+            },
+            {
+              "md_ms": 0.0149
+            },
+            {
+              "md_ms": 0.0236
+            }
+          ],
+          "avg_ms": 0.01616,
+          "std_ms": 0.0037526523953065514,
+          "p50_ms": 0.0145,
+          "p90_ms": 0.02012,
+          "p95_ms": 0.021859999999999997
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.3056
+            },
+            {
+              "md_ms": 0.3154
+            },
+            {
+              "md_ms": 0.319
+            },
+            {
+              "md_ms": 0.3241
+            },
+            {
+              "md_ms": 0.3319
+            }
+          ],
+          "avg_ms": 0.31920000000000004,
+          "std_ms": 0.008772000911992652,
+          "p50_ms": 0.319,
+          "p90_ms": 0.32877999999999996,
+          "p95_ms": 0.33033999999999997
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.3519
+            },
+            {
+              "md_ms": 0.4051
+            },
+            {
+              "md_ms": 0.4071
+            },
+            {
+              "md_ms": 0.4126
+            },
+            {
+              "md_ms": 0.4771
+            }
+          ],
+          "avg_ms": 0.41075999999999996,
+          "std_ms": 0.03978520327961139,
+          "p50_ms": 0.4071,
+          "p90_ms": 0.45130000000000003,
+          "p95_ms": 0.4642
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.7045520002720878
+            },
+            {
+              "md_ms": 3.8512870005433797
+            },
+            {
+              "md_ms": 4.141147999689565
+            },
+            {
+              "md_ms": 4.405539999424946
+            },
+            {
+              "md_ms": 4.63146299989603
+            }
+          ],
+          "avg_ms": 4.146797999965202,
+          "std_ms": 0.34199057939344946,
+          "p50_ms": 4.141147999689565,
+          "p90_ms": 4.541093799707596,
+          "p95_ms": 4.586278399801813
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.002592352559948153,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 45,
+          "line_f1": 0.8936170212765957,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 20,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00080.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00080.post-2.md"
+      }
+    },
+    {
+      "dataset": "MARMOT",
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2006_3.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.243
+            },
+            {
+              "md_ms": 0.2727
+            },
+            {
+              "md_ms": 0.2825
+            },
+            {
+              "md_ms": 0.2857
+            },
+            {
+              "md_ms": 0.3093
+            }
+          ],
+          "avg_ms": 0.27864,
+          "std_ms": 0.021495450681481426,
+          "p50_ms": 0.2825,
+          "p90_ms": 0.29986,
+          "p95_ms": 0.30458
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 1.1987
+            },
+            {
+              "md_ms": 1.276
+            },
+            {
+              "md_ms": 1.3106
+            },
+            {
+              "md_ms": 1.3847
+            },
+            {
+              "md_ms": 1.4565
+            }
+          ],
+          "avg_ms": 1.3253,
+          "std_ms": 0.08878731891435843,
+          "p50_ms": 1.3106,
+          "p90_ms": 1.42778,
+          "p95_ms": 1.44214
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 2.0393
+            },
+            {
+              "md_ms": 2.0861
+            },
+            {
+              "md_ms": 2.089
+            },
+            {
+              "md_ms": 2.1889
+            },
+            {
+              "md_ms": 2.3151
+            }
+          ],
+          "avg_ms": 2.14368,
+          "std_ms": 0.09862069559681687,
+          "p50_ms": 2.089,
+          "p90_ms": 2.26462,
+          "p95_ms": 2.28986
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.714934000527137
+            },
+            {
+              "md_ms": 3.8627170006293454
+            },
+            {
+              "md_ms": 3.8931660001253476
+            },
+            {
+              "md_ms": 3.9129189999584923
+            },
+            {
+              "md_ms": 4.0487770002073376
+            }
+          ],
+          "avg_ms": 3.886502600289532,
+          "std_ms": 0.10684263859822038,
+          "p50_ms": 3.8931660001253476,
+          "p90_ms": 3.9944338001077995,
+          "p95_ms": 4.0216054001575685
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0004088307440719542,
+          "token_precision": 1,
+          "token_recall": 0.9987623762376238,
+          "token_f1": 0.9993808049535603
+        },
+        "structure": {
+          "line_count": 100,
+          "line_f1": 0.99,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2006_3.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2006_3.post-2.md"
+      }
+    },
+    {
+      "dataset": "MARMOT",
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2013_63.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.017
+            },
+            {
+              "md_ms": 0.0171
+            },
+            {
+              "md_ms": 0.0174
+            },
+            {
+              "md_ms": 0.018
+            },
+            {
+              "md_ms": 0.0192
+            }
+          ],
+          "avg_ms": 0.01774,
+          "std_ms": 0.0008089499366462665,
+          "p50_ms": 0.0174,
+          "p90_ms": 0.018719999999999997,
+          "p95_ms": 0.018959999999999998
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.3038
+            },
+            {
+              "md_ms": 0.3326
+            },
+            {
+              "md_ms": 0.4012
+            },
+            {
+              "md_ms": 0.4111
+            },
+            {
+              "md_ms": 0.4298
+            }
+          ],
+          "avg_ms": 0.37570000000000003,
+          "std_ms": 0.048697926033867196,
+          "p50_ms": 0.4012,
+          "p90_ms": 0.42232000000000003,
+          "p95_ms": 0.42606
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.371
+            },
+            {
+              "md_ms": 0.4301
+            },
+            {
+              "md_ms": 0.4483
+            },
+            {
+              "md_ms": 0.4522
+            },
+            {
+              "md_ms": 0.5052
+            }
+          ],
+          "avg_ms": 0.44136,
+          "std_ms": 0.04317066596660282,
+          "p50_ms": 0.4483,
+          "p90_ms": 0.484,
+          "p95_ms": 0.4946
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.3596860002944595
+            },
+            {
+              "md_ms": 3.5904619999200804
+            },
+            {
+              "md_ms": 3.900971999428293
+            },
+            {
+              "md_ms": 4.107931999897119
+            },
+            {
+              "md_ms": 4.362192999906256
+            }
+          ],
+          "avg_ms": 3.8642489998892415,
+          "std_ms": 0.35727338335037667,
+          "p50_ms": 3.900971999428293,
+          "p90_ms": 4.260488599902601,
+          "p95_ms": 4.311340799904428
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0007867820613690008,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 38,
+          "line_f1": 0.9610389610389611,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2013_63.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2013_63.post-2.md"
+      }
+    },
+    {
+      "dataset": "MARMOT",
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2013_64.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0063
+            },
+            {
+              "md_ms": 0.0065
+            },
+            {
+              "md_ms": 0.0074
+            },
+            {
+              "md_ms": 0.0079
+            },
+            {
+              "md_ms": 0.008
+            }
+          ],
+          "avg_ms": 0.00722,
+          "std_ms": 0.0007025667228100121,
+          "p50_ms": 0.0074,
+          "p90_ms": 0.00796,
+          "p95_ms": 0.007980000000000001
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1243
+            },
+            {
+              "md_ms": 0.1265
+            },
+            {
+              "md_ms": 0.1312
+            },
+            {
+              "md_ms": 0.134
+            },
+            {
+              "md_ms": 0.1493
+            }
+          ],
+          "avg_ms": 0.13306,
+          "std_ms": 0.008807405974519397,
+          "p50_ms": 0.1312,
+          "p90_ms": 0.14318,
+          "p95_ms": 0.14623999999999998
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.153
+            },
+            {
+              "md_ms": 0.1539
+            },
+            {
+              "md_ms": 0.1554
+            },
+            {
+              "md_ms": 0.1645
+            },
+            {
+              "md_ms": 0.1863
+            }
+          ],
+          "avg_ms": 0.16262000000000001,
+          "std_ms": 0.012529868315349522,
+          "p50_ms": 0.1554,
+          "p90_ms": 0.17758000000000002,
+          "p95_ms": 0.18194
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.3353710005030734
+            },
+            {
+              "md_ms": 3.408653999940725
+            },
+            {
+              "md_ms": 3.552801000296313
+            },
+            {
+              "md_ms": 3.7139510004635667
+            },
+            {
+              "md_ms": 3.7719849997301935
+            }
+          ],
+          "avg_ms": 3.5565524001867743,
+          "std_ms": 0.16851987756798809,
+          "p50_ms": 3.552801000296313,
+          "p90_ms": 3.748771400023543,
+          "p95_ms": 3.760378199876868
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.008915304606240713,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 16,
+          "line_f1": 0.5263157894736842,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2013_64.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2013_64.post-2.md"
+      }
+    },
+    {
+      "dataset": "MARMOT",
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2014_4.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0181
+            },
+            {
+              "md_ms": 0.019
+            },
+            {
+              "md_ms": 0.019
+            },
+            {
+              "md_ms": 0.0213
+            },
+            {
+              "md_ms": 0.0216
+            }
+          ],
+          "avg_ms": 0.0198,
+          "std_ms": 0.0013899640283115244,
+          "p50_ms": 0.019,
+          "p90_ms": 0.02148,
+          "p95_ms": 0.02154
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.3351
+            },
+            {
+              "md_ms": 0.3542
+            },
+            {
+              "md_ms": 0.3617
+            },
+            {
+              "md_ms": 0.3671
+            },
+            {
+              "md_ms": 0.3871
+            }
+          ],
+          "avg_ms": 0.36103999999999997,
+          "std_ms": 0.01694669289271508,
+          "p50_ms": 0.3617,
+          "p90_ms": 0.3791,
+          "p95_ms": 0.3831
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.3799
+            },
+            {
+              "md_ms": 0.3898
+            },
+            {
+              "md_ms": 0.4049
+            },
+            {
+              "md_ms": 0.4482
+            },
+            {
+              "md_ms": 0.4925
+            }
+          ],
+          "avg_ms": 0.42306,
+          "std_ms": 0.04183953154613469,
+          "p50_ms": 0.4049,
+          "p90_ms": 0.47478,
+          "p95_ms": 0.48363999999999996
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.9909779998197337
+            },
+            {
+              "md_ms": 4.042762999233673
+            },
+            {
+              "md_ms": 4.135745999519713
+            },
+            {
+              "md_ms": 4.5697269997617695
+            },
+            {
+              "md_ms": 4.668986999604385
+            }
+          ],
+          "avg_ms": 4.281640199587855,
+          "std_ms": 0.28137643709241505,
+          "p50_ms": 4.135745999519713,
+          "p90_ms": 4.629282999667339,
+          "p95_ms": 4.649134999635862
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0026030368763557484,
+          "token_precision": 1,
+          "token_recall": 0.997716894977169,
+          "token_f1": 0.9988571428571429
+        },
+        "structure": {
+          "line_count": 34,
+          "line_f1": 0.8450704225352113,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 4,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2014_4.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2014_4.post-2.md"
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_0.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0055
+            },
+            {
+              "md_ms": 0.006
+            },
+            {
+              "md_ms": 0.0066
+            },
+            {
+              "md_ms": 0.0117
+            },
+            {
+              "md_ms": 0.0886
+            }
+          ],
+          "avg_ms": 0.02368,
+          "std_ms": 0.03253597393655214,
+          "p50_ms": 0.0066,
+          "p90_ms": 0.05784000000000001,
+          "p95_ms": 0.07321999999999998
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.0755
+            },
+            {
+              "md_ms": 0.0889
+            },
+            {
+              "md_ms": 0.1038
+            },
+            {
+              "md_ms": 0.11
+            },
+            {
+              "md_ms": 0.116
+            }
+          ],
+          "avg_ms": 0.09884000000000001,
+          "std_ms": 0.014745656987737103,
+          "p50_ms": 0.1038,
+          "p90_ms": 0.1136,
+          "p95_ms": 0.1148
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.0954
+            },
+            {
+              "md_ms": 0.1026
+            },
+            {
+              "md_ms": 0.1038
+            },
+            {
+              "md_ms": 0.1154
+            },
+            {
+              "md_ms": 0.1226
+            }
+          ],
+          "avg_ms": 0.10795999999999999,
+          "std_ms": 0.009731104767702382,
+          "p50_ms": 0.1038,
+          "p90_ms": 0.11972000000000001,
+          "p95_ms": 0.12116
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.092021999895223
+            },
+            {
+              "md_ms": 4.113316000257328
+            },
+            {
+              "md_ms": 4.185087000223575
+            },
+            {
+              "md_ms": 4.219977000502695
+            },
+            {
+              "md_ms": 4.647019000003638
+            }
+          ],
+          "avg_ms": 4.251484200176492,
+          "std_ms": 0.2031589104393988,
+          "p50_ms": 4.185087000223575,
+          "p90_ms": 4.476202200203261,
+          "p95_ms": 4.5616106001034495
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0015060240963855422,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 10,
+          "line_f1": 0.8571428571428572,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 2,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_0.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_0.post-2.md"
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_2.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0058
+            },
+            {
+              "md_ms": 0.0058
+            },
+            {
+              "md_ms": 0.0061
+            },
+            {
+              "md_ms": 0.0063
+            },
+            {
+              "md_ms": 0.0077
+            }
+          ],
+          "avg_ms": 0.00634,
+          "std_ms": 0.0007059745037889119,
+          "p50_ms": 0.0061,
+          "p90_ms": 0.0071400000000000005,
+          "p95_ms": 0.0074199999999999995
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.107
+            },
+            {
+              "md_ms": 0.1175
+            },
+            {
+              "md_ms": 0.1205
+            },
+            {
+              "md_ms": 0.1327
+            },
+            {
+              "md_ms": 0.1368
+            }
+          ],
+          "avg_ms": 0.12290000000000001,
+          "std_ms": 0.010742253022527449,
+          "p50_ms": 0.1205,
+          "p90_ms": 0.13516,
+          "p95_ms": 0.13598000000000002
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.1321
+            },
+            {
+              "md_ms": 0.1385
+            },
+            {
+              "md_ms": 0.144
+            },
+            {
+              "md_ms": 0.158
+            },
+            {
+              "md_ms": 0.1712
+            }
+          ],
+          "avg_ms": 0.14876,
+          "std_ms": 0.014102567142190811,
+          "p50_ms": 0.144,
+          "p90_ms": 0.16591999999999998,
+          "p95_ms": 0.16856
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.7920349996056757
+            },
+            {
+              "md_ms": 4.314449999583303
+            },
+            {
+              "md_ms": 4.505369999606046
+            },
+            {
+              "md_ms": 4.505751000579039
+            },
+            {
+              "md_ms": 4.8206789997493615
+            }
+          ],
+          "avg_ms": 4.387656999824685,
+          "std_ms": 0.33924487550431703,
+          "p50_ms": 4.505369999606046,
+          "p90_ms": 4.694707800081233,
+          "p95_ms": 4.757693399915297
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0073964497041420114,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 15,
+          "line_f1": 0.6857142857142857,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_2.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_2.post-2.md"
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_3.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0068
+            },
+            {
+              "md_ms": 0.0073
+            },
+            {
+              "md_ms": 0.0076
+            },
+            {
+              "md_ms": 0.0077
+            },
+            {
+              "md_ms": 0.008
+            }
+          ],
+          "avg_ms": 0.0074800000000000005,
+          "std_ms": 0.00040693979898751627,
+          "p50_ms": 0.0076,
+          "p90_ms": 0.00788,
+          "p95_ms": 0.007940000000000001
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1405
+            },
+            {
+              "md_ms": 0.1417
+            },
+            {
+              "md_ms": 0.1422
+            },
+            {
+              "md_ms": 0.1452
+            },
+            {
+              "md_ms": 0.1473
+            }
+          ],
+          "avg_ms": 0.14337999999999998,
+          "std_ms": 0.002497518768698239,
+          "p50_ms": 0.1422,
+          "p90_ms": 0.14645999999999998,
+          "p95_ms": 0.14687999999999998
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.1572
+            },
+            {
+              "md_ms": 0.1579
+            },
+            {
+              "md_ms": 0.16
+            },
+            {
+              "md_ms": 0.161
+            },
+            {
+              "md_ms": 0.1625
+            }
+          ],
+          "avg_ms": 0.15972000000000003,
+          "std_ms": 0.0019548913013259827,
+          "p50_ms": 0.16,
+          "p90_ms": 0.16190000000000002,
+          "p95_ms": 0.1622
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.568934000417357
+            },
+            {
+              "md_ms": 4.581790999509394
+            },
+            {
+              "md_ms": 4.813042000023415
+            },
+            {
+              "md_ms": 4.858739000155765
+            },
+            {
+              "md_ms": 5.416562000391423
+            }
+          ],
+          "avg_ms": 4.847813600099471,
+          "std_ms": 0.30768328733178113,
+          "p50_ms": 4.813042000023415,
+          "p90_ms": 5.19343280029716,
+          "p95_ms": 5.304997400344291
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0231023102310231,
+          "token_precision": 1,
+          "token_recall": 0.9871794871794872,
+          "token_f1": 0.9935483870967742
+        },
+        "structure": {
+          "line_count": 9,
+          "line_f1": 0.6086956521739131,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_3.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_3.post-2.md"
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_4.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0064
+            },
+            {
+              "md_ms": 0.0065
+            },
+            {
+              "md_ms": 0.0071
+            },
+            {
+              "md_ms": 0.0074
+            },
+            {
+              "md_ms": 0.008
+            }
+          ],
+          "avg_ms": 0.00708,
+          "std_ms": 0.0005912698199637794,
+          "p50_ms": 0.0071,
+          "p90_ms": 0.00776,
+          "p95_ms": 0.00788
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1342
+            },
+            {
+              "md_ms": 0.1508
+            },
+            {
+              "md_ms": 0.1523
+            },
+            {
+              "md_ms": 0.1608
+            },
+            {
+              "md_ms": 0.1672
+            }
+          ],
+          "avg_ms": 0.15305999999999997,
+          "std_ms": 0.011146586921564818,
+          "p50_ms": 0.1523,
+          "p90_ms": 0.16463999999999998,
+          "p95_ms": 0.16591999999999998
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.1496
+            },
+            {
+              "md_ms": 0.1586
+            },
+            {
+              "md_ms": 0.1638
+            },
+            {
+              "md_ms": 0.1652
+            },
+            {
+              "md_ms": 0.205
+            }
+          ],
+          "avg_ms": 0.16843999999999998,
+          "std_ms": 0.019081048189237396,
+          "p50_ms": 0.1638,
+          "p90_ms": 0.18908,
+          "p95_ms": 0.19704
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 5.457656000544375
+            },
+            {
+              "md_ms": 5.565351999393897
+            },
+            {
+              "md_ms": 5.603451000752102
+            },
+            {
+              "md_ms": 5.627116000141541
+            },
+            {
+              "md_ms": 5.759695000051579
+            }
+          ],
+          "avg_ms": 5.602654000176699,
+          "std_ms": 0.09764912642074652,
+          "p50_ms": 5.603451000752102,
+          "p90_ms": 5.706663400087564,
+          "p95_ms": 5.733179200069571
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0050062578222778474,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 18,
+          "line_f1": 0.7999999999999999,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_4.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_4.post-2.md"
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_5.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0074
+            },
+            {
+              "md_ms": 0.0076
+            },
+            {
+              "md_ms": 0.0079
+            },
+            {
+              "md_ms": 0.0087
+            },
+            {
+              "md_ms": 0.0095
+            }
+          ],
+          "avg_ms": 0.008220000000000002,
+          "std_ms": 0.0007782030583337485,
+          "p50_ms": 0.0079,
+          "p90_ms": 0.009179999999999999,
+          "p95_ms": 0.00934
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1031
+            },
+            {
+              "md_ms": 0.1082
+            },
+            {
+              "md_ms": 0.1147
+            },
+            {
+              "md_ms": 0.116
+            },
+            {
+              "md_ms": 0.1704
+            }
+          ],
+          "avg_ms": 0.12248,
+          "std_ms": 0.024406343437721266,
+          "p50_ms": 0.1147,
+          "p90_ms": 0.14864,
+          "p95_ms": 0.15952
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.1365
+            },
+            {
+              "md_ms": 0.14
+            },
+            {
+              "md_ms": 0.1523
+            },
+            {
+              "md_ms": 0.1653
+            },
+            {
+              "md_ms": 0.1794
+            }
+          ],
+          "avg_ms": 0.1547,
+          "std_ms": 0.015972100675866022,
+          "p50_ms": 0.1523,
+          "p90_ms": 0.17376,
+          "p95_ms": 0.17658000000000001
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.126537000047392
+            },
+            {
+              "md_ms": 4.341758999544254
+            },
+            {
+              "md_ms": 4.388690999803657
+            },
+            {
+              "md_ms": 4.556631000014022
+            },
+            {
+              "md_ms": 4.932933999953093
+            }
+          ],
+          "avg_ms": 4.469310399872484,
+          "std_ms": 0.26938232339245466,
+          "p50_ms": 4.388690999803657,
+          "p90_ms": 4.782412799977465,
+          "p95_ms": 4.857673399965279
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0025940337224383916,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 14,
+          "line_f1": 0.7999999999999999,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_5.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_5.post-2.md"
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_6.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0021
+            },
+            {
+              "md_ms": 0.0021
+            },
+            {
+              "md_ms": 0.0028
+            },
+            {
+              "md_ms": 0.0032
+            },
+            {
+              "md_ms": 0.0036
+            }
+          ],
+          "avg_ms": 0.0027599999999999994,
+          "std_ms": 0.0005953150426454887,
+          "p50_ms": 0.0028,
+          "p90_ms": 0.00344,
+          "p95_ms": 0.0035199999999999997
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.0379
+            },
+            {
+              "md_ms": 0.038
+            },
+            {
+              "md_ms": 0.0386
+            },
+            {
+              "md_ms": 0.0437
+            },
+            {
+              "md_ms": 0.0667
+            }
+          ],
+          "avg_ms": 0.044980000000000006,
+          "std_ms": 0.011072018786111228,
+          "p50_ms": 0.0386,
+          "p90_ms": 0.0575,
+          "p95_ms": 0.06209999999999999
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.0457
+            },
+            {
+              "md_ms": 0.0461
+            },
+            {
+              "md_ms": 0.047
+            },
+            {
+              "md_ms": 0.0497
+            },
+            {
+              "md_ms": 0.065
+            }
+          ],
+          "avg_ms": 0.05069999999999999,
+          "std_ms": 0.007284778651407331,
+          "p50_ms": 0.047,
+          "p90_ms": 0.05888,
+          "p95_ms": 0.061939999999999995
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.5414200001469
+            },
+            {
+              "md_ms": 3.592377000131819
+            },
+            {
+              "md_ms": 3.592463000131829
+            },
+            {
+              "md_ms": 3.727412000444019
+            },
+            {
+              "md_ms": 4.065340999659384
+            }
+          ],
+          "avg_ms": 3.70380260010279,
+          "std_ms": 0.1910223535387598,
+          "p50_ms": 3.592463000131829,
+          "p90_ms": 3.930169399973238,
+          "p95_ms": 3.997755199816311
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.013824884792626729,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 5,
+          "line_f1": 0.6153846153846154,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_6.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_6.post-2.md"
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064082_table_0.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.001
+            },
+            {
+              "md_ms": 0.001
+            },
+            {
+              "md_ms": 0.0011
+            },
+            {
+              "md_ms": 0.0015
+            },
+            {
+              "md_ms": 0.0022
+            }
+          ],
+          "avg_ms": 0.0013599999999999999,
+          "std_ms": 0.0004586937976471887,
+          "p50_ms": 0.0011,
+          "p90_ms": 0.0019200000000000003,
+          "p95_ms": 0.00206
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.0194
+            },
+            {
+              "md_ms": 0.0238
+            },
+            {
+              "md_ms": 0.0278
+            },
+            {
+              "md_ms": 0.028
+            },
+            {
+              "md_ms": 0.0351
+            }
+          ],
+          "avg_ms": 0.02682,
+          "std_ms": 0.0051978457075984846,
+          "p50_ms": 0.0278,
+          "p90_ms": 0.03226,
+          "p95_ms": 0.03368
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.0261
+            },
+            {
+              "md_ms": 0.0267
+            },
+            {
+              "md_ms": 0.0271
+            },
+            {
+              "md_ms": 0.0276
+            },
+            {
+              "md_ms": 0.0454
+            }
+          ],
+          "avg_ms": 0.030580000000000006,
+          "std_ms": 0.007426277667849486,
+          "p50_ms": 0.0271,
+          "p90_ms": 0.03828,
+          "p95_ms": 0.04184
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.0501020002920995
+            },
+            {
+              "md_ms": 4.082598999957554
+            },
+            {
+              "md_ms": 4.134132000217505
+            },
+            {
+              "md_ms": 4.272958999536058
+            },
+            {
+              "md_ms": 5.066718000307446
+            }
+          ],
+          "avg_ms": 4.321302000062133,
+          "std_ms": 0.3804058964047786,
+          "p50_ms": 4.134132000217505,
+          "p90_ms": 4.749214399998891,
+          "p95_ms": 4.907966200153169
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 4,
+          "line_f1": 1,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064082_table_0.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064082_table_0.post-2.md"
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064082_table_1.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0081
+            },
+            {
+              "md_ms": 0.0092
+            },
+            {
+              "md_ms": 0.0093
+            },
+            {
+              "md_ms": 0.01
+            },
+            {
+              "md_ms": 0.0108
+            }
+          ],
+          "avg_ms": 0.009479999999999999,
+          "std_ms": 0.0008975522268926754,
+          "p50_ms": 0.0093,
+          "p90_ms": 0.01048,
+          "p95_ms": 0.01064
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1686
+            },
+            {
+              "md_ms": 0.1744
+            },
+            {
+              "md_ms": 0.1944
+            },
+            {
+              "md_ms": 0.2315
+            },
+            {
+              "md_ms": 0.2451
+            }
+          ],
+          "avg_ms": 0.2028,
+          "std_ms": 0.030527823374751115,
+          "p50_ms": 0.1944,
+          "p90_ms": 0.23966,
+          "p95_ms": 0.24238
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.185
+            },
+            {
+              "md_ms": 0.1871
+            },
+            {
+              "md_ms": 0.2108
+            },
+            {
+              "md_ms": 0.2158
+            },
+            {
+              "md_ms": 0.2514
+            }
+          ],
+          "avg_ms": 0.21002,
+          "std_ms": 0.024073421028179613,
+          "p50_ms": 0.2108,
+          "p90_ms": 0.23716,
+          "p95_ms": 0.24428
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.962515000239364
+            },
+            {
+              "md_ms": 3.985786000157532
+            },
+            {
+              "md_ms": 4.006817999652412
+            },
+            {
+              "md_ms": 4.091545999472146
+            },
+            {
+              "md_ms": 7.243125999593758
+            }
+          ],
+          "avg_ms": 4.657958199823042,
+          "std_ms": 1.2933178730541313,
+          "p50_ms": 4.006817999652412,
+          "p90_ms": 5.982493999545113,
+          "p95_ms": 6.612809999569436
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.006218905472636816,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 22,
+          "line_f1": 0.6938775510204083,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064082_table_1.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064082_table_1.post-2.md"
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X00016469670.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0115
+            },
+            {
+              "md_ms": 0.0116
+            },
+            {
+              "md_ms": 0.0123
+            },
+            {
+              "md_ms": 0.013
+            },
+            {
+              "md_ms": 0.0153
+            }
+          ],
+          "avg_ms": 0.012740000000000001,
+          "std_ms": 0.0013893883546366723,
+          "p50_ms": 0.0123,
+          "p90_ms": 0.01438,
+          "p95_ms": 0.014839999999999999
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1744
+            },
+            {
+              "md_ms": 0.1819
+            },
+            {
+              "md_ms": 0.1966
+            },
+            {
+              "md_ms": 0.2048
+            },
+            {
+              "md_ms": 0.2992
+            }
+          ],
+          "avg_ms": 0.21137999999999998,
+          "std_ms": 0.04519001659658913,
+          "p50_ms": 0.1966,
+          "p90_ms": 0.26144,
+          "p95_ms": 0.28032
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2373
+            },
+            {
+              "md_ms": 0.2435
+            },
+            {
+              "md_ms": 0.2474
+            },
+            {
+              "md_ms": 0.249
+            },
+            {
+              "md_ms": 0.2742
+            }
+          ],
+          "avg_ms": 0.25028,
+          "std_ms": 0.012621790681198921,
+          "p50_ms": 0.2474,
+          "p90_ms": 0.26412,
+          "p95_ms": 0.26916
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.3453760006523225
+            },
+            {
+              "md_ms": 4.198640999675263
+            },
+            {
+              "md_ms": 4.285396999875957
+            },
+            {
+              "md_ms": 5.194073999518878
+            },
+            {
+              "md_ms": 5.876082999748178
+            }
+          ],
+          "avg_ms": 4.5799141998941195,
+          "std_ms": 0.8733201036148291,
+          "p50_ms": 4.285396999875957,
+          "p90_ms": 5.603279399656458,
+          "p95_ms": 5.739681199702318
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.07890743550834597,
+          "token_precision": 0.848,
+          "token_recall": 0.9724770642201835,
+          "token_f1": 0.9059829059829061
+        },
+        "structure": {
+          "line_count": 26,
+          "line_f1": 0.6181818181818182,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 1,
+            "table_cell_f1": null,
+            "pipes_lines_count": 5,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/SROIE2019/img/X00016469670.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/SROIE2019/img/X00016469670.post-2.md"
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X00016469671.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0134
+            },
+            {
+              "md_ms": 0.014
+            },
+            {
+              "md_ms": 0.0148
+            },
+            {
+              "md_ms": 0.0151
+            },
+            {
+              "md_ms": 0.0157
+            }
+          ],
+          "avg_ms": 0.014600000000000002,
+          "std_ms": 0.0008124038404635957,
+          "p50_ms": 0.0148,
+          "p90_ms": 0.01546,
+          "p95_ms": 0.015579999999999998
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.173
+            },
+            {
+              "md_ms": 0.1772
+            },
+            {
+              "md_ms": 0.1793
+            },
+            {
+              "md_ms": 0.2196
+            },
+            {
+              "md_ms": 0.3134
+            }
+          ],
+          "avg_ms": 0.2125,
+          "std_ms": 0.05317856711119623,
+          "p50_ms": 0.1793,
+          "p90_ms": 0.27588,
+          "p95_ms": 0.29464
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.235
+            },
+            {
+              "md_ms": 0.2495
+            },
+            {
+              "md_ms": 0.2512
+            },
+            {
+              "md_ms": 0.292
+            },
+            {
+              "md_ms": 0.3284
+            }
+          ],
+          "avg_ms": 0.27122,
+          "std_ms": 0.034309788690692934,
+          "p50_ms": 0.2512,
+          "p90_ms": 0.31384,
+          "p95_ms": 0.32112
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.6186249999445863
+            },
+            {
+              "md_ms": 3.646282999397954
+            },
+            {
+              "md_ms": 3.7754300001324737
+            },
+            {
+              "md_ms": 3.9082959992811084
+            },
+            {
+              "md_ms": 5.074367999441165
+            }
+          ],
+          "avg_ms": 4.0046003996394575,
+          "std_ms": 0.5447136303801334,
+          "p50_ms": 3.7754300001324737,
+          "p90_ms": 4.607939199377142,
+          "p95_ms": 4.841153599409154
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.003389830508474576,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 27,
+          "line_f1": 0.8928571428571429,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/SROIE2019/img/X00016469671.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/SROIE2019/img/X00016469671.post-2.md"
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X51005200931.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0121
+            },
+            {
+              "md_ms": 0.0134
+            },
+            {
+              "md_ms": 0.015
+            },
+            {
+              "md_ms": 0.0164
+            },
+            {
+              "md_ms": 0.0196
+            }
+          ],
+          "avg_ms": 0.0153,
+          "std_ms": 0.002593838853899756,
+          "p50_ms": 0.015,
+          "p90_ms": 0.01832,
+          "p95_ms": 0.018959999999999998
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.2809
+            },
+            {
+              "md_ms": 0.2998
+            },
+            {
+              "md_ms": 0.3085
+            },
+            {
+              "md_ms": 0.3174
+            },
+            {
+              "md_ms": 0.364
+            }
+          ],
+          "avg_ms": 0.31411999999999995,
+          "std_ms": 0.027709160940021262,
+          "p50_ms": 0.3085,
+          "p90_ms": 0.34536,
+          "p95_ms": 0.35468
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.3384
+            },
+            {
+              "md_ms": 0.3455
+            },
+            {
+              "md_ms": 0.3648
+            },
+            {
+              "md_ms": 0.4198
+            },
+            {
+              "md_ms": 0.4742
+            }
+          ],
+          "avg_ms": 0.38854,
+          "std_ms": 0.051468188233121256,
+          "p50_ms": 0.3648,
+          "p90_ms": 0.45244,
+          "p95_ms": 0.46332
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.8461419999293867
+            },
+            {
+              "md_ms": 4.220708000502782
+            },
+            {
+              "md_ms": 4.829284999686934
+            },
+            {
+              "md_ms": 4.909350000161794
+            },
+            {
+              "md_ms": 5.505690000063623
+            }
+          ],
+          "avg_ms": 4.662235000068904,
+          "std_ms": 0.576427226782699,
+          "p50_ms": 4.829284999686934,
+          "p90_ms": 5.267154000102892,
+          "p95_ms": 5.3864220000832574
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.06359649122807018,
+          "token_precision": 0.8756756756756757,
+          "token_recall": 0.9759036144578314,
+          "token_f1": 0.9230769230769231
+        },
+        "structure": {
+          "line_count": 39,
+          "line_f1": 0.691358024691358,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 1,
+            "table_cell_f1": null,
+            "pipes_lines_count": 6,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/SROIE2019/img/X51005200931.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/SROIE2019/img/X51005200931.post-2.md"
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X51005230605.txt",
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0069
+            },
+            {
+              "md_ms": 0.007
+            },
+            {
+              "md_ms": 0.0071
+            },
+            {
+              "md_ms": 0.0078
+            },
+            {
+              "md_ms": 0.0086
+            }
+          ],
+          "avg_ms": 0.007479999999999999,
+          "std_ms": 0.000643117407632541,
+          "p50_ms": 0.0071,
+          "p90_ms": 0.00828,
+          "p95_ms": 0.00844
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1643
+            },
+            {
+              "md_ms": 0.1739
+            },
+            {
+              "md_ms": 0.1796
+            },
+            {
+              "md_ms": 0.1905
+            },
+            {
+              "md_ms": 0.2184
+            }
+          ],
+          "avg_ms": 0.18534,
+          "std_ms": 0.01858005382123529,
+          "p50_ms": 0.1796,
+          "p90_ms": 0.20724,
+          "p95_ms": 0.21282
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.209
+            },
+            {
+              "md_ms": 0.2117
+            },
+            {
+              "md_ms": 0.2173
+            },
+            {
+              "md_ms": 0.2223
+            },
+            {
+              "md_ms": 0.2732
+            }
+          ],
+          "avg_ms": 0.22669999999999998,
+          "std_ms": 0.023699198298676692,
+          "p50_ms": 0.2173,
+          "p90_ms": 0.25284,
+          "p95_ms": 0.26302
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.2304329997714376
+            },
+            {
+              "md_ms": 3.362211999956344
+            },
+            {
+              "md_ms": 3.6698160001833457
+            },
+            {
+              "md_ms": 3.911634000360209
+            },
+            {
+              "md_ms": 4.807217999768909
+            }
+          ],
+          "avg_ms": 3.796262600008049,
+          "std_ms": 0.5585504780843458,
+          "p50_ms": 3.6698160001833457,
+          "p90_ms": 4.448984400005429,
+          "p95_ms": 4.628101199887169
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.10638297872340426,
+          "token_precision": 0.8053097345132744,
+          "token_recall": 0.9680851063829787,
+          "token_f1": 0.8792270531400965
+        },
+        "structure": {
+          "line_count": 23,
+          "line_f1": 0.6530612244897959,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 1,
+            "table_cell_f1": null,
+            "pipes_lines_count": 5,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/SROIE2019/img/X51005230605.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/SROIE2019/img/X51005230605.post-2.md"
+      }
+    }
+  ],
+  "aggregate": {
+    "by_dataset": {
+      "FUNSD": {
+        "n_files": 4,
+        "timing": {
+          "pre": {
+            "avg_ms": 0.013245000000000002,
+            "std_ms": 0.0026879127590009326,
+            "p50_ms": 0.01247,
+            "p90_ms": 0.016316000000000004,
+            "p95_ms": 0.016898
+          },
+          "post-1S": {
+            "avg_ms": 0.20095000000000002,
+            "std_ms": 0.025720592916960532,
+            "p50_ms": 0.20504,
+            "p90_ms": 0.226226,
+            "p95_ms": 0.226523
+          },
+          "post-2": {
+            "avg_ms": 0.2528,
+            "std_ms": 0.053224047196732426,
+            "p50_ms": 0.24222,
+            "p90_ms": 0.31270000000000003,
+            "p95_ms": 0.32359
+          },
+          "python-hot": {
+            "avg_ms": 4.503616449892434,
+            "std_ms": 0.8216827903460087,
+            "p50_ms": 4.5613967999088345,
+            "p90_ms": 5.36269952008297,
+            "p95_ms": 5.44499726011054
+          }
+        },
+        "quality": {
+          "pre": {
+            "cer_char": 0.00027085590465872155,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 0.99375,
+            "line_count": 39.5,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 2.5,
+              "median_pipes_per_line": 0.75,
+              "max_pipes_per_line": 1.25
+            }
+          },
+          "post-1S": {
+            "cer_char": 0.0106704389039922,
+            "token_precision": 1,
+            "token_recall": 0.9983221476510067,
+            "token_f1": 0.9991582491582491,
+            "line_f1": 0.7042460317460317,
+            "line_count": 31,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 2.5,
+              "median_pipes_per_line": 0.75,
+              "max_pipes_per_line": 1.25
+            }
+          },
+          "post-2": {
+            "cer_char": 0.03609778422181792,
+            "token_precision": 0.9381769793745842,
+            "token_recall": 0.9883624822296426,
+            "token_f1": 0.9619070152608541,
+            "line_f1": 0.6634974629802217,
+            "line_count": 32,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0.5,
+              "table_cell_f1": null,
+              "pipes_lines_count": 5.25,
+              "median_pipes_per_line": 1.75,
+              "max_pipes_per_line": 2.25
+            }
+          },
+          "python-hot": {
+            "cer_char": 0,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 1,
+            "line_count": 39.5,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 2.5,
+              "median_pipes_per_line": 0.75,
+              "max_pipes_per_line": 1.25
+            }
+          }
+        },
+        "tables": {
+          "tables_count_sum": 2,
+          "table_cell_f1_avg": null,
+          "pipes_lines_count_avg": 5.25,
+          "median_pipes_per_line_avg": 1.75,
+          "max_pipes_per_line_avg": 2.25
+        },
+        "timing_deltas": {
+          "post2_vs_post1S_pct": 25.8024384175168,
+          "post2_vs_pythonHot_pct": -94.38673335501211
+        }
+      },
+      "ICDAR": {
+        "n_files": 4,
+        "timing": {
+          "pre": {
+            "avg_ms": 0.015475,
+            "std_ms": 0.0013973814797685,
+            "p50_ms": 0.016210000000000002,
+            "p90_ms": 0.016372,
+            "p95_ms": 0.016396
+          },
+          "post-1S": {
+            "avg_ms": 0.26709499999999997,
+            "std_ms": 0.03612224072507132,
+            "p50_ms": 0.26432,
+            "p90_ms": 0.30654000000000003,
+            "p95_ms": 0.31287000000000004
+          },
+          "post-2": {
+            "avg_ms": 0.8129700000000001,
+            "std_ms": 0.8007475315603542,
+            "p50_ms": 0.36722999999999995,
+            "p90_ms": 1.6621500000000005,
+            "p95_ms": 1.9303049999999997
+          },
+          "python-hot": {
+            "avg_ms": 4.907198649834754,
+            "std_ms": 0.47264803674770434,
+            "p50_ms": 5.018498899789847,
+            "p90_ms": 5.324903519795043,
+            "p95_ms": 5.384951159794582
+          }
+        },
+        "quality": {
+          "pre": {
+            "cer_char": 0,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 1,
+            "line_count": 42,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 30.25,
+              "median_pipes_per_line": 2.5,
+              "max_pipes_per_line": 8.5
+            }
+          },
+          "post-1S": {
+            "cer_char": 0.001218839350639414,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 0.9386820330969268,
+            "line_count": 40,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 30,
+              "median_pipes_per_line": 2.5,
+              "max_pipes_per_line": 8.5
+            }
+          },
+          "post-2": {
+            "cer_char": 0.001218839350639414,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 0.9386820330969268,
+            "line_count": 40,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 30,
+              "median_pipes_per_line": 2.5,
+              "max_pipes_per_line": 8.5
+            }
+          },
+          "python-hot": {
+            "cer_char": 0,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 1,
+            "line_count": 42,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 30.25,
+              "median_pipes_per_line": 2.5,
+              "max_pipes_per_line": 8.5
+            }
+          }
+        },
+        "tables": {
+          "tables_count_sum": 0,
+          "table_cell_f1_avg": null,
+          "pipes_lines_count_avg": 30,
+          "median_pipes_per_line_avg": 2.5,
+          "max_pipes_per_line_avg": 8.5
+        },
+        "timing_deltas": {
+          "post2_vs_post1S_pct": 204.37484790055979,
+          "post2_vs_pythonHot_pct": -83.43311412454484
+        }
+      },
+      "MARMOT": {
+        "n_files": 4,
+        "timing": {
+          "pre": {
+            "avg_ms": 0.08085,
+            "std_ms": 0.11429373954858595,
+            "p50_ms": 0.018770000000000002,
+            "p90_ms": 0.20098800000000006,
+            "p95_ms": 0.23981399999999994
+          },
+          "post-1S": {
+            "avg_ms": 0.548775,
+            "std_ms": 0.45853282944081547,
+            "p50_ms": 0.36837,
+            "p90_ms": 1.0404200000000001,
+            "p95_ms": 1.1828599999999996
+          },
+          "post-2": {
+            "avg_ms": 0.7926799999999999,
+            "std_ms": 0.7877533386790563,
+            "p50_ms": 0.43221,
+            "p90_ms": 1.6329840000000002,
+            "p95_ms": 1.8883319999999992
+          },
+          "python-hot": {
+            "avg_ms": 3.8972360499883507,
+            "std_ms": 0.2574078727856432,
+            "p50_ms": 3.8753758000893868,
+            "p90_ms": 4.163098919798358,
+            "p95_ms": 4.222369559693107
+          }
+        },
+        "quality": {
+          "pre": {
+            "cer_char": 0,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 1,
+            "line_count": 49.5,
+            "list_items": 0.25,
+            "max_list_depth": 0.25,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 1.25,
+              "median_pipes_per_line": 0.5,
+              "max_pipes_per_line": 0.5
+            }
+          },
+          "post-1S": {
+            "cer_char": 0.003178488572009354,
+            "token_precision": 1,
+            "token_recall": 0.9991198178036982,
+            "token_f1": 0.9995594869526758,
+            "line_f1": 0.8306062932619642,
+            "line_count": 47,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 1.25,
+              "median_pipes_per_line": 0.5,
+              "max_pipes_per_line": 0.5
+            }
+          },
+          "post-2": {
+            "cer_char": 0.003178488572009354,
+            "token_precision": 1,
+            "token_recall": 0.9991198178036982,
+            "token_f1": 0.9995594869526758,
+            "line_f1": 0.8306062932619642,
+            "line_count": 47,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 1.25,
+              "median_pipes_per_line": 0.5,
+              "max_pipes_per_line": 0.5
+            }
+          },
+          "python-hot": {
+            "cer_char": 0,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 1,
+            "line_count": 49.5,
+            "list_items": 0.25,
+            "max_list_depth": 0.25,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 1.25,
+              "median_pipes_per_line": 0.5,
+              "max_pipes_per_line": 0.5
+            }
+          }
+        },
+        "tables": {
+          "tables_count_sum": 0,
+          "table_cell_f1_avg": null,
+          "pipes_lines_count_avg": 1.25,
+          "median_pipes_per_line_avg": 0.5,
+          "max_pipes_per_line_avg": 0.5
+        },
+        "timing_deltas": {
+          "post2_vs_post1S_pct": 44.44535556466674,
+          "post2_vs_pythonHot_pct": -79.66045705642159
+        }
+      },
+      "PUBTABLES": {
+        "n_files": 8,
+        "timing": {
+          "pre": {
+            "avg_ms": 0.008300000000000002,
+            "std_ms": 0.006352172856590097,
+            "p50_ms": 0.00728,
+            "p90_ms": 0.013739999999999995,
+            "p95_ms": 0.01870999999999999
+          },
+          "post-1S": {
+            "avg_ms": 0.1144075,
+            "std_ms": 0.05364004841300947,
+            "p50_ms": 0.12269000000000001,
+            "p90_ms": 0.16798199999999996,
+            "p95_ms": 0.18539099999999997
+          },
+          "post-2": {
+            "avg_ms": 0.12886,
+            "std_ms": 0.05741769239528875,
+            "p50_ms": 0.15173,
+            "p90_ms": 0.180914,
+            "p95_ms": 0.19546699999999997
+          },
+          "python-hot": {
+            "avg_ms": 4.5302477500172245,
+            "std_ms": 0.5118151161739825,
+            "p50_ms": 4.428483699848584,
+            "p90_ms": 5.074265720122639,
+            "p95_ms": 5.338459860149669
+          }
+        },
+        "quality": {
+          "pre": {
+            "cer_char": 0,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 1,
+            "line_count": 15.25,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 0.375,
+              "median_pipes_per_line": 0.25,
+              "max_pipes_per_line": 0.25
+            }
+          },
+          "post-1S": {
+            "cer_char": 0.007456108230191305,
+            "token_precision": 1,
+            "token_recall": 0.9983974358974359,
+            "token_f1": 0.9991935483870968,
+            "line_f1": 0.75760187017951,
+            "line_count": 12.125,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 0.375,
+              "median_pipes_per_line": 0.25,
+              "max_pipes_per_line": 0.25
+            }
+          },
+          "post-2": {
+            "cer_char": 0.007456108230191305,
+            "token_precision": 1,
+            "token_recall": 0.9983974358974359,
+            "token_f1": 0.9991935483870968,
+            "line_f1": 0.75760187017951,
+            "line_count": 12.125,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 0.375,
+              "median_pipes_per_line": 0.25,
+              "max_pipes_per_line": 0.25
+            }
+          },
+          "python-hot": {
+            "cer_char": 0,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 1,
+            "line_count": 15.25,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 0.375,
+              "median_pipes_per_line": 0.25,
+              "max_pipes_per_line": 0.25
+            }
+          }
+        },
+        "tables": {
+          "tables_count_sum": 0,
+          "table_cell_f1_avg": null,
+          "pipes_lines_count_avg": 0.375,
+          "median_pipes_per_line_avg": 0.25,
+          "max_pipes_per_line_avg": 0.25
+        },
+        "timing_deltas": {
+          "post2_vs_post1S_pct": 12.632476017743599,
+          "post2_vs_pythonHot_pct": -97.15556395343918
+        }
+      },
+      "SROIE2019": {
+        "n_files": 4,
+        "timing": {
+          "pre": {
+            "avg_ms": 0.012530000000000001,
+            "std_ms": 0.003062041802457962,
+            "p50_ms": 0.013670000000000002,
+            "p90_ms": 0.015090000000000001,
+            "p95_ms": 0.015195
+          },
+          "post-1S": {
+            "avg_ms": 0.23083499999999998,
+            "std_ms": 0.0492971994640669,
+            "p50_ms": 0.21194,
+            "p90_ms": 0.283634,
+            "p95_ms": 0.29887699999999995
+          },
+          "post-2": {
+            "avg_ms": 0.284185,
+            "std_ms": 0.0622738538633992,
+            "p50_ms": 0.26075000000000004,
+            "p90_ms": 0.353344,
+            "p95_ms": 0.37094199999999994
+          },
+          "python-hot": {
+            "avg_ms": 4.2607530499026325,
+            "std_ms": 0.36892314723168357,
+            "p50_ms": 4.2922572997667885,
+            "p90_ms": 4.637538760016469,
+            "p95_ms": 4.649886880042686
+          }
+        },
+        "quality": {
+          "pre": {
+            "cer_char": 0,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 1,
+            "line_count": 31.5,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 0,
+              "median_pipes_per_line": 0,
+              "max_pipes_per_line": 0
+            }
+          },
+          "post-1S": {
+            "cer_char": 0.006532679986758833,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 0.7952762403967121,
+            "line_count": 27.25,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 0,
+              "median_pipes_per_line": 0,
+              "max_pipes_per_line": 0
+            }
+          },
+          "post-2": {
+            "cer_char": 0.06306918399207374,
+            "token_precision": 0.8822463525472375,
+            "token_recall": 0.9791164462652484,
+            "token_f1": 0.9270717205499814,
+            "line_f1": 0.7138645525550287,
+            "line_count": 28.75,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0.75,
+              "table_cell_f1": null,
+              "pipes_lines_count": 4,
+              "median_pipes_per_line": 2.25,
+              "max_pipes_per_line": 2.25
+            }
+          },
+          "python-hot": {
+            "cer_char": 0,
+            "token_precision": 1,
+            "token_recall": 1,
+            "token_f1": 1,
+            "line_f1": 1,
+            "line_count": 31.5,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables": {
+              "tables_count": 0,
+              "table_cell_f1": null,
+              "pipes_lines_count": 0,
+              "median_pipes_per_line": 0,
+              "max_pipes_per_line": 0
+            }
+          }
+        },
+        "tables": {
+          "tables_count_sum": 3,
+          "table_cell_f1_avg": null,
+          "pipes_lines_count_avg": 4,
+          "median_pipes_per_line_avg": 2.25,
+          "max_pipes_per_line_avg": 2.25
+        },
+        "timing_deltas": {
+          "post2_vs_post1S_pct": 23.11174648558496,
+          "post2_vs_pythonHot_pct": -93.33016965143065
+        }
+      }
+    },
+    "global": {
+      "n_files": 24,
+      "timing": {
+        "pre": {
+          "avg_ms": 0.023116666666666664,
+          "std_ms": 0.05354505911431563,
+          "p50_ms": 0.0129,
+          "p90_ms": 0.019181999999999998,
+          "p95_ms": 0.023097999999999994
+        },
+        "post-1S": {
+          "avg_ms": 0.24607833333333332,
+          "std_ms": 0.2413205886310205,
+          "p50_ms": 0.20709,
+          "p90_ms": 0.34848799999999996,
+          "p95_ms": 0.37350099999999997
+        },
+        "post-2": {
+          "avg_ms": 0.4000591666666667,
+          "std_ms": 0.5449637422948175,
+          "p50_ms": 0.23848999999999998,
+          "p90_ms": 0.43587,
+          "p95_ms": 1.8883319999999961
+        },
+        "python-hot": {
+          "avg_ms": 4.43821661660877,
+          "std_ms": 0.6041723454583978,
+          "p50_ms": 4.354479499943409,
+          "p90_ms": 5.324903519795043,
+          "p95_ms": 5.514950570086512
+        }
+      },
+      "quality": {
+        "pre": {
+          "cer_char": 4.514265077645359e-05,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_f1": 0.9989583333333334,
+          "line_count": 32.166666666666664,
+          "list_items": 0.041666666666666664,
+          "max_list_depth": 0.041666666666666664,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 5.791666666666667,
+            "median_pipes_per_line": 0.7083333333333334,
+            "max_pipes_per_line": 1.7916666666666667
+          }
+        },
+        "post-1S": {
+          "cer_char": 0.0060854438789637345,
+          "token_precision": 1,
+          "token_recall": 0.9990394728749296,
+          "token_f1": 0.9995174721475197,
+          "line_f1": 0.7973357231434427,
+          "line_count": 28.25,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 5.75,
+            "median_pipes_per_line": 0.7083333333333334,
+            "max_pipes_per_line": 1.7916666666666667
+          }
+        },
+        "post-2": {
+          "cer_char": 0.019746085432820505,
+          "token_precision": 0.9700705553203036,
+          "token_recall": 0.9938989363489101,
+          "token_f1": 0.9811542199229507,
+          "line_f1": 0.7769756803755269,
+          "line_count": 28.666666666666668,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0.20833333333333334,
+            "table_cell_f1": null,
+            "pipes_lines_count": 6.875,
+            "median_pipes_per_line": 1.25,
+            "max_pipes_per_line": 2.3333333333333335
+          }
+        },
+        "python-hot": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "line_f1": 1,
+          "line_count": 32.166666666666664,
+          "list_items": 0.041666666666666664,
+          "max_list_depth": 0.041666666666666664,
+          "tables": {
+            "tables_count": 0,
+            "table_cell_f1": null,
+            "pipes_lines_count": 5.791666666666667,
+            "median_pipes_per_line": 0.7083333333333334,
+            "max_pipes_per_line": 1.7916666666666667
+          }
+        }
+      },
+      "tables": {
+        "tables_count_sum": 5,
+        "table_cell_f1_avg": null,
+        "pipes_lines_count_avg": 6.875,
+        "median_pipes_per_line_avg": 1.25,
+        "max_pipes_per_line_avg": 2.3333333333333335
+      },
+      "timing_deltas": {
+        "post2_vs_post1S_pct": 62.5739093919958,
+        "post2_vs_pythonHot_pct": -90.98603783399038
+      }
+    }
+  }
+}
