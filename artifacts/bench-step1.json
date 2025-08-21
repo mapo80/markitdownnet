@@ -1,0 +1,84 @@
+[
+  {
+    "Mode": "pre",
+    "Trials": [
+      25.4874,
+      21.9157,
+      0.54,
+      0.4443,
+      0.2874
+    ],
+    "AvgMs": 9.73496,
+    "StdMs": 11.459754233769587,
+    "Output": "artifacts/outputs/busta_paga_internet.pre.md",
+    "Similarity": {
+      "Cer": 0,
+      "Precision": 0,
+      "Recall": 0,
+      "F1": 0,
+      "HeadingLevels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ListItems": 0,
+      "MaxListDepth": 0,
+      "CodeBlocks": 0,
+      "HorizontalRules": 0,
+      "Tables": 0,
+      "HeadingMatch": 1,
+      "TableCellF1": 1
+    }
+  },
+  {
+    "Mode": "post-v0",
+    "Trials": [
+      13.2756,
+      0.8585,
+      0.817,
+      0.6695,
+      0.8207
+    ],
+    "AvgMs": 3.2882599999999997,
+    "StdMs": 4.994088029100008,
+    "Output": "artifacts/outputs/busta_paga_internet.post-v0.md",
+    "Similarity": {
+      "Cer": 0,
+      "Precision": 0,
+      "Recall": 0,
+      "F1": 0,
+      "HeadingLevels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ListItems": 0,
+      "MaxListDepth": 0,
+      "CodeBlocks": 0,
+      "HorizontalRules": 0,
+      "Tables": 0,
+      "HeadingMatch": 1,
+      "TableCellF1": 1
+    }
+  },
+  {
+    "Mode": "python",
+    "Trials": [
+      983.6208,
+      977.4702,
+      1047.1363,
+      1014.568,
+      952.7386
+    ],
+    "AvgMs": 995.1067799999998,
+    "StdMs": 32.630811827130465,
+    "Output": "artifacts/outputs/busta_paga_internet.python.md",
+    "Similarity": null
+  }
+]
