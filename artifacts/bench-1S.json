@@ -1,0 +1,235 @@
+{
+  "file": "artifacts/busta_paga_internet.txt",
+  "modes": [
+    {
+      "mode": "pre",
+      "timing": {
+        "trials": [
+          {
+            "md_ms": 0.0752
+          },
+          {
+            "md_ms": 0.1195
+          },
+          {
+            "md_ms": 0.0652
+          },
+          {
+            "md_ms": 0.1123
+          },
+          {
+            "md_ms": 0.0665
+          }
+        ],
+        "avg_ms": 0.08774,
+        "std_ms": 0.023359503419379445
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0008431703204047217,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 36,
+          "line_f1": 0.9863013698630138,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "pipes_lines_count": 16,
+          "median_pipes_per_line": 2.5,
+          "max_pipes_per_line": 6
+        }
+      },
+      "paths": {
+        "md": "artifacts/outputs/busta_paga_internet.pre.md",
+        "md_norm": "artifacts/outputs/busta_paga_internet.pre.norm.md"
+      }
+    },
+    {
+      "mode": "post-1R",
+      "timing": {
+        "trials": [
+          {
+            "md_ms": 0.8414
+          },
+          {
+            "md_ms": 0.4654
+          },
+          {
+            "md_ms": 0.5739
+          },
+          {
+            "md_ms": 0.5595
+          },
+          {
+            "md_ms": 0.531
+          }
+        ],
+        "avg_ms": 0.59424,
+        "std_ms": 0.12907958165410982
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.006745362563237774,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 29,
+          "line_f1": 0.7575757575757576,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "pipes_lines_count": 15,
+          "median_pipes_per_line": 3,
+          "max_pipes_per_line": 6
+        }
+      },
+      "paths": {
+        "md": "artifacts/outputs/busta_paga_internet.post-1R.md",
+        "md_norm": "artifacts/outputs/busta_paga_internet.post-1R.norm.md"
+      }
+    },
+    {
+      "mode": "post-1S",
+      "timing": {
+        "trials": [
+          {
+            "md_ms": 0.6278
+          },
+          {
+            "md_ms": 0.5859
+          },
+          {
+            "md_ms": 0.5733
+          },
+          {
+            "md_ms": 0.5183
+          },
+          {
+            "md_ms": 0.5232
+          }
+        ],
+        "avg_ms": 0.5657,
+        "std_ms": 0.040927301401387325
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0008431703204047217,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 36,
+          "line_f1": 0.9863013698630138,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "pipes_lines_count": 16,
+          "median_pipes_per_line": 2.5,
+          "max_pipes_per_line": 6
+        }
+      },
+      "paths": {
+        "md": "artifacts/outputs/busta_paga_internet.post-1S.md",
+        "md_norm": "artifacts/outputs/busta_paga_internet.post-1S.norm.md"
+      }
+    },
+    {
+      "mode": "python-hot",
+      "timing": {
+        "trials": [
+          {
+            "md_ms": 3.8748729999724674
+          },
+          {
+            "md_ms": 3.8992059999714
+          },
+          {
+            "md_ms": 4.155678000017815
+          },
+          {
+            "md_ms": 4.428726000014649
+          },
+          {
+            "md_ms": 4.3523440000399205
+          }
+        ],
+        "avg_ms": 4.14216540000325,
+        "std_ms": 0.22669323277481118
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 37,
+          "line_f1": 1,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "pipes_lines_count": 16,
+          "median_pipes_per_line": 2.5,
+          "max_pipes_per_line": 6
+        }
+      },
+      "paths": {
+        "md": "artifacts/outputs/busta_paga_internet.python-hot.md",
+        "md_norm": "artifacts/outputs/busta_paga_internet.python-hot.norm.md"
+      }
+    },
+    {
+      "mode": "python-cold",
+      "timing": {
+        "trials": [
+          {
+            "md_ms": 2054.6479
+          },
+          {
+            "md_ms": 2083.1316
+          },
+          {
+            "md_ms": 2072.5491
+          },
+          {
+            "md_ms": 2015.6787
+          },
+          {
+            "md_ms": 1998.3839
+          }
+        ],
+        "avg_ms": 2044.8782400000005,
+        "std_ms": 32.67653313676964
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 37,
+          "line_f1": 1,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "pipes_lines_count": 16,
+          "median_pipes_per_line": 2.5,
+          "max_pipes_per_line": 6
+        }
+      },
+      "paths": {
+        "md": "artifacts/outputs/busta_paga_internet.python-cold.md",
+        "md_norm": "artifacts/outputs/busta_paga_internet.python-cold.norm.md"
+      }
+    }
+  ],
+  "env": {
+    "os": "Ubuntu 24.04.2 LTS",
+    "dotnet": "9.0.0",
+    "python": "Python 3.12.10"
+  }
+}

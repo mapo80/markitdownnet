@@ -36,6 +36,11 @@ public static class TextModeConverter
             text = Reflow(text, config, false, false);
             text = DetectLists(text, config, false, false);
         }
+        else if (mode == "post-1S")
+        {
+            text = Reflow1S(text, config);
+            text = DetectLists(text, config, false, false);
+        }
         else if (mode == "post-v0" || mode == "post-v01" || mode=="post-v02" || mode=="post-v03")
         {
             bool v02 = mode=="post-v02" || mode=="post-v03";
@@ -151,6 +156,85 @@ public static class TextModeConverter
             {
                 var next = lines[i+1].TrimStart();
                 if (config.Dehyphenation && paragraph.ToString().EndsWith("-") && Regex.IsMatch(next, "^[a-z0-9].*") && !Regex.IsMatch(paragraph.ToString(), @"[A-Z]{2,}\d+$"))
+                {
+                    paragraph.Length--;
+                    paragraph.Append(next);
+                }
+                else
+                {
+                    paragraph.Append(' ');
+                    paragraph.Append(next);
+                }
+                i++;
+            }
+            sb.AppendLine(paragraph.ToString());
+            i++;
+        }
+        return sb.ToString();
+    }
+
+    private static string Reflow1S(string text, TextModeConfig config)
+    {
+        var lines = text.Split('\n');
+        double avgLen = lines.Where(l => !string.IsNullOrWhiteSpace(l)).Select(l => l.Trim().Length).DefaultIfEmpty(0).Average();
+        var sb = new StringBuilder();
+        for (int i = 0; i < lines.Length;)
+        {
+            var line = lines[i];
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                sb.AppendLine();
+                i++;
+                continue;
+            }
+            if (IsListLine(line, config) || IsCodeLine(line, config.CodeMinIndent))
+            {
+                sb.AppendLine(line);
+                i++;
+                continue;
+            }
+            var paragraph = new StringBuilder(line.TrimEnd());
+            bool CanMerge(int idx)
+            {
+                if (idx + 1 >= lines.Length) return false;
+                var curr = lines[idx];
+                var next = lines[idx + 1];
+                if (string.IsNullOrWhiteSpace(next)) return false;
+                if (IsListLine(next, config) || IsCodeLine(next, config.CodeMinIndent)) return false;
+                var currTrim = curr.TrimEnd();
+                var nextTrim = next.TrimStart();
+                int currPipes = currTrim.Count(c => c == '|');
+                int nextPipes = nextTrim.Count(c => c == '|');
+                if (currPipes >= 2 || nextPipes >= 2) return false;
+                if (currPipes >= 1 && nextPipes >= 1) return false;
+                if (currTrim.EndsWith(':') || currTrim.EndsWith(';')) return false;
+                if (IsProbableCode(nextTrim, config)) return false;
+                if (Regex.IsMatch(nextTrim, @"^(https?://|www\.|[^\s]+@[^\s]+)", RegexOptions.IgnoreCase)) return false;
+                int currIndent = curr.TakeWhile(ch => ch == ' ').Count();
+                int nextIndent = next.TakeWhile(ch => ch == ' ').Count();
+                if (Math.Abs(currIndent - nextIndent) >= 2) return false;
+                if (Regex.IsMatch(nextTrim, @"^\d+\s*\|")) return false;
+                bool currDigit = Regex.IsMatch(curr, @"\d");
+                bool nextDigit = Regex.IsMatch(next, @"\d");
+                bool currSpaceRun = Regex.IsMatch(curr, @" {2,}");
+                bool nextSpaceRun = Regex.IsMatch(next, @" {2,}");
+                if (currDigit && nextDigit && currSpaceRun && nextSpaceRun) return false;
+                return true;
+            }
+            bool OkMerge(int idx)
+            {
+                if (idx + 1 >= lines.Length) return false;
+                var current = lines[idx].TrimEnd();
+                var next = lines[idx + 1].TrimStart();
+                if (!(current.Length < 0.6 * avgLen)) return false;
+                if (Regex.IsMatch(current, "[.!?;:]$")) return false;
+                if (Regex.IsMatch(next, @"^[A-Z][a-z]{0,3}\b") && !next.Contains('|')) return false;
+                return true;
+            }
+            while (CanMerge(i) && OkMerge(i))
+            {
+                var next = lines[i + 1].TrimStart();
+                if (config.Dehyphenation && paragraph.ToString().EndsWith("-") && Regex.IsMatch(next, "^[a-z0-9]") && !Regex.IsMatch(paragraph.ToString(), @"[A-Z]{2,}\d+$"))
                 {
                     paragraph.Length--;
                     paragraph.Append(next);
