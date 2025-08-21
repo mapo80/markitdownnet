@@ -1,0 +1,91 @@
+{
+  "file": "artifacts/busta_paga_internet.txt",
+  "runs": [
+    {
+      "mode": "pre",
+      "trials": [
+        {
+          "md_ms": 0.0967
+        },
+        {
+          "md_ms": 0.1272
+        },
+        {
+          "md_ms": 0.1052
+        },
+        {
+          "md_ms": 0.1718
+        },
+        {
+          "md_ms": 0.111
+        }
+      ],
+      "avg": {
+        "md_ms": 0.12238
+      },
+      "stddev": {
+        "md_ms": 0.026644654248085115
+      },
+      "output": "artifacts/outputs/busta_paga_internet.pre.md"
+    },
+    {
+      "mode": "post-v0",
+      "trials": [
+        {
+          "md_ms": 0.9948
+        },
+        {
+          "md_ms": 0.6916
+        },
+        {
+          "md_ms": 0.6339
+        },
+        {
+          "md_ms": 0.8234
+        },
+        {
+          "md_ms": 0.8525
+        }
+      ],
+      "avg": {
+        "md_ms": 0.79924
+      },
+      "stddev": {
+        "md_ms": 0.12695489907837348
+      },
+      "output": "artifacts/outputs/busta_paga_internet.post-v0.md"
+    },
+    {
+      "mode": "python",
+      "trials": [
+        {
+          "md_ms": 35.4
+        },
+        {
+          "md_ms": 37.54
+        },
+        {
+          "md_ms": 50.95
+        },
+        {
+          "md_ms": 27.34
+        },
+        {
+          "md_ms": 31.83
+        }
+      ],
+      "avg": {
+        "md_ms": 36.612
+      },
+      "stddev": {
+        "md_ms": 7.959219559730717
+      },
+      "output": "artifacts/outputs/busta_paga_internet.python.md"
+    }
+  ],
+  "env": {
+    "os": "Ubuntu 24.04.2 LTS",
+    "dotnet": "9.0.0",
+    "python": "Python 3.12.10"
+  }
+}
