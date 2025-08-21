@@ -1,0 +1,128 @@
+path,ext,bytes,width,height,mode,format,frames,error,megapixels,aspect,dirname,filename
+FUNSD/.DS_Store,,6148,,,,,,,0.0,,FUNSD,.DS_Store
+FUNSD/images/82251504.png,.png,99142,754.0,1000.0,L,PNG,1.0,,0.75,0.754,FUNSD/images,82251504.png
+FUNSD/images/.DS_Store,,6148,,,,,,,0.0,,FUNSD/images,.DS_Store
+FUNSD/images/82250337_0338.png,.png,86609,754.0,1000.0,L,PNG,1.0,,0.75,0.754,FUNSD/images,82250337_0338.png
+FUNSD/images/82200067_0069.png,.png,90035,754.0,1000.0,L,PNG,1.0,,0.75,0.754,FUNSD/images,82200067_0069.png
+FUNSD/images/82092117.png,.png,111080,754.0,1000.0,L,PNG,1.0,,0.75,0.754,FUNSD/images,82092117.png
+FUNSD/annotations/82200067_0069.json,.json,69309,,,,,,,0.0,,FUNSD/annotations,82200067_0069.json
+FUNSD/annotations/82250337_0338.json,.json,66664,,,,,,,0.0,,FUNSD/annotations,82250337_0338.json
+FUNSD/annotations/82251504.json,.json,69984,,,,,,,0.0,,FUNSD/annotations,82251504.json
+FUNSD/annotations/82092117.json,.json,65335,,,,,,,0.0,,FUNSD/annotations,82092117.json
+__MACOSX/._ICDAR,,276,,,,,,,0.0,,__MACOSX,._ICDAR
+__MACOSX/._MARMOT,,276,,,,,,,0.0,,__MACOSX,._MARMOT
+__MACOSX/._SROIE2019,,276,,,,,,,0.0,,__MACOSX,._SROIE2019
+__MACOSX/FUNSD/._.DS_Store,.ds_store,120,,,,,,,0.0,,__MACOSX/FUNSD,._.DS_Store
+__MACOSX/FUNSD/._images,,176,,,,,,,0.0,,__MACOSX/FUNSD,._images
+__MACOSX/FUNSD/images/._82251504.png,.png,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/FUNSD/images/._82251504.png',0.0,,__MACOSX/FUNSD/images,._82251504.png
+__MACOSX/FUNSD/images/._.DS_Store,.ds_store,120,,,,,,,0.0,,__MACOSX/FUNSD/images,._.DS_Store
+__MACOSX/FUNSD/images/._82250337_0338.png,.png,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/FUNSD/images/._82250337_0338.png',0.0,,__MACOSX/FUNSD/images,._82250337_0338.png
+__MACOSX/FUNSD/images/._82200067_0069.png,.png,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/FUNSD/images/._82200067_0069.png',0.0,,__MACOSX/FUNSD/images,._82200067_0069.png
+__MACOSX/FUNSD/images/._82092117.png,.png,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/FUNSD/images/._82092117.png',0.0,,__MACOSX/FUNSD/images,._82092117.png
+__MACOSX/FUNSD/annotations/._82200067_0069.json,.json,176,,,,,,,0.0,,__MACOSX/FUNSD/annotations,._82200067_0069.json
+__MACOSX/FUNSD/annotations/._82250337_0338.json,.json,176,,,,,,,0.0,,__MACOSX/FUNSD/annotations,._82250337_0338.json
+__MACOSX/FUNSD/annotations/._82251504.json,.json,176,,,,,,,0.0,,__MACOSX/FUNSD/annotations,._82251504.json
+__MACOSX/FUNSD/annotations/._82092117.json,.json,176,,,,,,,0.0,,__MACOSX/FUNSD/annotations,._82092117.json
+__MACOSX/ICDAR/._.DS_Store,.ds_store,120,,,,,,,0.0,,__MACOSX/ICDAR,._.DS_Store
+__MACOSX/ICDAR/._cTDaR_t00015.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/ICDAR/._cTDaR_t00015.jpg',0.0,,__MACOSX/ICDAR,._cTDaR_t00015.jpg
+__MACOSX/ICDAR/._cTDaR_t00015.xml,.xml,176,,,,,,,0.0,,__MACOSX/ICDAR,._cTDaR_t00015.xml
+__MACOSX/ICDAR/._cTDaR_t00014.xml,.xml,176,,,,,,,0.0,,__MACOSX/ICDAR,._cTDaR_t00014.xml
+__MACOSX/ICDAR/._cTDaR_t00014.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/ICDAR/._cTDaR_t00014.jpg',0.0,,__MACOSX/ICDAR,._cTDaR_t00014.jpg
+__MACOSX/ICDAR/._cTDaR_t00016.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/ICDAR/._cTDaR_t00016.jpg',0.0,,__MACOSX/ICDAR,._cTDaR_t00016.jpg
+__MACOSX/ICDAR/._cTDaR_t00016.xml,.xml,176,,,,,,,0.0,,__MACOSX/ICDAR,._cTDaR_t00016.xml
+__MACOSX/ICDAR/._cTDaR_t00080.xml,.xml,176,,,,,,,0.0,,__MACOSX/ICDAR,._cTDaR_t00080.xml
+__MACOSX/ICDAR/._cTDaR_t00080.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/ICDAR/._cTDaR_t00080.jpg',0.0,,__MACOSX/ICDAR,._cTDaR_t00080.jpg
+__MACOSX/MARMOT/._10.1.1.1.2014_4.xml,.xml,176,,,,,,,0.0,,__MACOSX/MARMOT,._10.1.1.1.2014_4.xml
+__MACOSX/MARMOT/._10.1.1.1.2013_63.xml,.xml,176,,,,,,,0.0,,__MACOSX/MARMOT,._10.1.1.1.2013_63.xml
+__MACOSX/MARMOT/._10.1.1.1.2013_63.jpeg,.jpeg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/MARMOT/._10.1.1.1.2013_63.jpeg',0.0,,__MACOSX/MARMOT,._10.1.1.1.2013_63.jpeg
+__MACOSX/MARMOT/._.DS_Store,.ds_store,120,,,,,,,0.0,,__MACOSX/MARMOT,._.DS_Store
+__MACOSX/MARMOT/._10.1.1.1.2006_3.jpeg,.jpeg,232,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/MARMOT/._10.1.1.1.2006_3.jpeg',0.0,,__MACOSX/MARMOT,._10.1.1.1.2006_3.jpeg
+__MACOSX/MARMOT/._10.1.1.1.2013_64.xml,.xml,176,,,,,,,0.0,,__MACOSX/MARMOT,._10.1.1.1.2013_64.xml
+__MACOSX/MARMOT/._10.1.1.1.2014_4.jpeg,.jpeg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/MARMOT/._10.1.1.1.2014_4.jpeg',0.0,,__MACOSX/MARMOT,._10.1.1.1.2014_4.jpeg
+__MACOSX/MARMOT/._10.1.1.1.2013_64.jpeg,.jpeg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/MARMOT/._10.1.1.1.2013_64.jpeg',0.0,,__MACOSX/MARMOT,._10.1.1.1.2013_64.jpeg
+__MACOSX/MARMOT/._10.1.1.1.2006_3.xml,.xml,176,,,,,,,0.0,,__MACOSX/MARMOT,._10.1.1.1.2006_3.xml
+__MACOSX/PUBTABLES/._PMC1064082_table_1.xml,.xml,176,,,,,,,0.0,,__MACOSX/PUBTABLES,._PMC1064082_table_1.xml
+__MACOSX/PUBTABLES/._PMC1064082_table_1.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/PUBTABLES/._PMC1064082_table_1.jpg',0.0,,__MACOSX/PUBTABLES,._PMC1064082_table_1.jpg
+__MACOSX/PUBTABLES/._PMC1064082_table_0.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/PUBTABLES/._PMC1064082_table_0.jpg',0.0,,__MACOSX/PUBTABLES,._PMC1064082_table_0.jpg
+__MACOSX/PUBTABLES/._PMC1064082_table_0.xml,.xml,176,,,,,,,0.0,,__MACOSX/PUBTABLES,._PMC1064082_table_0.xml
+__MACOSX/PUBTABLES/._PMC1064078_table_2.xml,.xml,176,,,,,,,0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_2.xml
+__MACOSX/PUBTABLES/._PMC1064078_table_2.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/PUBTABLES/._PMC1064078_table_2.jpg',0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_2.jpg
+__MACOSX/PUBTABLES/._PMC1064078_table_3.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/PUBTABLES/._PMC1064078_table_3.jpg',0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_3.jpg
+__MACOSX/PUBTABLES/._PMC1064078_table_3.xml,.xml,176,,,,,,,0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_3.xml
+__MACOSX/PUBTABLES/._PMC1064078_table_0.jpg,.jpg,232,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/PUBTABLES/._PMC1064078_table_0.jpg',0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_0.jpg
+__MACOSX/PUBTABLES/._PMC1064078_table_0.xml,.xml,176,,,,,,,0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_0.xml
+__MACOSX/PUBTABLES/._PMC1064078_table_4.xml,.xml,176,,,,,,,0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_4.xml
+__MACOSX/PUBTABLES/._PMC1064078_table_4.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/PUBTABLES/._PMC1064078_table_4.jpg',0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_4.jpg
+__MACOSX/PUBTABLES/._PMC1064078_table_5.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/PUBTABLES/._PMC1064078_table_5.jpg',0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_5.jpg
+__MACOSX/PUBTABLES/._PMC1064078_table_5.xml,.xml,176,,,,,,,0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_5.xml
+__MACOSX/PUBTABLES/._PMC1064078_table_6.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/PUBTABLES/._PMC1064078_table_6.jpg',0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_6.jpg
+__MACOSX/PUBTABLES/._PMC1064078_table_6.xml,.xml,176,,,,,,,0.0,,__MACOSX/PUBTABLES,._PMC1064078_table_6.xml
+__MACOSX/SROIE2019/._box,,176,,,,,,,0.0,,__MACOSX/SROIE2019,._box
+__MACOSX/SROIE2019/._.DS_Store,.ds_store,120,,,,,,,0.0,,__MACOSX/SROIE2019,._.DS_Store
+__MACOSX/SROIE2019/._img,,176,,,,,,,0.0,,__MACOSX/SROIE2019,._img
+__MACOSX/SROIE2019/._entities,,176,,,,,,,0.0,,__MACOSX/SROIE2019,._entities
+__MACOSX/SROIE2019/box/._X00016469670.txt,.txt,176,,,,,,,0.0,,__MACOSX/SROIE2019/box,._X00016469670.txt
+__MACOSX/SROIE2019/box/._X00016469671.txt,.txt,176,,,,,,,0.0,,__MACOSX/SROIE2019/box,._X00016469671.txt
+__MACOSX/SROIE2019/box/._.DS_Store,.ds_store,120,,,,,,,0.0,,__MACOSX/SROIE2019/box,._.DS_Store
+__MACOSX/SROIE2019/box/._X51005230605.txt,.txt,176,,,,,,,0.0,,__MACOSX/SROIE2019/box,._X51005230605.txt
+__MACOSX/SROIE2019/box/._X51005200931.txt,.txt,176,,,,,,,0.0,,__MACOSX/SROIE2019/box,._X51005200931.txt
+__MACOSX/SROIE2019/img/._.DS_Store,.ds_store,120,,,,,,,0.0,,__MACOSX/SROIE2019/img,._.DS_Store
+__MACOSX/SROIE2019/img/._X00016469671.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/SROIE2019/img/._X00016469671.jpg',0.0,,__MACOSX/SROIE2019/img,._X00016469671.jpg
+__MACOSX/SROIE2019/img/._X00016469670.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/SROIE2019/img/._X00016469670.jpg',0.0,,__MACOSX/SROIE2019/img,._X00016469670.jpg
+__MACOSX/SROIE2019/img/._X51005230605.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/SROIE2019/img/._X51005230605.jpg',0.0,,__MACOSX/SROIE2019/img,._X51005230605.jpg
+__MACOSX/SROIE2019/img/._X51005200931.jpg,.jpg,176,,,,,,img open error: cannot identify image file '/mnt/data/dataset_upload/__MACOSX/SROIE2019/img/._X51005200931.jpg',0.0,,__MACOSX/SROIE2019/img,._X51005200931.jpg
+__MACOSX/SROIE2019/entities/._X00016469670.txt,.txt,176,,,,,,,0.0,,__MACOSX/SROIE2019/entities,._X00016469670.txt
+__MACOSX/SROIE2019/entities/._X00016469671.txt,.txt,176,,,,,,,0.0,,__MACOSX/SROIE2019/entities,._X00016469671.txt
+__MACOSX/SROIE2019/entities/._.DS_Store,.ds_store,120,,,,,,,0.0,,__MACOSX/SROIE2019/entities,._.DS_Store
+__MACOSX/SROIE2019/entities/._X51005230605.txt,.txt,176,,,,,,,0.0,,__MACOSX/SROIE2019/entities,._X51005230605.txt
+__MACOSX/SROIE2019/entities/._X51005200931.txt,.txt,176,,,,,,,0.0,,__MACOSX/SROIE2019/entities,._X51005200931.txt
+ICDAR/.DS_Store,,6148,,,,,,,0.0,,ICDAR,.DS_Store
+ICDAR/cTDaR_t00015.jpg,.jpg,1369063,4912.0,3584.0,L,JPEG,1.0,,17.6,1.371,ICDAR,cTDaR_t00015.jpg
+ICDAR/cTDaR_t00015.xml,.xml,252,,,,,,,0.0,,ICDAR,cTDaR_t00015.xml
+ICDAR/cTDaR_t00014.xml,.xml,172,,,,,,,0.0,,ICDAR,cTDaR_t00014.xml
+ICDAR/cTDaR_t00014.jpg,.jpg,1205239,4912.0,3584.0,L,JPEG,1.0,,17.6,1.371,ICDAR,cTDaR_t00014.jpg
+ICDAR/cTDaR_t00016.jpg,.jpg,1408797,4912.0,3584.0,L,JPEG,1.0,,17.6,1.371,ICDAR,cTDaR_t00016.jpg
+ICDAR/cTDaR_t00016.xml,.xml,252,,,,,,,0.0,,ICDAR,cTDaR_t00016.xml
+ICDAR/cTDaR_t00080.xml,.xml,168,,,,,,,0.0,,ICDAR,cTDaR_t00080.xml
+ICDAR/cTDaR_t00080.jpg,.jpg,1075249,2010.0,3114.0,RGB,JPEG,1.0,,6.26,0.645,ICDAR,cTDaR_t00080.jpg
+MARMOT/10.1.1.1.2014_4.xml,.xml,790,,,,,,,0.0,,MARMOT,10.1.1.1.2014_4.xml
+MARMOT/10.1.1.1.2013_63.xml,.xml,1928,,,,,,,0.0,,MARMOT,10.1.1.1.2013_63.xml
+MARMOT/10.1.1.1.2013_63.jpeg,.jpeg,75044,816.0,1056.0,RGB,JPEG,1.0,,0.86,0.773,MARMOT,10.1.1.1.2013_63.jpeg
+MARMOT/.DS_Store,,6148,,,,,,,0.0,,MARMOT,.DS_Store
+MARMOT/10.1.1.1.2006_3.jpeg,.jpeg,205848,793.0,1123.0,RGB,JPEG,1.0,,0.89,0.706,MARMOT,10.1.1.1.2006_3.jpeg
+MARMOT/10.1.1.1.2013_64.xml,.xml,3744,,,,,,,0.0,,MARMOT,10.1.1.1.2013_64.xml
+MARMOT/10.1.1.1.2014_4.jpeg,.jpeg,154739,816.0,1056.0,RGB,JPEG,1.0,,0.86,0.773,MARMOT,10.1.1.1.2014_4.jpeg
+MARMOT/10.1.1.1.2013_64.jpeg,.jpeg,55202,816.0,1056.0,RGB,JPEG,1.0,,0.86,0.773,MARMOT,10.1.1.1.2013_64.jpeg
+MARMOT/10.1.1.1.2006_3.xml,.xml,1260,,,,,,,0.0,,MARMOT,10.1.1.1.2006_3.xml
+PUBTABLES/PMC1064082_table_1.xml,.xml,12533,,,,,,,0.0,,PUBTABLES,PMC1064082_table_1.xml
+PUBTABLES/PMC1064082_table_1.jpg,.jpg,34244,574.0,538.0,RGB,JPEG,1.0,,0.31,1.067,PUBTABLES,PMC1064082_table_1.jpg
+PUBTABLES/PMC1064082_table_0.jpg,.jpg,11704,580.0,153.0,RGB,JPEG,1.0,,0.09,3.791,PUBTABLES,PMC1064082_table_0.jpg
+PUBTABLES/PMC1064082_table_0.xml,.xml,4618,,,,,,,0.0,,PUBTABLES,PMC1064082_table_0.xml
+PUBTABLES/PMC1064078_table_2.xml,.xml,9841,,,,,,,0.0,,PUBTABLES,PMC1064078_table_2.xml
+PUBTABLES/PMC1064078_table_2.jpg,.jpg,41357,687.0,388.0,RGB,JPEG,1.0,,0.27,1.771,PUBTABLES,PMC1064078_table_2.jpg
+PUBTABLES/PMC1064078_table_3.jpg,.jpg,51622,771.0,444.0,RGB,JPEG,1.0,,0.34,1.736,PUBTABLES,PMC1064078_table_3.jpg
+PUBTABLES/PMC1064078_table_3.xml,.xml,14142,,,,,,,0.0,,PUBTABLES,PMC1064078_table_3.xml
+PUBTABLES/PMC1064078_table_0.jpg,.jpg,32877,682.0,251.0,RGB,JPEG,1.0,,0.17,2.717,PUBTABLES,PMC1064078_table_0.jpg
+PUBTABLES/PMC1064078_table_0.xml,.xml,7241,,,,,,,0.0,,PUBTABLES,PMC1064078_table_0.xml
+PUBTABLES/PMC1064078_table_4.xml,.xml,10493,,,,,,,0.0,,PUBTABLES,PMC1064078_table_4.xml
+PUBTABLES/PMC1064078_table_4.jpg,.jpg,43405,687.0,428.0,RGB,JPEG,1.0,,0.29,1.605,PUBTABLES,PMC1064078_table_4.jpg
+PUBTABLES/PMC1064078_table_5.jpg,.jpg,52959,764.0,472.0,RGB,JPEG,1.0,,0.36,1.619,PUBTABLES,PMC1064078_table_5.jpg
+PUBTABLES/PMC1064078_table_5.xml,.xml,14790,,,,,,,0.0,,PUBTABLES,PMC1064078_table_5.xml
+PUBTABLES/PMC1064078_table_6.jpg,.jpg,50989,763.0,435.0,RGB,JPEG,1.0,,0.33,1.754,PUBTABLES,PMC1064078_table_6.jpg
+PUBTABLES/PMC1064078_table_6.xml,.xml,14142,,,,,,,0.0,,PUBTABLES,PMC1064078_table_6.xml
+SROIE2019/.DS_Store,,6148,,,,,,,0.0,,SROIE2019,.DS_Store
+SROIE2019/box/X00016469670.txt,.txt,2119,,,,,,,0.0,,SROIE2019/box,X00016469670.txt
+SROIE2019/box/X00016469671.txt,.txt,1884,,,,,,,0.0,,SROIE2019/box,X00016469671.txt
+SROIE2019/box/.DS_Store,,6148,,,,,,,0.0,,SROIE2019/box,.DS_Store
+SROIE2019/box/X51005230605.txt,.txt,1944,,,,,,,0.0,,SROIE2019/box,X51005230605.txt
+SROIE2019/box/X51005200931.txt,.txt,3631,,,,,,,0.0,,SROIE2019/box,X51005200931.txt
+SROIE2019/img/.DS_Store,,6148,,,,,,,0.0,,SROIE2019/img,.DS_Store
+SROIE2019/img/X00016469671.jpg,.jpg,131538,463.0,776.0,RGB,JPEG,1.0,,0.36,0.597,SROIE2019/img,X00016469671.jpg
+SROIE2019/img/X00016469670.jpg,.jpg,156824,463.0,894.0,RGB,JPEG,1.0,,0.41,0.518,SROIE2019/img,X00016469670.jpg
+SROIE2019/img/X51005230605.jpg,.jpg,417591,616.0,1336.0,RGB,JPEG,1.0,,0.82,0.461,SROIE2019/img,X51005230605.jpg
+SROIE2019/img/X51005200931.jpg,.jpg,250414,992.0,1403.0,RGB,JPEG,1.0,,1.39,0.707,SROIE2019/img,X51005200931.jpg
+SROIE2019/entities/X00016469670.txt,.txt,170,,,,,,,0.0,,SROIE2019/entities,X00016469670.txt
+SROIE2019/entities/X00016469671.txt,.txt,170,,,,,,,0.0,,SROIE2019/entities,X00016469671.txt
+SROIE2019/entities/.DS_Store,,6148,,,,,,,0.0,,SROIE2019/entities,.DS_Store
+SROIE2019/entities/X51005230605.txt,.txt,185,,,,,,,0.0,,SROIE2019/entities,X51005230605.txt
+SROIE2019/entities/X51005200931.txt,.txt,173,,,,,,,0.0,,SROIE2019/entities,X51005200931.txt

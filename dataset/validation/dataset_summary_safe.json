@@ -1,0 +1,13 @@
+{
+  "by_ext": {
+    ".jpg": 32,
+    ".xml": 32,
+    ".txt": 16,
+    "": 15,
+    ".png": 8,
+    ".json": 8,
+    ".ds_store": 8,
+    ".jpeg": 8
+  },
+  "total_files": 127
+}
