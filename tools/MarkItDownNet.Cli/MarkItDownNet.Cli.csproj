@@ -6,6 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <!-- no project references -->
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
   </ItemGroup>
 </Project>
