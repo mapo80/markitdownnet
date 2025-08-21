@@ -66,7 +66,12 @@ static void BenchCommand(string[] args)
             r.Similarity = CompareOutputs(r.Output, python.Output);
     }
 
-    var json = JsonSerializer.Serialize(results, new JsonSerializerOptions{WriteIndented=true});
+    var env = new {
+        os = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+        dotnet = Environment.Version.ToString()
+    };
+    var output = new { environment = env, results = results };
+    var json = JsonSerializer.Serialize(output, new JsonSerializerOptions{WriteIndented=true});
     File.WriteAllText(outJson, json);
     File.WriteAllText(outHtml, HtmlReport(results));
     if (!string.IsNullOrEmpty(summaryMd))
@@ -109,12 +114,13 @@ static BenchResult RunMode(string mode, string input, string pythonExe, TextMode
 static string HtmlReport(List<BenchResult> results)
 {
     var sb = new System.Text.StringBuilder();
-    sb.AppendLine("<html><body><table border='1'><tr><th>Mode</th><th>avg ms</th><th>std ms</th><th>F1</th><th>CER</th></tr>");
+    sb.AppendLine("<html><body><table border='1'><tr><th>Mode</th><th>avg ms</th><th>std ms</th><th>F1</th><th>CER</th><th>LineRatio</th></tr>");
     foreach (var r in results)
     {
         var f1 = r.Similarity?.F1.ToString("F2") ?? "-";
         var cer = r.Similarity?.Cer.ToString("F2") ?? "-";
-        sb.AppendLine($"<tr><td>{r.Mode}</td><td>{r.AvgMs:F1}</td><td>{r.StdMs:F1}</td><td>{f1}</td><td>{cer}</td></tr>");
+        var lr = r.Similarity?.LineRatio.ToString("F2") ?? "-";
+        sb.AppendLine($"<tr><td>{r.Mode}</td><td>{r.AvgMs:F1}</td><td>{r.StdMs:F1}</td><td>{f1}</td><td>{cer}</td><td>{lr}</td></tr>");
     }
     sb.AppendLine("</table>");
     var python = results.FirstOrDefault(r=>r.Mode=="python");
@@ -139,7 +145,7 @@ static string SummaryMarkdown(List<BenchResult> results)
     {
         var r = results.FirstOrDefault(x=>x.Mode==mode);
         if (r?.Similarity!=null)
-            sb.AppendLine($"- {mode}: token-F1 {r.Similarity.F1:F2}, CER {r.Similarity.Cer:F2}, {r.AvgMs:F1}±{r.StdMs:F1} ms");
+            sb.AppendLine($"- {mode}: token-F1 {r.Similarity.F1:F2}, CER {r.Similarity.Cer:F2}, line-ratio {r.Similarity.LineRatio:F2}, {r.AvgMs:F1}±{r.StdMs:F1} ms");
     }
     var py = results.FirstOrDefault(x=>x.Mode=="python");
     if(py!=null)
@@ -170,10 +176,11 @@ static Similarity CompareOutputs(string candidatePath, string referencePath)
     var refStructure = StructureCounts(refText);
     double headingMatch = HeadingMatchRatio(cand, refText);
     double tableCellF1 = TableCellF1(cand, refText);
+    double lineRatio = refStructure.LineCount==0?1.0:(double)structure.LineCount/refStructure.LineCount;
     return new Similarity{Cer=cer, Precision=precision, Recall=recall, F1=f1,
         HeadingLevels=structure.HeadingLevels, ListItems=structure.ListItems, MaxListDepth=structure.MaxListDepth,
         CodeBlocks=structure.CodeBlocks, HorizontalRules=structure.HorizontalRules, Tables=structure.Tables,
-        HeadingMatch=headingMatch, TableCellF1=tableCellF1};
+        HeadingMatch=headingMatch, TableCellF1=tableCellF1, LineCount=structure.LineCount, LineRatio=lineRatio};
 }
 
 static string Normalize(string text)
@@ -205,6 +212,7 @@ static StructureMetrics StructureCounts(string text)
     int[] headLevels = new int[6];
     int listItems=0,maxDepth=0,codeBlocks=0,hrs=0,tables=0; bool inCode=false;
     var lines = text.Split('\n');
+    int lineCount = lines.Length;
     for (int idx=0; idx<lines.Length; idx++)
     {
         var line = lines[idx];
@@ -228,7 +236,7 @@ static StructureMetrics StructureCounts(string text)
         if (line.TrimStart().StartsWith("|") && (idx==0 || !lines[idx-1].TrimStart().StartsWith("|")))
             tables++;
     }
-    return new StructureMetrics{HeadingLevels=headLevels,ListItems=listItems,MaxListDepth=maxDepth,CodeBlocks=codeBlocks,HorizontalRules=hrs,Tables=tables};
+    return new StructureMetrics{HeadingLevels=headLevels,ListItems=listItems,MaxListDepth=maxDepth,CodeBlocks=codeBlocks,HorizontalRules=hrs,Tables=tables,LineCount=lineCount};
 }
 
 static List<List<List<string>>> ExtractTables(string text)
@@ -323,6 +331,8 @@ record Similarity
     public int Tables { get; set; }
     public double HeadingMatch { get; set; }
     public double TableCellF1 { get; set; }
+    public int LineCount { get; set; }
+    public double LineRatio { get; set; }
 }
 
 record StructureMetrics
@@ -333,4 +343,5 @@ record StructureMetrics
     public int CodeBlocks { get; set; }
     public int HorizontalRules { get; set; }
     public int Tables { get; set; }
+    public int LineCount { get; set; }
 }
