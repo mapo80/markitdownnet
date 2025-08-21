@@ -2,20 +2,20 @@
 
 ## Global
 | scope | CER | Token-F1 | line_F1 | n_files |
-| Global | 0.2364 | 0.7035 | 0.3878 | 24 |
+| Global | 0.2729 | 0.6423 | 0.2973 | 24 |
 
 ## By dataset
 | scope | CER | Token-F1 | line_F1 | n_files |
-| FUNSD | 0.0148 | 1.0000 | 1.0000 | 4 |
-| SROIE2019 | 0.0631 | 0.8816 | 0.7352 | 4 |
-| ICDAR | 0.7248 | 0.3618 | 0.0000 | 4 |
+| SROIE2019 | 0.1254 | 0.7841 | 0.5843 | 4 |
+| ICDAR | 0.7238 | 0.3710 | 0.0000 | 4 |
 | PUBTABLES | 0.2689 | 0.5715 | 0.0899 | 8 |
-| MARMOT | 0.0778 | 0.8346 | 0.4114 | 4 |
+| FUNSD | 0.1695 | 0.7238 | 0.6171 | 4 |
+| MARMOT | 0.0807 | 0.8319 | 0.4025 | 4 |
 
 ## Top-5 worst files
 | dataset/file | cer_char | token_f1 | line_f1 | note |
-| ICDAR/cTDaR_t00015 | 0.7768 | 0.3080 | 0.0000 | |
-| ICDAR/cTDaR_t00080 | 0.7516 | 0.3719 | 0.0000 | |
+| ICDAR/cTDaR_t00080 | 0.7648 | 0.3690 | 0.0000 | |
+| ICDAR/cTDaR_t00015 | 0.7595 | 0.3475 | 0.0000 | |
 | ICDAR/cTDaR_t00016 | 0.7078 | 0.4268 | 0.0000 | |
 | PUBTABLES/PMC1064082_table_0 | 0.6912 | 0.2000 | 0.0000 | |
 | ICDAR/cTDaR_t00014 | 0.6631 | 0.3406 | 0.0000 | |
