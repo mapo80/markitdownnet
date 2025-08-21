@@ -9,10 +9,10 @@ static class ReportMarkdown
     {
         var sb = new StringBuilder();
         sb.AppendLine("## Timing summary (md_ms)");
-        sb.AppendLine("| mode | avg md_ms | std md_ms |");
-        sb.AppendLine("| --- | --- | --- |");
+        sb.AppendLine("| mode | avg±std (ms) | p50 | p90 | p95 |");
+        sb.AppendLine("| --- | --- | --- | --- | --- |");
         foreach (var r in results)
-            sb.AppendLine($"| {r.Mode} | {r.AvgMs:F1} | {r.StdMs:F1} |");
+            sb.AppendLine($"| {r.Mode} | {r.AvgMs:F1}±{r.StdMs:F1} | {r.P50Ms:F1} | {r.P90Ms:F1} | {r.P95Ms:F1} |");
 
         var pre = results.FirstOrDefault(r=>r.Mode=="pre");
         var post1S = results.FirstOrDefault(r=>r.Mode=="post-1S");
@@ -37,27 +37,27 @@ static class ReportMarkdown
         sb.AppendLine("\n## Quality vs python-hot");
         if (pyHot!=null && pyHot.Similarity?.Tables > 0)
         {
-            sb.AppendLine("| mode | CER | Token-F1 | line_F1 | tables_count | line_count | list_items | table_cell_F1 |");
-            sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- |");
+            sb.AppendLine("| mode | CER | Token-F1 | line_F1 | tables_count | line_count | list_items | max_list_depth | table_cell_F1 |");
+            sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- | --- |");
             foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
             {
                 var s = r.Similarity;
                 if (s != null)
                 {
                     var f1 = s.TableCellF1.HasValue ? s.TableCellF1.Value.ToString("F3") : "—";
-                    sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.Tables} | {s.LineCount} | {s.ListItems} | {f1} |");
+                    sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.Tables} | {s.LineCount} | {s.ListItems} | {s.MaxListDepth} | {f1} |");
                 }
             }
         }
         else if (pyHot!=null)
         {
-            sb.AppendLine("| mode | CER | Token-F1 | line_F1 | tables_count | line_count | list_items | pipes_lines | median_pipes | max_pipes |");
-            sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |");
+            sb.AppendLine("| mode | CER | Token-F1 | line_F1 | tables_count | line_count | list_items | max_list_depth | pipes_lines | median_pipes | max_pipes |");
+            sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |");
             foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
             {
                 var s = r.Similarity;
                 if (s != null)
-                    sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.Tables} | {s.LineCount} | {s.ListItems} | {s.PipeLines} | {s.MedianPipesPerLine:F1} | {s.MaxPipesPerLine} |");
+                    sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.Tables} | {s.LineCount} | {s.ListItems} | {s.MaxListDepth} | {s.PipeLines} | {s.MedianPipesPerLine:F1} | {s.MaxPipesPerLine} |");
             }
         }
 
