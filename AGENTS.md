@@ -44,3 +44,4 @@ Indicare quindi il percorso tramite `OcrDataPath`.
 - Install Python dependencies: `pip install 'markitdown[all]' pytesseract`.
 - Generate Markdown with `python tools/markitdown_ocr.py <image_or_text> -o <out.md>`.
 - When running benchmarks, the CLI automatically calls this script for `python` mode.
+- For warm-start benchmarks, `python tools/run_markitdown_hot.py <text> <out.md>` loads the text once and runs five conversions, printing timing data as JSON.

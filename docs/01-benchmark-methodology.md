@@ -6,17 +6,17 @@
    ```
 2. Convert modes:
    - `pre` : baseline formatting
-   - `post-v0` : heuristic set v0
-   - `post-v01` : heuristic set v01 (tables etc.)
-   - `post-v02` : heuristic set v02 (refined reflow/lists/headings/tables)
-   - `post-v03` : heuristic set v03 (headers/footer, generic typography)
-   - `python` : `python -m markitdown artifacts/busta_paga_internet.txt -o artifacts/outputs/busta_paga_internet.python.md`
+   - `post-1R` : safe reflow + robust lists
+   - `python-cold` : `python -m markitdown artifacts/busta_paga_internet.txt -o artifacts/outputs/busta_paga_internet.python-cold.md`
+   - `python-hot` : `python tools/run_markitdown_hot.py artifacts/busta_paga_internet.txt artifacts/outputs/busta_paga_internet.python-hot.md`
 3. Benchmark:
    ```bash
    markitdownnet bench --input artifacts/busta_paga_internet.txt \
-     --modes pre,post-v0,post-v01,post-v02,post-v03,python \
-     --out-json artifacts/bench-v03.json --out-html artifacts/bench-v03.html \
-     --summary-md artifacts/summary-v03.md --config markitdownnet.json
+     --modes pre,post-1R,python-cold,python-hot \
+     --out-json artifacts/bench-1R-hot.json --out-html artifacts/bench-1R-hot.html \
+     --summary-md artifacts/summary-1R-hot.md --config markitdownnet.json \
+     --python-exe python --python-markitdown-cmd "python -m markitdown" \
+     --python-hot-cmd "python tools/run_markitdown_hot.py"
    ```
 
 ## Metrics
