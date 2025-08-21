@@ -1,17 +1,14 @@
 # v0 spec
 
 ## Heuristics
-1. Normalize line endings and spaces.
-2. Reflow paragraphs and dehyphenate.
-3. Detect lists with bullets/numbering.
-4. Promote isolated lines to headings.
-5. Fence code blocks by indentation or symbol density.
-6. Replace runs of '-', '*', '_' with horizontal rules.
+1. Normalize line endings and collapse extra spaces.
+2. Reflow paragraphs and dehyphenate, stopping before bullets/numbers, table-like lines or code-like lines, and when the previous line ends with `:`.
+3. Detect bullet and numbered lists; normalize bullets to `- ` and numbers to `1.`; wrap items if the next line is indented; single isolated items fall back to paragraphs.
 
 ## Pipeline
 Input text from Tesseract -> optional heuristics (post mode) -> Markdown.
 
 ## Limitations
-- No metadata extraction.
+- Headings, tables, code fences and horizontal rules are not yet generated.
 - Heuristics are rule based, may mis-detect complex structures.
 - Only plain text input supported.

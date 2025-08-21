@@ -39,11 +39,12 @@ public static class TextModeConverter
                 text = StripHeaders(text);
             text = Reflow(text, config, v02, v03);
             text = DetectLists(text, config, v02, v03);
-            text = DetectHeadings(text, config, mode == "post-v01" || mode=="post-v02", v02, v03);
-            text = DetectCodeBlocks(text, config);
-            text = DetectHorizontalRules(text, config, v02);
+
             if (mode != "post-v0")
             {
+                text = DetectHeadings(text, config, mode == "post-v01" || mode=="post-v02", v02, v03);
+                text = DetectCodeBlocks(text, config);
+                text = DetectHorizontalRules(text, config, v02);
                 text = DetectKeyValueTables(text, config, v02, v03);
                 text = DetectMonoTables(text, config, v02 || v03);
             }
@@ -127,13 +128,10 @@ public static class TextModeConverter
                 if (string.IsNullOrWhiteSpace(nl)) return false;
                 if (IsListLine(nl, config) || IsCodeLine(nl, config.CodeMinIndent)) return false;
                 if ((v02 || v03) && IsKeyValueLine(nl)) return false;
-                if (v02 && paragraph.ToString().EndsWith(":")) return false;
-                if (v03)
-                {
-                    var trimmed = nl.TrimStart();
-                    if (IsTableLikeLine(nl, config) || IsProbableCode(nl, config) || trimmed.StartsWith("|") || trimmed.StartsWith("```"))
-                        return false;
-                }
+                if (paragraph.ToString().EndsWith(":")) return false;
+                var trimmed = nl.TrimStart();
+                if (IsTableLikeLine(nl, config) || IsProbableCode(nl, config) || trimmed.StartsWith("|") || trimmed.StartsWith("```") )
+                    return false;
                 return true;
             }
             while (CanMerge(i))
