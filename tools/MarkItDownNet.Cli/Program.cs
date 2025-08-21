@@ -497,7 +497,7 @@ static AggregateData BuildAggregateData(List<BenchFileData> files, string[] mode
         ds.n_files = g.Count();
         foreach (var m in modes)
         {
-            var times = g.SelectMany(f => f.Results.First(r => r.Mode == m).Trials).ToList();
+            var times = g.Select(f => f.Results.First(r => r.Mode == m).AvgMs).ToList();
             ds.timing[m] = BuildTimingStats(times);
             var sims = g.Select(f => f.Results.First(r => r.Mode == m).Similarity).Where(s => s != null).Select(s => s!).ToList();
             ds.quality[m] = BuildQualityStats(sims);
@@ -510,7 +510,7 @@ static AggregateData BuildAggregateData(List<BenchFileData> files, string[] mode
     global.n_files = files.Count;
     foreach (var m in modes)
     {
-        var times = files.SelectMany(f => f.Results.First(r => r.Mode == m).Trials).ToList();
+        var times = files.Select(f => f.Results.First(r => r.Mode == m).AvgMs).ToList();
         global.timing[m] = BuildTimingStats(times);
         var sims = files.Select(f => f.Results.First(r => r.Mode == m).Similarity).Where(s => s != null).Select(s => s!).ToList();
         global.quality[m] = BuildQualityStats(sims);
@@ -573,7 +573,10 @@ static TablesAggregate BuildTablesAggregate(List<Similarity> sims)
     double sum = sims.Sum(s => s.Tables);
     var f1s = sims.Where(s => s.TableCellF1.HasValue).Select(s => s.TableCellF1!.Value).ToList();
     double? f1avg = f1s.Count > 0 ? f1s.Average() : null;
-    return new TablesAggregate { tables_count_sum = sum, table_cell_f1_avg = f1avg };
+    double pipesAvg = sims.Count > 0 ? sims.Average(s => s.PipeLines) : 0;
+    double medianAvg = sims.Count > 0 ? sims.Average(s => s.MedianPipesPerLine) : 0;
+    double maxAvg = sims.Count > 0 ? sims.Average(s => s.MaxPipesPerLine) : 0;
+    return new TablesAggregate { tables_count_sum = sum, table_cell_f1_avg = f1avg, pipes_lines_count_avg = pipesAvg, median_pipes_per_line_avg = medianAvg, max_pipes_per_line_avg = maxAvg };
 }
 
 static string GetDatasetName(string rootDir, string filePath)
@@ -640,7 +643,7 @@ static string BuildBenchHtml(AggregateData agg, RunConfig cfg, List<BenchFileDat
     foreach (var kv in agg.global.quality)
     {
         var t = kv.Value.tables;
-        var f1 = t.table_cell_f1.HasValue ? t.table_cell_f1.Value.ToString("F3") : "null";
+        var f1 = t.table_cell_f1.HasValue ? t.table_cell_f1.Value.ToString("F3") : "—";
         sb.AppendLine($"<tr><td>{kv.Key}</td><td>{t.tables_count:F1}</td><td>{f1}</td><td>{t.pipes_lines_count:F1}</td><td>{t.median_pipes_per_line:F1}</td><td>{t.max_pipes_per_line:F1}</td></tr>");
     }
     sb.AppendLine("</table>");
@@ -650,7 +653,7 @@ static string BuildBenchHtml(AggregateData agg, RunConfig cfg, List<BenchFileDat
         foreach (var kv in ds.Value.quality)
         {
             var t = kv.Value.tables;
-            var f1 = t.table_cell_f1.HasValue ? t.table_cell_f1.Value.ToString("F3") : "null";
+            var f1 = t.table_cell_f1.HasValue ? t.table_cell_f1.Value.ToString("F3") : "—";
             sb.AppendLine($"<tr><td>{kv.Key}</td><td>{t.tables_count:F1}</td><td>{f1}</td><td>{t.pipes_lines_count:F1}</td><td>{t.median_pipes_per_line:F1}</td><td>{t.max_pipes_per_line:F1}</td></tr>");
         }
         sb.AppendLine("</table>");
@@ -1079,6 +1082,9 @@ record TablesAggregate
 {
     public double tables_count_sum { get; set; }
     public double? table_cell_f1_avg { get; set; }
+    public double pipes_lines_count_avg { get; set; }
+    public double median_pipes_per_line_avg { get; set; }
+    public double max_pipes_per_line_avg { get; set; }
 }
 
 record TimingStats
