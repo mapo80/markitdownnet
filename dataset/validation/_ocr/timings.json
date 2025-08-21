@@ -1,0 +1,98 @@
+{
+  "FUNSD/82200067_0069.txt": {
+    "markitdownnet": 917,
+    "pytesseract": 2055
+  },
+  "FUNSD/82092117.txt": {
+    "markitdownnet": 681,
+    "pytesseract": 1963
+  },
+  "FUNSD/82250337_0338.txt": {
+    "markitdownnet": 511,
+    "pytesseract": 1845
+  },
+  "FUNSD/82251504.txt": {
+    "markitdownnet": 680,
+    "pytesseract": 2042
+  },
+  "SROIE2019/X00016469671.txt": {
+    "markitdownnet": 408,
+    "pytesseract": 1755
+  },
+  "SROIE2019/X51005230605.txt": {
+    "markitdownnet": 458,
+    "pytesseract": 1849
+  },
+  "SROIE2019/X51005200931.txt": {
+    "markitdownnet": 642,
+    "pytesseract": 2056
+  },
+  "SROIE2019/X00016469670.txt": {
+    "markitdownnet": 464,
+    "pytesseract": 1928
+  },
+  "ICDAR/cTDaR_t00080.txt": {
+    "markitdownnet": 3762,
+    "pytesseract": 5772
+  },
+  "ICDAR/cTDaR_t00015.txt": {
+    "markitdownnet": 3387,
+    "pytesseract": 4978
+  },
+  "ICDAR/cTDaR_t00014.txt": {
+    "markitdownnet": 2935,
+    "pytesseract": 4447
+  },
+  "ICDAR/cTDaR_t00016.txt": {
+    "markitdownnet": 3818,
+    "pytesseract": 5629
+  },
+  "PUBTABLES/PMC1064082_table_1.txt": {
+    "markitdownnet": 385,
+    "pytesseract": 1721
+  },
+  "PUBTABLES/PMC1064078_table_6.txt": {
+    "markitdownnet": 304,
+    "pytesseract": 1864
+  },
+  "PUBTABLES/PMC1064078_table_0.txt": {
+    "markitdownnet": 350,
+    "pytesseract": 1813
+  },
+  "PUBTABLES/PMC1064078_table_3.txt": {
+    "markitdownnet": 331,
+    "pytesseract": 1844
+  },
+  "PUBTABLES/PMC1064082_table_0.txt": {
+    "markitdownnet": 116,
+    "pytesseract": 1539
+  },
+  "PUBTABLES/PMC1064078_table_4.txt": {
+    "markitdownnet": 489,
+    "pytesseract": 1842
+  },
+  "PUBTABLES/PMC1064078_table_5.txt": {
+    "markitdownnet": 522,
+    "pytesseract": 2071
+  },
+  "PUBTABLES/PMC1064078_table_2.txt": {
+    "markitdownnet": 390,
+    "pytesseract": 1791
+  },
+  "MARMOT/10.1.1.1.2013_64.txt": {
+    "markitdownnet": 626,
+    "pytesseract": 1912
+  },
+  "MARMOT/10.1.1.1.2014_4.txt": {
+    "markitdownnet": 991,
+    "pytesseract": 2616
+  },
+  "MARMOT/10.1.1.1.2006_3.txt": {
+    "markitdownnet": 8684,
+    "pytesseract": 3309
+  },
+  "MARMOT/10.1.1.1.2013_63.txt": {
+    "markitdownnet": 3631,
+    "pytesseract": 2309
+  }
+}
