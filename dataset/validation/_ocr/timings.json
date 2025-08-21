@@ -1,98 +1,98 @@
 {
   "FUNSD/82200067_0069.txt": {
-    "markitdownnet": 887,
+    "markitdownnet": 649,
     "pytesseract": 2055
   },
   "FUNSD/82092117.txt": {
-    "markitdownnet": 733,
+    "markitdownnet": 538,
     "pytesseract": 1963
   },
   "FUNSD/82250337_0338.txt": {
-    "markitdownnet": 661,
+    "markitdownnet": 485,
     "pytesseract": 1845
   },
   "FUNSD/82251504.txt": {
-    "markitdownnet": 815,
+    "markitdownnet": 555,
     "pytesseract": 2042
   },
   "SROIE2019/X00016469671.txt": {
-    "markitdownnet": 797,
+    "markitdownnet": 2088,
     "pytesseract": 1755
   },
   "SROIE2019/X51005230605.txt": {
-    "markitdownnet": 463,
+    "markitdownnet": 394,
     "pytesseract": 1849
   },
   "SROIE2019/X51005200931.txt": {
-    "markitdownnet": 1247,
+    "markitdownnet": 3223,
     "pytesseract": 2056
   },
   "SROIE2019/X00016469670.txt": {
-    "markitdownnet": 796,
+    "markitdownnet": 582,
     "pytesseract": 1928
   },
   "ICDAR/cTDaR_t00080.txt": {
-    "markitdownnet": 3327,
+    "markitdownnet": 2980,
     "pytesseract": 5772
   },
   "ICDAR/cTDaR_t00015.txt": {
-    "markitdownnet": 4672,
+    "markitdownnet": 5005,
     "pytesseract": 4978
   },
   "ICDAR/cTDaR_t00014.txt": {
-    "markitdownnet": 3946,
+    "markitdownnet": 4288,
     "pytesseract": 4447
   },
   "ICDAR/cTDaR_t00016.txt": {
-    "markitdownnet": 4873,
+    "markitdownnet": 5016,
     "pytesseract": 5629
   },
   "PUBTABLES/PMC1064082_table_1.txt": {
-    "markitdownnet": 397,
+    "markitdownnet": 399,
     "pytesseract": 1721
   },
   "PUBTABLES/PMC1064078_table_6.txt": {
-    "markitdownnet": 1718,
+    "markitdownnet": 324,
     "pytesseract": 1864
   },
   "PUBTABLES/PMC1064078_table_0.txt": {
-    "markitdownnet": 358,
+    "markitdownnet": 578,
     "pytesseract": 1813
   },
   "PUBTABLES/PMC1064078_table_3.txt": {
-    "markitdownnet": 398,
+    "markitdownnet": 404,
     "pytesseract": 1844
   },
   "PUBTABLES/PMC1064082_table_0.txt": {
-    "markitdownnet": 501,
+    "markitdownnet": 147,
     "pytesseract": 1539
   },
   "PUBTABLES/PMC1064078_table_4.txt": {
-    "markitdownnet": 632,
+    "markitdownnet": 639,
     "pytesseract": 1842
   },
   "PUBTABLES/PMC1064078_table_5.txt": {
-    "markitdownnet": 634,
+    "markitdownnet": 614,
     "pytesseract": 2071
   },
   "PUBTABLES/PMC1064078_table_2.txt": {
-    "markitdownnet": 517,
+    "markitdownnet": 482,
     "pytesseract": 1791
   },
   "MARMOT/10.1.1.1.2013_64.txt": {
-    "markitdownnet": 694,
+    "markitdownnet": 505,
     "pytesseract": 1912
   },
   "MARMOT/10.1.1.1.2014_4.txt": {
-    "markitdownnet": 1190,
+    "markitdownnet": 878,
     "pytesseract": 2616
   },
   "MARMOT/10.1.1.1.2006_3.txt": {
-    "markitdownnet": 1955,
+    "markitdownnet": 1573,
     "pytesseract": 3309
   },
   "MARMOT/10.1.1.1.2013_63.txt": {
-    "markitdownnet": 743,
+    "markitdownnet": 566,
     "pytesseract": 2309
   }
 }

@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using MarkItDownNet;
 using Serilog;
 using Tesseract;
+using System.Security.Cryptography;
 
 Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateLogger();
 
@@ -99,6 +100,20 @@ static void Extract(Dictionary<string, string> o)
     };
     var converter = new MarkItDownConverter(options);
 
+    var ver = Proc("tesseract", "--version");
+    var verLines = ver.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+    var tessVer = verLines.Length > 0 ? verLines[0].Trim() : string.Empty;
+    var leptVer = verLines.FirstOrDefault(l => l.Contains("leptonica"))?.Trim() ?? string.Empty;
+    var engPath = Path.Combine(options.OcrDataPath!, "eng.traineddata");
+    string checksum = string.Empty;
+    if (File.Exists(engPath))
+    {
+        using var fs = File.OpenRead(engPath);
+        using var sha1 = SHA1.Create();
+        checksum = Convert.ToHexString(sha1.ComputeHash(fs)).ToLowerInvariant();
+    }
+    Console.WriteLine($"tesseract_version={tessVer} leptonica_version={leptVer} tessdata_path={Path.GetFullPath(engPath)} eng_checksum={checksum}");
+
     var exts = new HashSet<string>(new[] { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".pdf" }, StringComparer.OrdinalIgnoreCase);
     var datasets = Directory.GetDirectories(inputDir).Where(d => Path.GetFileName(d) != "_ocr");
     long totalMark = 0, totalPy = 0;
@@ -119,8 +134,11 @@ static void Extract(Dictionary<string, string> o)
 
             if (doMark)
             {
+                var rasterDir = Path.Combine("artifacts", "_sanity", "raster", dataset);
+                Directory.CreateDirectory(rasterDir);
+                var rasterPath = Path.Combine(rasterDir, Path.GetFileNameWithoutExtension(file) + ".png");
                 var sw = Stopwatch.StartNew();
-                var (textMark, meta) = OcrMark(converter, images);
+                var (textMark, meta) = OcrMark(converter, images, rasterPath);
                 sw.Stop();
                 var tMark = sw.ElapsedMilliseconds;
                 var outMarkDir = Path.Combine(outDir, "markitdownnet", dataset);
@@ -129,7 +147,7 @@ static void Extract(Dictionary<string, string> o)
                 totalMark += tMark;
                 var angleStr = meta?.DeskewAngleDeg.HasValue == true ? $"{meta.DeskewAngleDeg.Value:F2}°" : "skipped";
                 var depth = meta?.ColorDepth == OcrColorDepth.Grayscale8bpp ? 8 : 32;
-                Console.WriteLine($"{dataset}/{Path.GetFileName(file)} dpi={meta?.Dpi} depth={depth} deskew={angleStr} psm={meta?.Psm} oem={(int)(meta?.Oem ?? 0)} user_defined_dpi={options.OcrUserDpi} time_ms={tMark}");
+                Console.WriteLine($"{dataset}/{Path.GetFileName(file)} dpi={meta?.Dpi} depth={depth} deskew={angleStr} psm={meta?.Psm} oem={(int)(meta?.Oem ?? 0)} user_defined_dpi={options.OcrUserDpi} preserve_spaces=1 time_ms={tMark} raster={rasterPath}");
                 tdict["markitdownnet"] = tMark;
             }
 
@@ -177,15 +195,17 @@ static IEnumerable<string> GetImages(string path)
     }
 }
 
-static (string text, OcrMetadata? meta) OcrMark(MarkItDownConverter conv, IEnumerable<string> images)
+static (string text, OcrMetadata? meta) OcrMark(MarkItDownConverter conv, IEnumerable<string> images, string? rasterPath)
 {
     var sb = new StringBuilder();
     OcrMetadata? meta = null;
+    bool first = true;
     foreach (var img in images)
     {
-        var res = conv.ConvertAsync(img, GetMime(img)).Result;
+        var res = conv.ConvertAsync(img, GetMime(img), dumpRasterPath: first ? rasterPath : null).Result;
         meta ??= res.Ocr;
         sb.AppendLine(res.Markdown.Trim());
+        first = false;
     }
     return (sb.ToString().Trim(), meta);
 }
@@ -236,6 +256,7 @@ static void Compare(Dictionary<string, string> o)
     var outJson = o["--out-json"];
     var outMd = o["--out-md"];
     var runCli = o.ContainsKey("--run-cli-sanity");
+    var pixFromFile = o.ContainsKey("--pix-from-file");
 
     var markDir = Path.Combine(ocrDir, "markitdownnet");
     var pyDir = Path.Combine(ocrDir, "pytesseract");
@@ -339,27 +360,28 @@ static void Compare(Dictionary<string, string> o)
         var worst = files.OrderBy(f => Math.Min(f.token_f1, f.line_f1)).Take(2);
         foreach (var w in worst)
         {
-            var datasetPath = Path.Combine(Directory.GetParent(ocrDir)!.FullName, w.dataset);
-            var src = Directory.GetFiles(datasetPath, w.file + ".*").First();
-            var img = GetImages(src).First();
-            var rasterDir = Path.Combine("artifacts", "_sanity", "raster", w.dataset);
-            Directory.CreateDirectory(rasterDir);
-            var rasterPath = Path.Combine(rasterDir, w.file + ".png");
-            var pix = Pix.LoadFromFile(img);
-            if (pix.Depth == 32)
+            var rasterPath = Path.Combine("artifacts", "_sanity", "raster", w.dataset, w.file + ".png");
+            if (!File.Exists(rasterPath))
             {
-                var g = pix.ConvertRGBToGray();
+                var datasetPath = Path.Combine(Directory.GetParent(ocrDir)!.FullName, w.dataset);
+                var src = Directory.GetFiles(datasetPath, w.file + ".*").First();
+                var img = GetImages(src).First();
+                var pix = Pix.LoadFromFile(img);
+                if (pix.Depth == 32)
+                {
+                    var g = pix.ConvertRGBToGray();
+                    pix.Dispose();
+                    pix = g;
+                }
+                else if (pix.Depth != 8)
+                {
+                    var g = pix.ConvertTo8(0);
+                    pix.Dispose();
+                    pix = g;
+                }
+                pix.XRes = 300; pix.YRes = 300; pix.Save(rasterPath);
                 pix.Dispose();
-                pix = g;
             }
-            else if (pix.Depth != 8)
-            {
-                var g = pix.ConvertTo8(0);
-                pix.Dispose();
-                pix = g;
-            }
-            pix.XRes = 300; pix.YRes = 300; pix.Save(rasterPath);
-            pix.Dispose();
 
             var cliDir = Path.Combine("artifacts", "_sanity", "cli", w.dataset);
             Directory.CreateDirectory(cliDir);
@@ -375,12 +397,26 @@ static void Compare(Dictionary<string, string> o)
             psi.ArgumentList.Add("6");
             psi.ArgumentList.Add("-l");
             psi.ArgumentList.Add("eng");
+            psi.ArgumentList.Add("-c");
+            psi.ArgumentList.Add("preserve_interword_spaces=1");
             using var p = Process.Start(psi);
             var output = p!.StandardOutput.ReadToEnd();
             p.WaitForExit();
             File.WriteAllText(cliPath, output);
             Console.WriteLine($"cli sanity: file={w.dataset}/{w.file} exit={p.ExitCode} bytes_out={output.Length}");
             cliPaths.Add(cliPath);
+
+            if (pixFromFile)
+            {
+                using var eng = new TesseractEngine("/usr/share/tesseract-ocr/5/tessdata", "eng", EngineMode.LstmOnly);
+                eng.SetVariable("user_defined_dpi", "300");
+                eng.SetVariable("preserve_interword_spaces", "1");
+                eng.DefaultPageSegMode = (PageSegMode)6;
+                using var px = Pix.LoadFromFile(rasterPath);
+                using var pg = eng.Process(px);
+                var txt = pg.GetText();
+                Console.WriteLine($"pix_from_file=true file={w.dataset}/{w.file} bytes_out={txt.Length}");
+            }
         }
     }
 

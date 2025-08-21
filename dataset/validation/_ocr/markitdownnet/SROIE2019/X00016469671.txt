@@ -12,23 +12,23 @@ Email: ng@ojegroup.com
 Cash Bill
 
 ““Tavoice No”: PEGIV-1030531 =~:
-Date 02/01/2019 2:47:14 PM
-Cashier : RHYS TAN
+Date         02/01/2019 2:47:14 PM
+Cashier      : RHYS TAN
 Sales Persor : FATIN
 
 eOROGR, RY Fe Arne
-000000111 1 170,00 170.00
-KINGS SAFETY Pood
+000000111            1 170,00     170.00
+KINGS SAFETY           Pood
 SHOES KWO 805
 
 Qty’ 1 Total Item Discount! =i.”
-Total Amount: 170.00
+Total Amount:        170.00
 slags causes OO OD
-TOTAL: 170.00
-VISA CARD 170.00
+TOTAL:      170.00
+VISA CARD              170.00
 
 XXX KK KKK KK4 318
-Approval Code: 123 ey) U0
+Approval Code: 123                 ey)  U0
 
 Goods Sold Are Not Returnable & Refundable
 ****Thank You. Please Come Again.****

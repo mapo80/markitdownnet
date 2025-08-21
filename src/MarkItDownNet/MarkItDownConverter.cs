@@ -40,7 +40,7 @@ public class MarkItDownConverter
     }
 
     /// <summary>Convert the input file based on the provided mime type.</summary>
-    public async Task<MarkItDownResult> ConvertAsync(string path, string mimeType, CancellationToken cancellationToken = default)
+    public async Task<MarkItDownResult> ConvertAsync(string path, string mimeType, CancellationToken cancellationToken = default, string? dumpRasterPath = null)
     {
         if (string.IsNullOrWhiteSpace(path))
         {
@@ -52,7 +52,7 @@ public class MarkItDownConverter
         return mimeType switch
         {
             "application/pdf" => await Task.Run(() => ProcessPdf(path, cancellationToken), cancellationToken),
-            var m when m.StartsWith("image/") => await Task.Run(() => ProcessImage(path, cancellationToken), cancellationToken),
+            var m when m.StartsWith("image/") => await Task.Run(() => ProcessImage(path, dumpRasterPath, cancellationToken), cancellationToken),
             _ => throw new NotSupportedException($"Unsupported mime type '{mimeType}'.")
         };
     }
@@ -124,9 +124,15 @@ public class MarkItDownConverter
         return new MarkItDownResult(markdown, pages, lines, words, meta);
     }
 
-    private MarkItDownResult ProcessImage(string path, CancellationToken ct)
+    private MarkItDownResult ProcessImage(string path, string? dumpRasterPath, CancellationToken ct)
     {
         var prep = PreparePix(path);
+        if (!string.IsNullOrEmpty(dumpRasterPath))
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(dumpRasterPath)!);
+            prep.pix.Save(dumpRasterPath);
+            _logger.Information("raster={RasterPath}", dumpRasterPath);
+        }
         var pages = new List<Page> { new Page(1, prep.pix.Width, prep.pix.Height) };
         var (lines, words) = ProcessPix(prep.pix, 1, ct);
         prep.pix.Dispose();
@@ -144,8 +150,15 @@ public class MarkItDownConverter
             _options.OcrOem);
         engine.SetVariable("OMP_THREAD_LIMIT", _options.OcrThreads.ToString());
         engine.SetVariable("user_defined_dpi", _options.OcrUserDpi.ToString());
-        _logger.Information("psm={Psm} oem={Oem} user_defined_dpi={Dpi}", _options.OcrPsm, (int)_options.OcrOem, _options.OcrUserDpi);
-        using var page = engine.Process(pix, (PageSegMode)_options.OcrPsm);
+        engine.SetVariable("preserve_interword_spaces", "1");
+        engine.DefaultPageSegMode = (PageSegMode)_options.OcrPsm;
+        _logger.Information(
+            "psm={Psm} oem={Oem} user_defined_dpi={Dpi} preserve_spaces={Preserve}",
+            _options.OcrPsm,
+            (int)_options.OcrOem,
+            _options.OcrUserDpi,
+            1);
+        using var page = engine.Process(pix);
         using var iter = page.GetIterator();
         iter.Begin();
         do
