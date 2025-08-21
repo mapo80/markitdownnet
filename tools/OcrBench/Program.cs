@@ -8,6 +8,8 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using MarkItDownNet;
+using Tesseract;
+using SkiaSharp;
 
 if (args.Length == 0)
 {
@@ -28,8 +30,20 @@ else
 static Dictionary<string, string> ParseArgs(string[] a)
 {
     var d = new Dictionary<string, string>();
-    for (int i = 0; i < a.Length - 1; i += 2)
-        d[a[i]] = a[i + 1];
+    for (int i = 0; i < a.Length; i++)
+    {
+        var key = a[i];
+        if (!key.StartsWith("--")) continue;
+        if (i + 1 < a.Length && !a[i + 1].StartsWith("--"))
+        {
+            d[key] = a[i + 1];
+            i++;
+        }
+        else
+        {
+            d[key] = "1";
+        }
+    }
     return d;
 }
 
@@ -40,13 +54,22 @@ static void Extract(Dictionary<string, string> o)
     var langs = o["--langs"];
     var psm = o["--psm"];
     var threads = o["--threads"];
-    var python = o["--python-exe"];
+    var python = o.GetValueOrDefault("--python-exe", "python3");
+    var refresh = o.GetValueOrDefault("--refresh", "both");
+    var doMark = refresh.Contains("markitdownnet");
+    var doPy = refresh.Contains("pytesseract");
 
     Environment.SetEnvironmentVariable("OMP_THREAD_LIMIT", threads);
 
-    if (Directory.Exists(outDir)) Directory.Delete(outDir, true);
-    Directory.CreateDirectory(Path.Combine(outDir, "markitdownnet"));
-    Directory.CreateDirectory(Path.Combine(outDir, "pytesseract"));
+    var markDir = Path.Combine(outDir, "markitdownnet");
+    var pyDir = Path.Combine(outDir, "pytesseract");
+    var rasterRoot = Path.Combine(outDir, "_raster");
+    Directory.CreateDirectory(outDir);
+    if (doMark && Directory.Exists(markDir)) Directory.Delete(markDir, true);
+    if (doPy && Directory.Exists(pyDir)) Directory.Delete(pyDir, true);
+    if (doMark) Directory.CreateDirectory(markDir);
+    if (doPy) Directory.CreateDirectory(pyDir);
+    Directory.CreateDirectory(rasterRoot);
 
     var options = new MarkItDownOptions
     {
@@ -63,7 +86,10 @@ static void Extract(Dictionary<string, string> o)
 
     var exts = new HashSet<string>(new[] { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".pdf" }, StringComparer.OrdinalIgnoreCase);
     var datasets = Directory.GetDirectories(inputDir).Where(d => Path.GetFileName(d) != "_ocr");
-    var timings = new Dictionary<string, Dictionary<string, long>>();
+    var timingsPath = Path.Combine(outDir, "timings.json");
+    var timings = File.Exists(timingsPath)
+        ? JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, long>>>(File.ReadAllText(timingsPath))!
+        : new Dictionary<string, Dictionary<string, long>>();
     long totalMark = 0, totalPy = 0;
 
     foreach (var datasetPath in datasets)
@@ -77,33 +103,50 @@ static void Extract(Dictionary<string, string> o)
             var rel = dataset + "/" + name;
             var images = GetImages(file).ToList();
 
-            var sw = Stopwatch.StartNew();
-            var textMark = OcrMark(converter, images);
-            sw.Stop();
-            var tMark = sw.ElapsedMilliseconds;
-            var outMarkDir = Path.Combine(outDir, "markitdownnet", dataset);
-            Directory.CreateDirectory(outMarkDir);
-            File.WriteAllText(Path.Combine(outMarkDir, name), textMark);
-            totalMark += tMark;
-            Console.WriteLine($"{dataset} | {Path.GetFileName(file)} | markitdownnet | {tMark} ms");
+            var rasterDir = Path.Combine(rasterRoot, dataset);
+            Directory.CreateDirectory(rasterDir);
+            var rasterPath = Path.Combine(rasterDir, Path.GetFileNameWithoutExtension(file) + ".png");
+            SaveRaster(images.First(), rasterPath);
+            using var rpix = Pix.LoadFromFile(rasterPath);
+            var depth = rpix.Depth;
 
-            sw.Restart();
-            var textPy = OcrPy(images, python, langs, psm);
-            sw.Stop();
-            var tPy = sw.ElapsedMilliseconds;
-            var outPyDir = Path.Combine(outDir, "pytesseract", dataset);
-            Directory.CreateDirectory(outPyDir);
-            File.WriteAllText(Path.Combine(outPyDir, name), textPy);
-            totalPy += tPy;
-            Console.WriteLine($"{dataset} | {Path.GetFileName(file)} | pytesseract | {tPy} ms");
+            long tMark = 0, tPy = 0;
+            if (doMark)
+            {
+                var sw = Stopwatch.StartNew();
+                var textMark = OcrMark(converter, images);
+                sw.Stop();
+                tMark = sw.ElapsedMilliseconds;
+                var outMarkDir = Path.Combine(outDir, "markitdownnet", dataset);
+                Directory.CreateDirectory(outMarkDir);
+                File.WriteAllText(Path.Combine(outMarkDir, name), textMark);
+                totalMark += tMark;
+            }
 
-            timings[rel] = new Dictionary<string, long> { { "markitdownnet", tMark }, { "pytesseract", tPy } };
+            if (doPy)
+            {
+                var sw = Stopwatch.StartNew();
+                var textPy = OcrPy(images, python, langs, psm);
+                sw.Stop();
+                tPy = sw.ElapsedMilliseconds;
+                var outPyDir = Path.Combine(outDir, "pytesseract", dataset);
+                Directory.CreateDirectory(outPyDir);
+                File.WriteAllText(Path.Combine(outPyDir, name), textPy);
+                totalPy += tPy;
+            }
+
+            var entry = timings.ContainsKey(rel) ? timings[rel] : new Dictionary<string, long>();
+            if (doMark) entry["markitdownnet"] = tMark;
+            if (doPy) entry["pytesseract"] = tPy;
+            timings[rel] = entry;
+
+            Console.WriteLine($"{dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} deskew=skipped xdpi=300 ydpi=300 psm=6 oem=1 user_defined_dpi=300 preserve_spaces=1 time_ms={tMark} raster={rasterPath}");
         }
     }
 
-    File.WriteAllText(Path.Combine(outDir, "timings.json"), JsonSerializer.Serialize(timings, new JsonSerializerOptions { WriteIndented = true }));
-    Console.WriteLine($"TOTAL markitdownnet {totalMark} ms");
-    Console.WriteLine($"TOTAL pytesseract {totalPy} ms");
+    File.WriteAllText(timingsPath, JsonSerializer.Serialize(timings, new JsonSerializerOptions { WriteIndented = true }));
+    if (doMark) Console.WriteLine($"TOTAL markitdownnet {totalMark} ms");
+    if (doPy) Console.WriteLine($"TOTAL pytesseract {totalPy} ms");
 }
 
 static IEnumerable<string> GetImages(string path)
@@ -185,6 +228,7 @@ static void Compare(Dictionary<string, string> o)
     var ocrDir = o["--ocr-dir"];
     var outJson = o["--out-json"];
     var outMd = o["--out-md"];
+    var runCliSanity = o.ContainsKey("--run-cli-sanity");
 
     var markDir = Path.Combine(ocrDir, "markitdownnet");
     var pyDir = Path.Combine(ocrDir, "pytesseract");
@@ -281,6 +325,73 @@ static void Compare(Dictionary<string, string> o)
         sb.AppendLine($"- {kv.Key}: {kv.Value}");
     Directory.CreateDirectory(Path.GetDirectoryName(outMd)!);
     File.WriteAllText(outMd, sb.ToString());
+
+    var fails = new List<string>();
+    if (global.token_f1_avg < 0.80 || global.line_f1_avg < 0.50)
+        fails.Add($"GLOBAL Token-F1={global.token_f1_avg:F2} line_F1={global.line_f1_avg:F2}");
+    foreach (var ds in new[] { "ICDAR", "PUBTABLES" })
+    {
+        if (byDataset.TryGetValue(ds, out var m))
+        {
+            if (m.token_f1_avg < 0.80 || m.line_f1_avg < 0.50)
+                fails.Add($"{ds} Token-F1={m.token_f1_avg:F2} line_F1={m.line_f1_avg:F2}");
+        }
+    }
+    if (fails.Count > 0)
+    {
+        Console.WriteLine("Gate check failed:");
+        foreach (var f in fails) Console.WriteLine(f);
+        Environment.ExitCode = 1;
+    }
+
+    if (runCliSanity)
+    {
+        var worst = files.OrderByDescending(x => x.cer_char).Take(2).ToList();
+        Directory.CreateDirectory("artifacts/_sanity");
+        foreach (var f in worst)
+        {
+            var img = Path.Combine(ocrDir, "_raster", f.dataset, f.file + ".png");
+            var baseName = f.dataset + "_" + f.file;
+            var out6 = Path.Combine("artifacts/_sanity", baseName + ".psm6.cli.txt");
+            var out11 = Path.Combine("artifacts/_sanity", baseName + ".psm11.cli.txt");
+            var e6 = RunTessCli(img, out6, "6");
+            var e11 = RunTessCli(img, out11, "11");
+            var b6 = new FileInfo(out6).Length;
+            var b11 = new FileInfo(out11).Length;
+            var exit = e6 == 0 && e11 == 0 ? 0 : 1;
+            Console.WriteLine($"cli sanity: file={f.dataset}/{f.file} psm6_bytes={b6} psm11_bytes={b11} exit={exit}");
+        }
+    }
+}
+
+static void SaveRaster(string src, string dest)
+{
+    using var bmp = SKBitmap.Decode(src);
+    using var img = SKImage.FromBitmap(bmp);
+    using var data = img.Encode(SKEncodedImageFormat.Png, 100);
+    File.WriteAllBytes(dest, data.ToArray());
+}
+
+static int RunTessCli(string img, string outFile, string psm)
+{
+    var psi = new ProcessStartInfo("tesseract")
+    {
+        RedirectStandardOutput = true,
+        RedirectStandardError = true
+    };
+    psi.ArgumentList.Add(img);
+    psi.ArgumentList.Add("stdout");
+    psi.ArgumentList.Add("--psm");
+    psi.ArgumentList.Add(psm);
+    psi.ArgumentList.Add("-l");
+    psi.ArgumentList.Add("eng");
+    psi.ArgumentList.Add("-c");
+    psi.ArgumentList.Add("preserve_interword_spaces=1");
+    using var p = Process.Start(psi);
+    var output = p!.StandardOutput.ReadToEnd();
+    p.WaitForExit();
+    File.WriteAllText(outFile, output);
+    return p.ExitCode;
 }
 
 static string Normalize(string text)

@@ -136,12 +136,28 @@ public class MarkItDownConverter
     {
         var lines = new List<Line>();
         var words = new List<Word>();
+
+        var depth = pix.Depth;
+        var converted = 0;
+        Pix pix8 = pix;
+        if (depth != 8)
+        {
+            pix8 = pix.ConvertTo8(0);
+            converted = 1;
+        }
+        pix8.XRes = 300;
+        pix8.YRes = 300;
+        _logger.Information("pix.depth={Depth} converted={Converted} xdpi={Xdpi} ydpi={Ydpi}", depth, converted, pix8.XRes, pix8.YRes);
+
         using var engine = new TesseractEngine(
             _options.OcrDataPath ?? string.Empty,
             _options.OcrLanguages,
             EngineMode.LstmOnly);
+        engine.SetVariable("user_defined_dpi", "300");
+        engine.SetVariable("preserve_interword_spaces", "1");
         engine.DefaultPageSegMode = _options.PageSegMode;
-        using var page = engine.Process(pix);
+        _logger.Information("psm=6 oem=1 user_defined_dpi=300 preserve_spaces=1");
+        using var page = engine.Process(pix8);
         using var iter = page.GetIterator();
         iter.Begin();
         do
@@ -167,6 +183,8 @@ public class MarkItDownConverter
                 }
             }
         } while (iter.Next(PageIteratorLevel.Word));
+
+        if (converted == 1) pix8.Dispose();
 
         return (lines, words);
     }
