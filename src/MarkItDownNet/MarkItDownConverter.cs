@@ -242,17 +242,29 @@ public class MarkItDownConverter
             if (prev != null)
             {
                 var gap = line.BBox.Y - (prev.BBox.Y + prev.BBox.Height);
-                if (isBullet && prevBullet)
+                if (isBullet)
                 {
                     sb.AppendLine();
+                    if (!prevBullet)
+                    {
+                        sb.AppendLine();
+                    }
+                }
+                else if (prevBullet)
+                {
+                    sb.AppendLine().AppendLine();
+                }
+                else if (gap > _options.ParagraphGapThreshold)
+                {
+                    sb.AppendLine().AppendLine();
+                }
+                else if (_options.MergeLines)
+                {
+                    sb.Append(' ');
                 }
                 else
                 {
                     sb.AppendLine();
-                    if (gap > _options.ParagraphGapThreshold)
-                    {
-                        sb.AppendLine();
-                    }
                 }
             }
 

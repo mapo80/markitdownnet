@@ -28,4 +28,9 @@ public class MarkItDownOptions
     /// Detect bullet or numbered list items and emit proper Markdown list syntax.
     /// </summary>
     public bool DetectBulletLists { get; set; } = true;
+
+    /// <summary>
+    /// Merge consecutive lines into paragraphs instead of preserving line breaks.
+    /// </summary>
+    public bool MergeLines { get; set; } = true;
 }
