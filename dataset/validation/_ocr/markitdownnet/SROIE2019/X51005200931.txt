@@ -8,39 +8,39 @@ BANDAR BARU PERMAS JAYA
 TEL :07-386 7524 FAX: 07-386 3794
 GST NO: 0oo80058e824
 SIMPLIFIED TAX INVOICE
-GOGIANT ENGINEERING (i) SDN BHD ~
+GOGIANT ENGINEERING (i) SDN BHD       ~
 Recelati# CS00082258
-‘Salesperson, Date. 09/02/2078
-Cashier: USER Time: 08:32:00
+‘Salesperson,                     Date. 09/02/2078
+Cashier: USER                      Time: 08:32:00
 nr oer
-tem Qty RSP Amount
-6783 Woy 5 380 HBL
+tem                  Qty RSP Amount
+6783               Woy 5 380 HBL
 SR CERAMIC CAP
-2084 $84 30 380 © 114.00 .
+2084               $84 30 380 © 114.00                                   .
 SR: SISTEEL 1/2" STREET ELBOW
-1760 GA 4 85.00 86.00
+1760                GA 4 85.00 86.00
 SR: 24MIN STARWELD RED HEAD TUNGSTEN ROD
-3496 44 3 B00 99.00
+3496                 44 3 B00 99.00
 SR: ESICUT 4" CUTTING DISC (4BOX)-50PCS
-2460 GA 2 43.00 -86.0¢
+2460                 GA 2 43.00 -86.0¢
 SR: WELDRO PICKLING GEL 1K
-9428 Ge 4 1900 40.0c
+9428                 Ge 4 1900 40.0c
 SR: 13.5" WELDING GLOVE- GREEN (@3}
 TOT GT BE
 
-(Excluded GST) Sub Total (RM) 411.50
-Discount (RM) ooo °
-Total GST (RM) 24.69
-Rounding (RM) : 0.0%
+(Excluded GST) Sub Total (RM)        411.50
+Discount (RM)          ooo                °
+Total GST (RM)         24.69
+Rounding (RM) :       0.0%
 Total (RM): 436.20
 GASH : 436.20
-Ghange (RM) : 0.00
+Ghange (RM) :       0.00
 
 GST SUMMARY
 
 _TaxGode %@ Amount GST.
-SR 6 417.50 24.69
+SR               6         417.50       24.69
 Tg tal TOR
 
 GOONS SOLD ARE NOT RETURNABLE,
-THANK YOU. .
+THANK YOU.                                .

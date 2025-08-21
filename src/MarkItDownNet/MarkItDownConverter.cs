@@ -9,10 +9,6 @@ using System.Threading.Tasks;
 using Markdig;
 using Serilog;
 using Tesseract;
-using UglyToad.PdfPig;
-using UglyToad.PdfPig.Content;
-using PDFtoImage;
-using SkiaSharp;
 using System.Runtime.InteropServices;
 
 namespace MarkItDownNet;
@@ -57,63 +53,26 @@ public class MarkItDownConverter
         };
     }
 
+    public double LastDeskewAngle { get; private set; }
+    public bool LastDeskewApplied { get; private set; }
+
     private MarkItDownResult ProcessPdf(string path, CancellationToken ct)
     {
-        using var stream = File.OpenRead(path);
-        using var document = PdfDocument.Open(stream);
         var pages = new List<Page>();
         var lines = new List<Line>();
         var words = new List<Word>();
 
-        foreach (var page in document.GetPages())
+        int pageNum = 0;
+        foreach (var item in Rasterizer.FromPdf(path, _options))
         {
-            ct.ThrowIfCancellationRequested();
-            pages.Add(new Page(page.Number, page.Width, page.Height));
-
-            var pageWords = page.GetWords()
-                .Select(w => new Word(page.Number, w.Text, BoundingBox.FromPdf(w.BoundingBox, page.Width, page.Height)))
-                .ToList();
-
-            words.AddRange(pageWords);
-
-            foreach (var lineWords in GroupWordsIntoLines(pageWords))
+            using (item.pix)
             {
-                var text = string.Join(" ", lineWords.Select(w => w.Text));
-                var union = Union(lineWords.Select(w => w.BBox));
-                lines.Add(new Line(page.Number, text, union));
-            }
-        }
-
-        // If there are not enough words, fall back to OCR
-        if (words.Count < _options.MinimumNativeWordThreshold)
-        {
-            _logger.Information("Native text too small ({Count}), attempting OCR fallback", words.Count);
-            return ProcessPdfWithOcr(path, ct);
-        }
-
-        var markdown = BuildMarkdown(lines);
-        return new MarkItDownResult(markdown, pages, lines, words);
-    }
-
-    private MarkItDownResult ProcessPdfWithOcr(string path, CancellationToken ct)
-    {
-        var pages = new List<Page>();
-        var lines = new List<Line>();
-        var words = new List<Word>();
-
-        // Rasterize PDF into images using PDFtoImage
-        var renderOptions = new RenderOptions { Dpi = _options.PdfRasterDpi };
-        using var stream = File.OpenRead(path);
-        foreach (var bitmap in Conversion.ToImages(stream, leaveOpen: false, password: null, renderOptions))
-        {
-            ct.ThrowIfCancellationRequested();
-            using (bitmap)
-            {
-                pages.Add(new Page(pages.Count + 1, bitmap.Width, bitmap.Height));
-                using var image = SKImage.FromBitmap(bitmap);
-                using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                using var pix = Pix.LoadFromMemory(data.ToArray());
-                var result = ProcessPix(pix, pages.Count, ct);
+                LastDeskewAngle = item.angle;
+                LastDeskewApplied = item.deskewed;
+                ct.ThrowIfCancellationRequested();
+                pageNum++;
+                pages.Add(new Page(pageNum, item.pix.Width, item.pix.Height));
+                var result = ProcessPix(item.pix, pageNum, ct);
                 lines.AddRange(result.lines);
                 words.AddRange(result.words);
             }
@@ -125,7 +84,10 @@ public class MarkItDownConverter
 
     private MarkItDownResult ProcessImage(string path, CancellationToken ct)
     {
-        using var pix = Pix.LoadFromFile(path);
+        var item = Rasterizer.FromImage(path, _options);
+        using var pix = item.pix;
+        LastDeskewAngle = item.angle;
+        LastDeskewApplied = item.deskewed;
         var (lines, words) = ProcessPix(pix, 1, ct);
         var pages = new List<Page> { new Page(1, pix.Width, pix.Height) };
         var markdown = BuildMarkdown(lines);
@@ -136,11 +98,13 @@ public class MarkItDownConverter
     {
         var lines = new List<Line>();
         var words = new List<Word>();
+        Environment.SetEnvironmentVariable("OMP_THREAD_LIMIT", _options.OcrThreads.ToString());
         using var engine = new TesseractEngine(
             _options.OcrDataPath ?? string.Empty,
             _options.OcrLanguages,
-            EngineMode.LstmOnly);
-        engine.DefaultPageSegMode = _options.PageSegMode;
+            _options.OcrOem);
+        engine.DefaultPageSegMode = (PageSegMode)_options.OcrPsm;
+        engine.SetVariable("preserve_interword_spaces", "1");
         using var page = engine.Process(pix);
         using var iter = page.GetIterator();
         iter.Begin();
@@ -174,45 +138,6 @@ public class MarkItDownConverter
     private static BoundingBox Normalize(Rect rect, int width, int height)
     {
         return new BoundingBox((double)rect.X1 / width, (double)rect.Y1 / height, (double)rect.Width / width, (double)rect.Height / height);
-    }
-
-    private static IEnumerable<IEnumerable<Word>> GroupWordsIntoLines(IReadOnlyList<Word> words)
-    {
-        const double tolerance = 0.02; // normalized units
-        var result = new List<List<Word>>();
-        var sorted = words.OrderBy(w => w.BBox.Y).ThenBy(w => w.BBox.X).ToList();
-
-        var current = new List<Word>();
-        double? currentTop = null;
-        foreach (var w in sorted)
-        {
-            if (currentTop == null || Math.Abs(w.BBox.Y - currentTop.Value) <= tolerance)
-            {
-                currentTop = w.BBox.Y;
-                current.Add(w);
-            }
-            else
-            {
-                result.Add(current);
-                current = new List<Word> { w };
-                currentTop = w.BBox.Y;
-            }
-        }
-        if (current.Count > 0)
-        {
-            result.Add(current);
-        }
-
-        return result;
-    }
-
-    private static BoundingBox Union(IEnumerable<BoundingBox> rects)
-    {
-        var left = rects.Min(r => r.X);
-        var top = rects.Min(r => r.Y);
-        var right = rects.Max(r => r.X + r.Width);
-        var bottom = rects.Max(r => r.Y + r.Height);
-        return new BoundingBox(left, top, right - left, bottom - top);
     }
 
     private string BuildMarkdown(IEnumerable<Line> lines)
