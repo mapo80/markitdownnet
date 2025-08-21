@@ -42,7 +42,7 @@ static void ConvertCommand(string[] args)
 static void BenchCommand(string[] args)
 {
     string input = GetOption(args, "--input") ?? throw new ArgumentException("--input required");
-    string modes = GetOption(args, "--modes") ?? "pre,post-v0,post-v01,post-v02,python";
+    string modes = GetOption(args, "--modes") ?? "pre,post-v0,post-v01,post-v02,post-v03,python";
     string outJson = GetOption(args, "--out-json") ?? throw new ArgumentException("--out-json required");
     string outHtml = GetOption(args, "--out-html") ?? throw new ArgumentException("--out-html required");
     string summaryMd = GetOption(args, "--summary-md") ?? "";
@@ -135,7 +135,7 @@ static string SummaryMarkdown(List<BenchResult> results)
 {
     var sb = new System.Text.StringBuilder();
     sb.AppendLine("## Executive summary");
-    foreach (var mode in new[]{"pre","post-v0","post-v01","post-v02"})
+    foreach (var mode in new[]{"pre","post-v0","post-v01","post-v02","post-v03"})
     {
         var r = results.FirstOrDefault(x=>x.Mode==mode);
         if (r?.Similarity!=null)
