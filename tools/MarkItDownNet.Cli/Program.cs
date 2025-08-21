@@ -44,7 +44,7 @@ static void ConvertCommand(string[] args)
 static void BenchCommand(string[] args)
 {
     string input = GetOption(args, "--input") ?? throw new ArgumentException("--input required");
-    string modes = GetOption(args, "--modes") ?? "pre,post-1R,python-cold,python-hot";
+    string modes = GetOption(args, "--modes") ?? "pre,post-1R,post-1S,python-cold,python-hot";
     string outJson = GetOption(args, "--out-json") ?? throw new ArgumentException("--out-json required");
     string outHtml = GetOption(args, "--out-html") ?? throw new ArgumentException("--out-html required");
     string summaryMd = GetOption(args, "--summary-md") ?? "";
@@ -92,8 +92,12 @@ static void BenchCommand(string[] args)
             },
             structure = new {
                 line_count = r.Similarity.LineCount,
+                line_f1 = r.Similarity.LineF1,
                 list_items = r.Similarity.ListItems,
-                max_list_depth = r.Similarity.MaxListDepth
+                max_list_depth = r.Similarity.MaxListDepth,
+                pipes_lines_count = r.Similarity.PipeLines,
+                median_pipes_per_line = r.Similarity.MedianPipesPerLine,
+                max_pipes_per_line = r.Similarity.MaxPipesPerLine
             }
         },
         paths = new { md = r.Output, md_norm = r.NormOutput }
@@ -172,37 +176,44 @@ static string HtmlReport(List<BenchResult> results)
         sb.AppendLine($"<tr><td>{r.Mode}</td><td>{r.AvgMs:F1}</td><td>{r.StdMs:F1}</td></tr>");
     sb.AppendLine("</table>");
     var pre = results.FirstOrDefault(r=>r.Mode=="pre");
-    var post = results.FirstOrDefault(r=>r.Mode=="post-1R");
+    var post1R = results.FirstOrDefault(r=>r.Mode=="post-1R");
+    var post1S = results.FirstOrDefault(r=>r.Mode=="post-1S");
     var pyHot = results.FirstOrDefault(r=>r.Mode=="python-hot");
     var pyCold = results.FirstOrDefault(r=>r.Mode=="python-cold");
-    if (pre!=null && post!=null)
+    if (post1R!=null && pre!=null)
     {
-        var delta = (post.AvgMs - pre.AvgMs)/pre.AvgMs*100.0;
+        var delta = (post1R.AvgMs - pre.AvgMs)/pre.AvgMs*100.0;
         sb.AppendLine($"<p>post-1R vs pre: {delta:F1}%</p>");
+    }
+    if (post1S!=null && post1R!=null)
+    {
+        var delta = (post1S.AvgMs - post1R.AvgMs)/post1R.AvgMs*100.0;
+        sb.AppendLine($"<p>post-1S vs post-1R: {delta:F1}%</p>");
     }
     if (pyHot!=null && pyCold!=null)
     {
         var delta = (pyHot.AvgMs - pyCold.AvgMs)/pyCold.AvgMs*100.0;
         sb.AppendLine($"<p>python-hot vs python-cold: {delta:F1}%</p>");
     }
-    if (pyHot!=null && post!=null)
+    if (pyHot!=null && post1S!=null)
     {
-        var delta = (post.AvgMs - pyHot.AvgMs)/pyHot.AvgMs*100.0;
-        sb.AppendLine($"<p>post-1R vs python-hot: {delta:F1}%</p>");
+        var delta = (post1S.AvgMs - pyHot.AvgMs)/pyHot.AvgMs*100.0;
+        sb.AppendLine($"<p>post-1S vs python-hot: {delta:F1}%</p>");
     }
     if (pyHot!=null)
     {
-        sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_count</th><th>list_items</th></tr>");
-        foreach(var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1R"))
+        sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th><th>line_count</th><th>list_items</th><th>pipes_lines</th><th>median_pipes</th><th>max_pipes</th></tr>");
+        foreach(var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1R" || r.Mode=="post-1S"))
         {
             var s=r.Similarity;
             if (s!=null)
-                sb.AppendLine($"<tr><td>{r.Mode}</td><td>{s.Cer:F3}</td><td>{s.F1:F3}</td><td>{s.LineCount}</td><td>{s.ListItems}</td></tr>");
+                sb.AppendLine($"<tr><td>{r.Mode}</td><td>{s.Cer:F3}</td><td>{s.F1:F3}</td><td>{s.LineF1:F3}</td><td>{s.LineCount}</td><td>{s.ListItems}</td><td>{s.PipeLines}</td><td>{s.MedianPipesPerLine:F1}</td><td>{s.MaxPipesPerLine}</td></tr>");
         }
         sb.AppendLine("</table>");
         var pyNorm = File.ReadAllText(pyHot.NormOutput);
-        var preNorm = results.FirstOrDefault(r=>r.Mode=="pre")?.NormOutput;
-        var postNorm = results.FirstOrDefault(r=>r.Mode=="post-1R")?.NormOutput;
+        var preNorm = pre?.NormOutput;
+        var postNorm = post1R?.NormOutput;
+        var post1SNorm = post1S?.NormOutput;
         if (preNorm!=null)
         {
             sb.AppendLine("<h3>pre vs python-hot</h3><table border='1'><tr><td><pre>");
@@ -215,6 +226,14 @@ static string HtmlReport(List<BenchResult> results)
         {
             sb.AppendLine("<h3>post-1R vs python-hot</h3><table border='1'><tr><td><pre>");
             sb.Append(WebUtility.HtmlEncode(File.ReadAllText(postNorm)));
+            sb.AppendLine("</pre></td><td><pre>");
+            sb.Append(WebUtility.HtmlEncode(pyNorm));
+            sb.AppendLine("</pre></td></tr></table>");
+        }
+        if (post1SNorm!=null)
+        {
+            sb.AppendLine("<h3>post-1S vs python-hot</h3><table border='1'><tr><td><pre>");
+            sb.Append(WebUtility.HtmlEncode(File.ReadAllText(post1SNorm)));
             sb.AppendLine("</pre></td><td><pre>");
             sb.Append(WebUtility.HtmlEncode(pyNorm));
             sb.AppendLine("</pre></td></tr></table>");
@@ -234,43 +253,49 @@ static string SummaryMarkdown(List<BenchResult> results)
         sb.AppendLine($"| {r.Mode} | {r.AvgMs:F1} | {r.StdMs:F1} |");
 
     var pre = results.FirstOrDefault(r=>r.Mode=="pre");
-    var post = results.FirstOrDefault(r=>r.Mode=="post-1R");
+    var post1R = results.FirstOrDefault(r=>r.Mode=="post-1R");
+    var post1S = results.FirstOrDefault(r=>r.Mode=="post-1S");
     var pyHot = results.FirstOrDefault(r=>r.Mode=="python-hot");
-    if (pre!=null && post!=null)
+    if (pre!=null && post1R!=null)
     {
-        var delta = (post.AvgMs - pre.AvgMs) / pre.AvgMs * 100.0;
+        var delta = (post1R.AvgMs - pre.AvgMs) / pre.AvgMs * 100.0;
         sb.AppendLine($"\npost-1R vs pre: {delta:F1}%");
     }
-    if (pyHot!=null && post!=null)
+    if (post1R!=null && post1S!=null)
     {
-        var delta = (post.AvgMs - pyHot.AvgMs) / pyHot.AvgMs * 100.0;
-        sb.AppendLine($"\npost-1R vs python-hot: {delta:F1}%");
+        var delta = (post1S.AvgMs - post1R.AvgMs) / post1R.AvgMs * 100.0;
+        sb.AppendLine($"\npost-1S vs post-1R: {delta:F1}%");
+    }
+    if (pyHot!=null && post1S!=null)
+    {
+        var delta = (post1S.AvgMs - pyHot.AvgMs) / pyHot.AvgMs * 100.0;
+        sb.AppendLine($"\npost-1S vs python-hot: {delta:F1}%");
     }
 
     sb.AppendLine("\n## Quality vs python-hot");
-    sb.AppendLine("| mode | CER | Token-F1 | line_count | list_items |");
-    sb.AppendLine("| --- | --- | --- | --- | --- |");
+    sb.AppendLine("| mode | CER | Token-F1 | line_F1 | line_count | list_items | pipes_lines | median_pipes | max_pipes |");
+    sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- | --- |");
     if (pyHot!=null)
     {
-        foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1R"))
+        foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1R" || r.Mode=="post-1S"))
         {
             var s = r.Similarity;
             if (s != null)
-                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineCount} | {s.ListItems} |");
+                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.LineCount} | {s.ListItems} | {s.PipeLines} | {s.MedianPipesPerLine:F1} | {s.MaxPipesPerLine} |");
         }
     }
     if (pyHot!=null)
     {
         sb.AppendLine("\n### Observations");
         var preS = results.FirstOrDefault(r=>r.Mode=="pre")?.Similarity;
-        var postS = results.FirstOrDefault(r=>r.Mode=="post-1R")?.Similarity;
+        var postS = results.FirstOrDefault(r=>r.Mode=="post-1S")?.Similarity;
         if (preS!=null && postS!=null)
         {
-            sb.AppendLine($"- CER pre {preS.Cer:F3} vs post-1R {postS.Cer:F3}");
-            sb.AppendLine($"- line_count pre {preS.LineCount}, post-1R {postS.LineCount}, python {pyHot.Similarity?.LineCount}");
+            sb.AppendLine($"- CER pre {preS.Cer:F3} vs post-1S {postS.Cer:F3}");
+            sb.AppendLine($"- line_F1 post-1S {postS.LineF1:F3} vs post-1R {results.First(r=>r.Mode=="post-1R").Similarity?.LineF1:F3}");
             var preAvg = results.First(r=>r.Mode=="pre").AvgMs;
-            var postAvg = results.First(r=>r.Mode=="post-1R").AvgMs;
-            sb.AppendLine($"- post-1R overhead vs pre {((postAvg-preAvg)/preAvg*100):F1}%");
+            var postAvg = results.First(r=>r.Mode=="post-1S").AvgMs;
+            sb.AppendLine($"- post-1S overhead vs pre {((postAvg-preAvg)/preAvg*100):F1}%");
         }
     }
     return sb.ToString();
@@ -329,6 +354,9 @@ static Similarity CompareOutputs(string candidatePath, string referencePath)
     double precision = tp / Math.Max(candTokens.Length,1);
     double recall = tp / Math.Max(refTokens.Length,1);
     double f1 = tp==0?0:2*precision*recall/(precision+recall);
+    var candLines = cand.Split('\n');
+    var refLines = refText.Split('\n');
+    var lineF1 = F1Scores(candLines, refLines);
     var structure = StructureCounts(cand);
     var refStructure = StructureCounts(refText);
     double headingMatch = HeadingMatchRatio(cand, refText);
@@ -337,7 +365,8 @@ static Similarity CompareOutputs(string candidatePath, string referencePath)
     return new Similarity{Cer=cer, Precision=precision, Recall=recall, F1=f1,
         HeadingLevels=structure.HeadingLevels, ListItems=structure.ListItems, MaxListDepth=structure.MaxListDepth,
         CodeBlocks=structure.CodeBlocks, HorizontalRules=structure.HorizontalRules, Tables=structure.Tables,
-        HeadingMatch=headingMatch, TableCellF1=tableCellF1, LineCount=structure.LineCount, LineRatio=lineRatio};
+        HeadingMatch=headingMatch, TableCellF1=tableCellF1, LineCount=structure.LineCount, LineRatio=lineRatio,
+        LineF1=lineF1, PipeLines=structure.PipeLines, MedianPipesPerLine=structure.MedianPipesPerLine, MaxPipesPerLine=structure.MaxPipesPerLine};
 }
 
 static string Normalize(string text)
@@ -364,10 +393,23 @@ static int Levenshtein(string s, string t)
     return dp[s.Length,t.Length];
 }
 
+static double F1Scores(string[] cand, string[] reference)
+{
+    var candCounts = cand.GroupBy(l=>l).ToDictionary(g=>g.Key,g=>g.Count());
+    var refCounts = reference.GroupBy(l=>l).ToDictionary(g=>g.Key,g=>g.Count());
+    double tp=0;
+    foreach(var kv in candCounts)
+        if (refCounts.TryGetValue(kv.Key, out var rc)) tp+=Math.Min(kv.Value, rc);
+    double prec = tp / Math.Max(cand.Length,1);
+    double rec = tp / Math.Max(reference.Length,1);
+    return tp==0?0:2*prec*rec/(prec+rec);
+}
+
 static StructureMetrics StructureCounts(string text)
 {
     int[] headLevels = new int[6];
     int listItems=0,maxDepth=0,codeBlocks=0,hrs=0,tables=0; bool inCode=false;
+    var pipeCounts = new List<int>();
     var lines = text.Split('\n');
     int lineCount = lines.Length;
     for (int idx=0; idx<lines.Length; idx++)
@@ -392,8 +434,18 @@ static StructureMetrics StructureCounts(string text)
         if (line.Trim() == "---") hrs++;
         if (line.TrimStart().StartsWith("|") && (idx==0 || !lines[idx-1].TrimStart().StartsWith("|")))
             tables++;
+        int pipes = line.Count(c=>c=='|');
+        if (pipes>0) pipeCounts.Add(pipes);
     }
-    return new StructureMetrics{HeadingLevels=headLevels,ListItems=listItems,MaxListDepth=maxDepth,CodeBlocks=codeBlocks,HorizontalRules=hrs,Tables=tables,LineCount=lineCount};
+    int pipeLines = pipeCounts.Count;
+    double median = pipeLines==0?0:pipeCounts.OrderBy(x=>x).ElementAt(pipeLines/2);
+    if (pipeLines>0 && pipeLines%2==0)
+    {
+        var ordered = pipeCounts.OrderBy(x=>x).ToArray();
+        median = (ordered[pipeLines/2-1]+ordered[pipeLines/2])/2.0;
+    }
+    int maxPipes = pipeLines==0?0:pipeCounts.Max();
+    return new StructureMetrics{HeadingLevels=headLevels,ListItems=listItems,MaxListDepth=maxDepth,CodeBlocks=codeBlocks,HorizontalRules=hrs,Tables=tables,LineCount=lineCount,PipeLines=pipeLines,MedianPipesPerLine=median,MaxPipesPerLine=maxPipes};
 }
 
 static List<List<List<string>>> ExtractTables(string text)
@@ -491,6 +543,10 @@ record Similarity
     public double TableCellF1 { get; set; }
     public int LineCount { get; set; }
     public double LineRatio { get; set; }
+    public double LineF1 { get; set; }
+    public int PipeLines { get; set; }
+    public double MedianPipesPerLine { get; set; }
+    public int MaxPipesPerLine { get; set; }
 }
 
 record StructureMetrics
@@ -502,4 +558,7 @@ record StructureMetrics
     public int HorizontalRules { get; set; }
     public int Tables { get; set; }
     public int LineCount { get; set; }
+    public int PipeLines { get; set; }
+    public double MedianPipesPerLine { get; set; }
+    public int MaxPipesPerLine { get; set; }
 }
