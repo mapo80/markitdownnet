@@ -82,7 +82,7 @@ static BenchResult RunMode(string mode, string input, string pythonExe, TextMode
         var sw = Stopwatch.StartNew();
         if (mode == "python")
         {
-            var psi = new ProcessStartInfo(pythonExe, $"-m markitdown {input} -o {tempOut}")
+            var psi = new ProcessStartInfo(pythonExe, $"tools/markitdown_ocr.py {input} -o {tempOut}")
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true
