@@ -76,31 +76,48 @@ static void BenchCommand(string[] args)
         python = GetPythonVersion(pythonExe)
     };
 
-    var modesJson = results.Select(r => new {
-        mode = r.Mode,
-        timing = new {
-            trials = r.Trials.Select(t => new { md_ms = t }).ToArray(),
-            avg_ms = r.AvgMs,
-            std_ms = r.StdMs
-        },
-        quality_vs_python_hot = r.Similarity == null ? null : new {
-            text = new {
-                cer_char = r.Similarity.Cer,
-                token_precision = r.Similarity.Precision,
-                token_recall = r.Similarity.Recall,
-                token_f1 = r.Similarity.F1
+    bool refHasTables = results.FirstOrDefault(r => r.Mode == "python-hot")?.Similarity?.Tables > 0;
+
+    var modesJson = results.Select(r => {
+        object? tables = null;
+        if (r.Similarity != null)
+        {
+            tables = refHasTables
+                ? new {
+                    tables_count = r.Similarity.Tables,
+                    table_cell_F1 = r.Similarity.TableCellF1
+                }
+                : new {
+                    tables_count = r.Similarity.Tables,
+                    pipes_lines_count = r.Similarity.PipeLines,
+                    median_pipes_per_line = r.Similarity.MedianPipesPerLine,
+                    max_pipes_per_line = r.Similarity.MaxPipesPerLine
+                };
+        }
+        return new {
+            mode = r.Mode,
+            timing = new {
+                trials = r.Trials.Select(t => new { md_ms = t }).ToArray(),
+                avg_ms = r.AvgMs,
+                std_ms = r.StdMs
             },
-            structure = new {
-                line_count = r.Similarity.LineCount,
-                line_f1 = r.Similarity.LineF1,
-                list_items = r.Similarity.ListItems,
-                max_list_depth = r.Similarity.MaxListDepth,
-                pipes_lines_count = r.Similarity.PipeLines,
-                median_pipes_per_line = r.Similarity.MedianPipesPerLine,
-                max_pipes_per_line = r.Similarity.MaxPipesPerLine
-            }
-        },
-        paths = new { md = r.Output, md_norm = r.NormOutput }
+            quality_vs_python_hot = r.Similarity == null ? null : new {
+                text = new {
+                    cer_char = r.Similarity.Cer,
+                    token_precision = r.Similarity.Precision,
+                    token_recall = r.Similarity.Recall,
+                    token_f1 = r.Similarity.F1
+                },
+                structure = new {
+                    line_count = r.Similarity.LineCount,
+                    line_f1 = r.Similarity.LineF1,
+                    list_items = r.Similarity.ListItems,
+                    max_list_depth = r.Similarity.MaxListDepth,
+                    tables = tables
+                }
+            },
+            paths = new { md = r.Output, md_norm = r.NormOutput }
+        };
     }).ToArray();
 
     var jsonObj = new { file = input, modes = modesJson, env = env };
@@ -202,14 +219,29 @@ static string HtmlReport(List<BenchResult> results)
     }
     if (pyHot!=null)
     {
-        sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th><th>line_count</th><th>list_items</th><th>pipes_lines</th><th>median_pipes</th><th>max_pipes</th></tr>");
-        foreach(var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
+        bool refHasTable = pyHot.Similarity?.Tables > 0;
+        if (refHasTable)
         {
-            var s=r.Similarity;
-            if (s!=null)
-                sb.AppendLine($"<tr><td>{r.Mode}</td><td>{s.Cer:F3}</td><td>{s.F1:F3}</td><td>{s.LineF1:F3}</td><td>{s.LineCount}</td><td>{s.ListItems}</td><td>{s.PipeLines}</td><td>{s.MedianPipesPerLine:F1}</td><td>{s.MaxPipesPerLine}</td></tr>");
+            sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th><th>line_count</th><th>list_items</th><th>tables_count</th><th>table_cell_F1</th></tr>");
+            foreach(var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
+            {
+                var s=r.Similarity;
+                if (s!=null)
+                    sb.AppendLine($"<tr><td>{r.Mode}</td><td>{s.Cer:F3}</td><td>{s.F1:F3}</td><td>{s.LineF1:F3}</td><td>{s.LineCount}</td><td>{s.ListItems}</td><td>{s.Tables}</td><td>{s.TableCellF1:F3}</td></tr>");
+            }
+            sb.AppendLine("</table>");
         }
-        sb.AppendLine("</table>");
+        else
+        {
+            sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th><th>line_count</th><th>list_items</th><th>tables_count</th><th>pipes_lines</th><th>median_pipes</th><th>max_pipes</th></tr>");
+            foreach(var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
+            {
+                var s=r.Similarity;
+                if (s!=null)
+                    sb.AppendLine($"<tr><td>{r.Mode}</td><td>{s.Cer:F3}</td><td>{s.F1:F3}</td><td>{s.LineF1:F3}</td><td>{s.LineCount}</td><td>{s.ListItems}</td><td>{s.Tables}</td><td>{s.PipeLines}</td><td>{s.MedianPipesPerLine:F1}</td><td>{s.MaxPipesPerLine}</td></tr>");
+            }
+            sb.AppendLine("</table>");
+        }
         var pyNorm = File.ReadAllText(pyHot.NormOutput);
         var preNorm = pre?.NormOutput;
         var post1SNorm = post1S?.NormOutput;
@@ -273,15 +305,26 @@ static string SummaryMarkdown(List<BenchResult> results)
     }
 
     sb.AppendLine("\n## Quality vs python-hot");
-    sb.AppendLine("| mode | CER | Token-F1 | line_F1 | line_count | list_items | pipes_lines | median_pipes | max_pipes |");
-    sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- | --- |");
-    if (pyHot!=null)
+    if (pyHot!=null && pyHot.Similarity?.Tables > 0)
     {
+        sb.AppendLine("| mode | CER | Token-F1 | line_F1 | line_count | list_items | tables_count | table_cell_F1 |");
+        sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- |");
         foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
         {
             var s = r.Similarity;
             if (s != null)
-                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.LineCount} | {s.ListItems} | {s.PipeLines} | {s.MedianPipesPerLine:F1} | {s.MaxPipesPerLine} |");
+                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.LineCount} | {s.ListItems} | {s.Tables} | {s.TableCellF1:F3} |");
+        }
+    }
+    else if (pyHot!=null)
+    {
+        sb.AppendLine("| mode | CER | Token-F1 | line_F1 | line_count | list_items | tables_count | pipes_lines | median_pipes | max_pipes |");
+        sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |");
+        foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
+        {
+            var s = r.Similarity;
+            if (s != null)
+                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.LineCount} | {s.ListItems} | {s.Tables} | {s.PipeLines} | {s.MedianPipesPerLine:F1} | {s.MaxPipesPerLine} |");
         }
     }
     if (pyHot!=null)
@@ -410,7 +453,7 @@ static double F1Scores(string[] cand, string[] reference)
 static StructureMetrics StructureCounts(string text)
 {
     int[] headLevels = new int[6];
-    int listItems=0,maxDepth=0,codeBlocks=0,hrs=0,tables=0; bool inCode=false;
+    int listItems=0,maxDepth=0,codeBlocks=0,hrs=0; bool inCode=false;
     var pipeCounts = new List<int>();
     var lines = text.Split('\n');
     int lineCount = lines.Length;
@@ -434,8 +477,6 @@ static StructureMetrics StructureCounts(string text)
             if (depth>maxDepth) maxDepth=depth;
         }
         if (line.Trim() == "---") hrs++;
-        if (line.TrimStart().StartsWith("|") && (idx==0 || !lines[idx-1].TrimStart().StartsWith("|")))
-            tables++;
         int pipes = line.Count(c=>c=='|');
         if (pipes>0) pipeCounts.Add(pipes);
     }
@@ -447,6 +488,7 @@ static StructureMetrics StructureCounts(string text)
         median = (ordered[pipeLines/2-1]+ordered[pipeLines/2])/2.0;
     }
     int maxPipes = pipeLines==0?0:pipeCounts.Max();
+    int tables = ExtractTables(text).Count;
     return new StructureMetrics{HeadingLevels=headLevels,ListItems=listItems,MaxListDepth=maxDepth,CodeBlocks=codeBlocks,HorizontalRules=hrs,Tables=tables,LineCount=lineCount,PipeLines=pipeLines,MedianPipesPerLine=median,MaxPipesPerLine=maxPipes};
 }
 
@@ -454,25 +496,35 @@ static List<List<List<string>>> ExtractTables(string text)
 {
     var lines = text.Split('\n');
     var tables = new List<List<List<string>>>();
-    int i=0;
-    while(i<lines.Length)
+    int i = 0;
+    while (i < lines.Length)
     {
-        if(lines[i].TrimStart().StartsWith("|"))
+        var header = lines[i];
+        if (Regex.IsMatch(header, @"^\s*\|") && i + 1 < lines.Length && IsSeparatorLine(lines[i + 1]))
         {
-            var table = new List<List<string>>();
-            while(i<lines.Length && lines[i].TrimStart().StartsWith("|"))
+            var table = new List<List<string>> { ParseTableRow(header) };
+            i += 2; // skip header and separator
+            while (i < lines.Length && Regex.IsMatch(lines[i], @"^\s*\|.*\|\s*$"))
             {
-                var row = lines[i].Trim().Trim('|');
-                var cells = row.Split('|').Select(c=>c.Trim()).ToList();
-                table.Add(cells);
+                table.Add(ParseTableRow(lines[i]));
                 i++;
             }
             tables.Add(table);
+            continue;
         }
-        else i++;
+        i++;
     }
     return tables;
 }
+
+static bool IsSeparatorLine(string line)
+    => Regex.IsMatch(line.Trim(), @"^\|(?:\s*:?-+:?\s*\|)+\s*$");
+
+static List<string> ParseTableRow(string line)
+    => line.Trim().Trim('|')
+        .Split('|')
+        .Select(c => Regex.Replace(c.Trim(), @"\s+", " "))
+        .ToList();
 
 static double TableCellF1(string cand, string reference)
 {

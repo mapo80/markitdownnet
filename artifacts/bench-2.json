@@ -6,23 +6,23 @@
       "timing": {
         "trials": [
           {
-            "md_ms": 0.1406
+            "md_ms": 0.1416
           },
           {
-            "md_ms": 0.1637
+            "md_ms": 0.1308
           },
           {
-            "md_ms": 0.2434
+            "md_ms": 0.1152
           },
           {
-            "md_ms": 0.1304
+            "md_ms": 0.102
           },
           {
-            "md_ms": 0.0991
+            "md_ms": 0.0976
           }
         ],
-        "avg_ms": 0.15544,
-        "std_ms": 0.0486345802901598
+        "avg_ms": 0.11743999999999999,
+        "std_ms": 0.01672861022320743
       },
       "quality_vs_python_hot": {
         "text": {
@@ -36,9 +36,12 @@
           "line_f1": 0.9863013698630138,
           "list_items": 0,
           "max_list_depth": 0,
-          "pipes_lines_count": 16,
-          "median_pipes_per_line": 2.5,
-          "max_pipes_per_line": 6
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 16,
+            "median_pipes_per_line": 2.5,
+            "max_pipes_per_line": 6
+          }
         }
       },
       "paths": {
@@ -51,23 +54,23 @@
       "timing": {
         "trials": [
           {
-            "md_ms": 0.8033
+            "md_ms": 0.907
           },
           {
-            "md_ms": 0.6332
+            "md_ms": 0.7495
           },
           {
-            "md_ms": 0.7374
+            "md_ms": 0.7105
           },
           {
-            "md_ms": 0.819
+            "md_ms": 0.9407
           },
           {
-            "md_ms": 0.6483
+            "md_ms": 0.8797
           }
         ],
-        "avg_ms": 0.72824,
-        "std_ms": 0.07665284339148809
+        "avg_ms": 0.83748,
+        "std_ms": 0.09070207053865968
       },
       "quality_vs_python_hot": {
         "text": {
@@ -81,9 +84,12 @@
           "line_f1": 0.9863013698630138,
           "list_items": 0,
           "max_list_depth": 0,
-          "pipes_lines_count": 16,
-          "median_pipes_per_line": 2.5,
-          "max_pipes_per_line": 6
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 16,
+            "median_pipes_per_line": 2.5,
+            "max_pipes_per_line": 6
+          }
         }
       },
       "paths": {
@@ -96,23 +102,23 @@
       "timing": {
         "trials": [
           {
-            "md_ms": 2.1696
+            "md_ms": 1.0144
           },
           {
-            "md_ms": 1.0345
+            "md_ms": 1.03
           },
           {
-            "md_ms": 1.1365
+            "md_ms": 0.892
           },
           {
-            "md_ms": 1.0688
+            "md_ms": 0.8436
           },
           {
-            "md_ms": 1.0913
+            "md_ms": 0.8502
           }
         ],
-        "avg_ms": 1.30014,
-        "std_ms": 0.43598983749624254
+        "avg_ms": 0.9260399999999999,
+        "std_ms": 0.08040143282305359
       },
       "quality_vs_python_hot": {
         "text": {
@@ -126,9 +132,12 @@
           "line_f1": 0.9863013698630138,
           "list_items": 0,
           "max_list_depth": 0,
-          "pipes_lines_count": 16,
-          "median_pipes_per_line": 2.5,
-          "max_pipes_per_line": 6
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 16,
+            "median_pipes_per_line": 2.5,
+            "max_pipes_per_line": 6
+          }
         }
       },
       "paths": {
@@ -141,23 +150,23 @@
       "timing": {
         "trials": [
           {
-            "md_ms": 15.262862999975368
+            "md_ms": 9.123351000027924
           },
           {
-            "md_ms": 9.754278999992039
+            "md_ms": 8.265120000032766
           },
           {
-            "md_ms": 9.883564999995542
+            "md_ms": 14.308229999983268
           },
           {
-            "md_ms": 6.666864000010264
+            "md_ms": 8.842314000048646
           },
           {
-            "md_ms": 22.78495899997779
+            "md_ms": 29.68144599998368
           }
         ],
-        "avg_ms": 12.8705059999902,
-        "std_ms": 5.676928951840469
+        "avg_ms": 14.044092200015257,
+        "std_ms": 8.11498999050313
       },
       "quality_vs_python_hot": {
         "text": {
@@ -171,9 +180,12 @@
           "line_f1": 1,
           "list_items": 0,
           "max_list_depth": 0,
-          "pipes_lines_count": 16,
-          "median_pipes_per_line": 2.5,
-          "max_pipes_per_line": 6
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 16,
+            "median_pipes_per_line": 2.5,
+            "max_pipes_per_line": 6
+          }
         }
       },
       "paths": {
@@ -186,23 +198,23 @@
       "timing": {
         "trials": [
           {
-            "md_ms": 3135.8208
+            "md_ms": 2891.5154
           },
           {
-            "md_ms": 3016.1998
+            "md_ms": 2930.6839
           },
           {
-            "md_ms": 2932.7859
+            "md_ms": 3019.664
           },
           {
-            "md_ms": 3029.6143
+            "md_ms": 2843.1921
           },
           {
-            "md_ms": 3027.8779
+            "md_ms": 2936.338
           }
         ],
-        "avg_ms": 3028.45974,
-        "std_ms": 64.54743765642758
+        "avg_ms": 2924.2786800000003,
+        "std_ms": 58.19498137480241
       },
       "quality_vs_python_hot": {
         "text": {
@@ -216,9 +228,12 @@
           "line_f1": 1,
           "list_items": 0,
           "max_list_depth": 0,
-          "pipes_lines_count": 16,
-          "median_pipes_per_line": 2.5,
-          "max_pipes_per_line": 6
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 16,
+            "median_pipes_per_line": 2.5,
+            "max_pipes_per_line": 6
+          }
         }
       },
       "paths": {
