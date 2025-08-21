@@ -84,15 +84,15 @@ public class MarkItDownConverter
             }
         }
 
-        // If there are not enough words, fall back to OCR
-        if (words.Count < _options.MinimumNativeWordThreshold)
+        // If forced or there are not enough words, fall back to OCR
+        if (_options.OcrForceRaster || words.Count < _options.MinimumNativeWordThreshold)
         {
             _logger.Information("Native text too small ({Count}), attempting OCR fallback", words.Count);
             return ProcessPdfWithOcr(path, ct);
         }
 
         var markdown = BuildMarkdown(lines);
-        return new MarkItDownResult(markdown, pages, lines, words);
+        return new MarkItDownResult(markdown, pages, lines, words, null);
     }
 
     private MarkItDownResult ProcessPdfWithOcr(string path, CancellationToken ct)
@@ -100,9 +100,10 @@ public class MarkItDownConverter
         var pages = new List<Page>();
         var lines = new List<Line>();
         var words = new List<Word>();
+        OcrMetadata? meta = null;
 
         // Rasterize PDF into images using PDFtoImage
-        var renderOptions = new RenderOptions { Dpi = _options.PdfRasterDpi };
+        var renderOptions = new RenderOptions { Dpi = _options.OcrUserDpi };
         using var stream = File.OpenRead(path);
         foreach (var bitmap in Conversion.ToImages(stream, leaveOpen: false, password: null, renderOptions))
         {
@@ -110,26 +111,27 @@ public class MarkItDownConverter
             using (bitmap)
             {
                 pages.Add(new Page(pages.Count + 1, bitmap.Width, bitmap.Height));
-                using var image = SKImage.FromBitmap(bitmap);
-                using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                using var pix = Pix.LoadFromMemory(data.ToArray());
-                var result = ProcessPix(pix, pages.Count, ct);
+                var prep = PreparePix(bitmap);
+                meta ??= prep.meta;
+                var result = ProcessPix(prep.pix, pages.Count, ct);
+                prep.pix.Dispose();
                 lines.AddRange(result.lines);
                 words.AddRange(result.words);
             }
         }
 
         var markdown = BuildMarkdown(lines);
-        return new MarkItDownResult(markdown, pages, lines, words);
+        return new MarkItDownResult(markdown, pages, lines, words, meta);
     }
 
     private MarkItDownResult ProcessImage(string path, CancellationToken ct)
     {
-        using var pix = Pix.LoadFromFile(path);
-        var (lines, words) = ProcessPix(pix, 1, ct);
-        var pages = new List<Page> { new Page(1, pix.Width, pix.Height) };
+        var prep = PreparePix(path);
+        var pages = new List<Page> { new Page(1, prep.pix.Width, prep.pix.Height) };
+        var (lines, words) = ProcessPix(prep.pix, 1, ct);
+        prep.pix.Dispose();
         var markdown = BuildMarkdown(lines);
-        return new MarkItDownResult(markdown, pages, lines, words);
+        return new MarkItDownResult(markdown, pages, lines, words, prep.meta);
     }
 
     private (List<Line> lines, List<Word> words) ProcessPix(Pix pix, int pageNumber, CancellationToken ct)
@@ -139,8 +141,9 @@ public class MarkItDownConverter
         using var engine = new TesseractEngine(
             _options.OcrDataPath ?? string.Empty,
             _options.OcrLanguages,
-            EngineMode.LstmOnly);
-        engine.DefaultPageSegMode = _options.PageSegMode;
+            _options.OcrOem);
+        engine.DefaultPageSegMode = (PageSegMode)_options.OcrPsm;
+        engine.SetVariable("OMP_THREAD_LIMIT", _options.OcrThreads.ToString());
         using var page = engine.Process(pix);
         using var iter = page.GetIterator();
         iter.Begin();
@@ -169,6 +172,70 @@ public class MarkItDownConverter
         } while (iter.Next(PageIteratorLevel.Word));
 
         return (lines, words);
+    }
+
+    private (Pix pix, OcrMetadata meta) PreparePix(string path)
+    {
+        var src = Pix.LoadFromFile(path);
+        return PreparePix(src);
+    }
+
+    private (Pix pix, OcrMetadata meta) PreparePix(SKBitmap bitmap)
+    {
+        using var image = SKImage.FromBitmap(bitmap);
+        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+        var pix = Pix.LoadFromMemory(data.ToArray());
+        return PreparePix(pix);
+    }
+
+    private (Pix pix, OcrMetadata meta) PreparePix(Pix pix)
+    {
+        var working = pix;
+
+        if (working.Depth == 32)
+        {
+            var gray = working.ConvertRGBToGray();
+            working.Dispose();
+            working = gray;
+        }
+        else if (working.Depth != 8)
+        {
+            var eight = working.ConvertTo8(0);
+            working.Dispose();
+            working = eight;
+        }
+
+        var dpi = working.XRes > 0 ? working.XRes : _options.OcrUserDpi;
+        if (dpi < 220)
+        {
+            var scale = (float)_options.OcrUserDpi / dpi;
+            var scaled = working.Scale(scale, scale);
+            working.Dispose();
+            working = scaled;
+            dpi = _options.OcrUserDpi;
+        }
+
+        if (_options.OcrSetDpiMetadata)
+        {
+            working.XRes = _options.OcrUserDpi;
+            working.YRes = _options.OcrUserDpi;
+        }
+
+        double? angle = null;
+        var deskewed = working.Deskew(out var scew);
+        if (Math.Abs(scew.Angle) >= _options.OcrDeskewMinAngleDeg)
+        {
+            working.Dispose();
+            working = deskewed;
+            angle = scew.Angle;
+        }
+        else
+        {
+            deskewed.Dispose();
+        }
+
+        var meta = new OcrMetadata(dpi, _options.OcrColorDepth, angle, _options.OcrPsm, _options.OcrOem);
+        return (working, meta);
     }
 
     private static BoundingBox Normalize(Rect rect, int width, int height)

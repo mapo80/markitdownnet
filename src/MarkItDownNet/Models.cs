@@ -1,3 +1,5 @@
+using Tesseract;
+
 namespace MarkItDownNet;
 
 /// <summary>Normalized bounding box.</summary>
@@ -28,4 +30,8 @@ public record MarkItDownResult(
     string Markdown,
     IReadOnlyList<Page> Pages,
     IReadOnlyList<Line> Lines,
-    IReadOnlyList<Word> Words);
+    IReadOnlyList<Word> Words,
+    OcrMetadata? Ocr);
+
+/// <summary>Metadata about the OCR operation.</summary>
+public record OcrMetadata(int Dpi, OcrColorDepth ColorDepth, double? DeskewAngleDeg, int Psm, EngineMode Oem);
