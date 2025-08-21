@@ -10,56 +10,56 @@
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
 |pre|0.0±0.0|0.0|0.0|0.0|
-|post-1S|0.2±0.1|0.2|0.4|0.4|
-|post-2|0.3±0.3|0.3|0.4|0.6|
-|python-hot|4.9±2.2|4.5|5.6|6.9|
-Δ post-2 vs post-1S: 35.5%
-Δ .NET vs python-hot: -93.6%
+|post-1S|0.2±0.2|0.2|0.4|0.4|
+|post-2|0.4±0.6|0.2|0.9|1.4|
+|python-hot|4.4±0.8|4.3|5.2|5.3|
+Δ post-2 vs post-1S: 93.1%
+Δ .NET vs python-hot: -90.2%
 
 ### FUNSD
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
 |pre|0.0±0.0|0.0|0.0|0.0|
-|post-1S|0.2±0.1|0.2|0.3|0.3|
-|post-2|0.3±0.1|0.2|0.4|0.4|
-|python-hot|4.3±0.8|4.2|5.2|5.3|
-Δ post-2 vs post-1S: 17.5%  Δ .NET vs python-hot: -93.9%
+|post-1S|0.2±0.0|0.2|0.2|0.2|
+|post-2|0.9±1.2|0.2|2.2|2.6|
+|python-hot|4.8±1.0|4.7|6.0|6.2|
+Δ post-2 vs post-1S: 376.0%  Δ .NET vs python-hot: -81.3%
 
 ### ICDAR
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
-|pre|0.0±0.0|0.0|0.0|0.0|
-|post-1S|0.3±0.0|0.3|0.4|0.4|
-|post-2|0.3±0.0|0.3|0.4|0.4|
-|python-hot|4.6±0.3|4.7|4.9|4.9|
-Δ post-2 vs post-1S: 10.5%  Δ .NET vs python-hot: -92.8%
+|pre|0.1±0.0|0.0|0.1|0.1|
+|post-1S|0.5±0.2|0.4|0.7|0.8|
+|post-2|0.6±0.3|0.5|0.9|1.0|
+|python-hot|4.8±0.4|4.8|5.2|5.3|
+Δ post-2 vs post-1S: 36.0%  Δ .NET vs python-hot: -87.1%
 
 ### MARMOT
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
 |pre|0.0±0.0|0.0|0.0|0.0|
 |post-1S|0.3±0.1|0.3|0.4|0.4|
-|post-2|0.6±0.6|0.3|1.3|1.5|
-|python-hot|4.5±0.6|4.5|5.1|5.2|
-Δ post-2 vs post-1S: 109.5%  Δ .NET vs python-hot: -86.6%
+|post-2|0.6±0.5|0.3|1.1|1.3|
+|python-hot|4.1±0.7|3.8|4.8|5.1|
+Δ post-2 vs post-1S: 105.0%  Δ .NET vs python-hot: -86.4%
 
 ### PUBTABLES
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
-|pre|0.0±0.0|0.0|0.0|0.1|
-|post-1S|0.2±0.2|0.1|0.3|0.5|
-|post-2|0.2±0.2|0.2|0.4|0.5|
-|python-hot|5.7±3.6|4.1|9.4|12.0|
-Δ post-2 vs post-1S: 18.4%  Δ .NET vs python-hot: -96.2%
+|pre|0.0±0.0|0.0|0.0|0.0|
+|post-1S|0.1±0.1|0.1|0.2|0.2|
+|post-2|0.1±0.1|0.1|0.2|0.2|
+|python-hot|4.3±0.6|4.3|5.0|5.1|
+Δ post-2 vs post-1S: 16.3%  Δ .NET vs python-hot: -97.1%
 
 ### SROIE2019
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
 |pre|0.0±0.0|0.0|0.0|0.0|
-|post-1S|0.2±0.1|0.2|0.3|0.3|
+|post-1S|0.2±0.0|0.2|0.2|0.3|
 |post-2|0.2±0.0|0.2|0.3|0.3|
-|python-hot|4.5±0.8|4.3|5.4|5.5|
-Δ post-2 vs post-1S: 18.1%  Δ .NET vs python-hot: -94.6%
+|python-hot|3.9±0.5|3.9|4.5|4.6|
+Δ post-2 vs post-1S: 20.5%  Δ .NET vs python-hot: -93.8%
 
 ## Quality
 ### Global
@@ -119,8 +119,8 @@
 |python-hot|0.0||
 
 ## Key findings
-- Δ post-2 vs post-1S: 35.5%
-- Δ .NET vs python-hot: -93.6%
+- Δ post-2 vs post-1S: 93.1%
+- Δ .NET vs python-hot: -90.2%
 - Global Token-F1 (post-2): 0.981
 - Global CER (post-2): 0.020
 - Tables detected (post-2): 0.2
