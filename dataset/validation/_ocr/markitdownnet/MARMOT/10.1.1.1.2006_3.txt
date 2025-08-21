@@ -1,6 +1,6 @@
 09                           these consume 0,99 CPU. That is, task3- misses
-a            isaaise        deadlines and the inverted pendulum! falls down, This
-og EF                     c                                explains the fact thatthe cost function in Figure 2 goes
+ra            praia        deadlines and the inverted pendulum! falls down, This
+og Ltr                     c                                explains the fact thatthe cost function in Figure 2 goes
 .                                to infinite. Note that under RM, the task is not
 Bod                               schedulable
 i                                + EDP: EDF is « dynamic alorihm in open bop
@@ -9,9 +9,9 @@ i,                                   Beavis dedine, Une BG’ holler te
 schedulabiity condition is given by U = 1. For our
 4                                         simulations, since U <1, the task set is schedulable
 and the three pendulums can be controlled as it can be
-A                                                           seen in Figure 2: the accumulated cost reaches a finite
-a a oe i       value, which means that the deviation caused by each
-sig cic al ad                  perturbation thet affected each of the three pendulums
+1                                                           seen in Figure 2: the accumulated cost reaches a finite
+a a oe       value, which means that the deviation caused by each
+icici al ak aed                  perturbation thet affected each of the three pendulums
 could be adequately comected. ‘The performance
 with the difference in performance due 10 the we of sehieved by EDF is also given in Figure 2 in tems of
 different scheduling polices, which is the objective of our      tie coat BocHonsreadting a valus oF W2754 at tho

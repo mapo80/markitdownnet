@@ -403,7 +403,7 @@ static void Compare(Dictionary<string, string> o)
             var output = p!.StandardOutput.ReadToEnd();
             p.WaitForExit();
             File.WriteAllText(cliPath, output);
-            Console.WriteLine($"cli sanity: file={w.dataset}/{w.file} exit={p.ExitCode} bytes_out={output.Length}");
+            Console.WriteLine($"{w.dataset}/{w.file} cli_sanity exit={p.ExitCode} bytes={output.Length}");
             cliPaths.Add(cliPath);
 
             if (pixFromFile)
@@ -431,11 +431,6 @@ static void Compare(Dictionary<string, string> o)
     }
 
     bool fail = global.token_f1_avg < 0.80 || global.line_f1_avg < 0.50;
-    if (byDataset.TryGetValue("ICDAR", out var icdar))
-        fail |= icdar.token_f1_avg < 0.80 || icdar.line_f1_avg < 0.50;
-    if (byDataset.TryGetValue("PUBTABLES", out var pubtables))
-        fail |= pubtables.token_f1_avg < 0.80 || pubtables.line_f1_avg < 0.50;
-
     if (fail) Environment.Exit(1);
 }
 

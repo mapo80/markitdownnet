@@ -190,13 +190,14 @@ public class MarkItDownConverter
 
     private (Pix pix, OcrMetadata meta) PreparePix(string path)
     {
-        var src = Pix.LoadFromFile(path);
-        return PreparePix(src);
+        using var bitmap = SKBitmap.Decode(path);
+        return PreparePix(bitmap);
     }
 
     private (Pix pix, OcrMetadata meta) PreparePix(SKBitmap bitmap)
     {
-        using var image = SKImage.FromBitmap(bitmap);
+        using var gray = bitmap.Copy(SKColorType.Gray8);
+        using var image = SKImage.FromBitmap(gray);
         using var data = image.Encode(SKEncodedImageFormat.Png, 100);
         var pix = Pix.LoadFromMemory(data.ToArray());
         return PreparePix(pix);

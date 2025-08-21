@@ -15,7 +15,7 @@ Store No.: 129077              Babu
 01/02/2018 4:43:17 PM
 
 A 2 double ,mint te         3.00
-& 1 sandwich venil]             1.90
+& 1 sandwich venil]             1,90
 
 GST RM:                       0.28
 Total RM inc.G3T:            4.90
@@ -32,4 +32,4 @@ Use 3000 Petron Miles
 points to pay for
 RM45 Fuel
 
-*            F          eee            H
+*            F          Reet            H
