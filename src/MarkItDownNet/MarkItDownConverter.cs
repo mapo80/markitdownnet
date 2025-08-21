@@ -133,7 +133,11 @@ public class MarkItDownConverter
     {
         var lines = new List<Line>();
         var words = new List<Word>();
-        using var engine = new TesseractEngine(_options.OcrDataPath ?? string.Empty, _options.OcrLanguages, EngineMode.Default);
+        using var engine = new TesseractEngine(
+            _options.OcrDataPath ?? string.Empty,
+            _options.OcrLanguages,
+            EngineMode.LstmOnly);
+        engine.DefaultPageSegMode = PageSegMode.Auto;
         using var page = engine.Process(pix);
         using var iter = page.GetIterator();
         iter.Begin();
