@@ -1,0 +1,118 @@
+[
+  {
+    "Mode": "pre",
+    "Trials": [
+      18.0449,
+      0.9276,
+      0.2363,
+      0.2411,
+      0.2259
+    ],
+    "AvgMs": 3.935159999999999,
+    "StdMs": 7.0599778236478885,
+    "Output": "artifacts/outputs/busta_paga_internet.pre.md",
+    "Similarity": {
+      "Cer": 0.0008431703204047217,
+      "Precision": 0.7839195979899497,
+      "Recall": 0.7839195979899497,
+      "F1": 0.7839195979899497,
+      "HeadingLevels": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ListItems": 0,
+      "MaxListDepth": 0,
+      "CodeBlocks": 0,
+      "HorizontalRules": 0,
+      "Tables": 0,
+      "HeadingMatch": 1,
+      "TableCellF1": 1
+    }
+  },
+  {
+    "Mode": "post-v0",
+    "Trials": [
+      10.3404,
+      1.0091,
+      0.8553,
+      0.9124,
+      0.69
+    ],
+    "AvgMs": 2.76144,
+    "StdMs": 3.7908973199494604,
+    "Output": "artifacts/outputs/busta_paga_internet.post-v0.md",
+    "Similarity": {
+      "Cer": 0.02023608768971332,
+      "Precision": 0.7761194029850746,
+      "Recall": 0.7839195979899497,
+      "F1": 0.78,
+      "HeadingLevels": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ListItems": 0,
+      "MaxListDepth": 0,
+      "CodeBlocks": 0,
+      "HorizontalRules": 0,
+      "Tables": 0,
+      "HeadingMatch": 1,
+      "TableCellF1": 1
+    }
+  },
+  {
+    "Mode": "post-v01",
+    "Trials": [
+      11.7196,
+      5.6236,
+      5.5078,
+      5.2408,
+      4.892
+    ],
+    "AvgMs": 6.596760000000001,
+    "StdMs": 2.5737598222056386,
+    "Output": "artifacts/outputs/busta_paga_internet.post-v01.md",
+    "Similarity": {
+      "Cer": 0.02023608768971332,
+      "Precision": 0.7761194029850746,
+      "Recall": 0.7839195979899497,
+      "F1": 0.78,
+      "HeadingLevels": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "ListItems": 0,
+      "MaxListDepth": 0,
+      "CodeBlocks": 0,
+      "HorizontalRules": 0,
+      "Tables": 0,
+      "HeadingMatch": 1,
+      "TableCellF1": 1
+    }
+  },
+  {
+    "Mode": "python",
+    "Trials": [
+      2335.6046,
+      2155.9772,
+      2151.2134,
+      2015.9802,
+      1986.0107
+    ],
+    "AvgMs": 2128.9572200000002,
+    "StdMs": 124.19828594344452,
+    "Output": "artifacts/outputs/busta_paga_internet.python.md",
+    "Similarity": null
+  }
+]

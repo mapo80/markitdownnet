@@ -9,5 +9,12 @@
   "CodeMinLines": 3,
   "CodeMinIndent": 4,
   "CodeSymbolDensityMin": 0.25,
-  "Dehyphenation": true
+  "Dehyphenation": true,
+  "KeyValueToTableEnabled": true,
+  "KeyMaxLen": 40,
+  "MinKeyValueRows": 3,
+  "MonoTableMinCols": 2,
+  "MonoTableMinRows": 3,
+  "MonoTableMinSpaceGap": 2,
+  "MonoTableColTolerance": 1
 }
