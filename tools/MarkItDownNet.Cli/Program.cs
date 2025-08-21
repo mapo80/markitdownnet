@@ -278,13 +278,12 @@ static void BenchDirCommand(string[] args)
     var runConfig = new RunConfig
     {
         os = env.os,
-        hw = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString(),
+        cpu = GetCpuInfo(),
         dotnet = env.dotnet,
         python = env.python,
         markitdown = env.markitdown,
         threads = threads,
-        tesseract_langs = tessLangs,
-        tesseract_psm = tessPsm
+        tesseract = new TesseractConfig { langs = tessLangs, psm = tessPsm }
     };
 
     string outputsRoot = Path.Combine("artifacts", "validation", "outputs");
@@ -478,6 +477,16 @@ static string GetMarkitdownVersion(string pythonExe)
     catch { return ""; }
 }
 
+static string GetCpuInfo()
+{
+    try
+    {
+        var line = File.ReadLines("/proc/cpuinfo").FirstOrDefault(l => l.StartsWith("model name"));
+        return line != null ? line.Split(':', 2)[1].Trim() : "";
+    }
+    catch { return string.Empty; }
+}
+
 static AggregateData BuildAggregateData(List<BenchFileData> files, string[] modes, string rootDir)
 {
     var data = new AggregateData();
@@ -485,14 +494,16 @@ static AggregateData BuildAggregateData(List<BenchFileData> files, string[] mode
     foreach (var g in groups)
     {
         var ds = new DatasetAggregate();
-        ds.files = g.Count();
+        ds.n_files = g.Count();
         foreach (var m in modes)
         {
             var times = g.SelectMany(f => f.Results.First(r => r.Mode == m).Trials).ToList();
             ds.timing[m] = BuildTimingStats(times);
-            var sims = g.Select(f => f.Results.First(r => r.Mode == m).Similarity).Where(s => s != null).Select(s=>s!).ToList();
+            var sims = g.Select(f => f.Results.First(r => r.Mode == m).Similarity).Where(s => s != null).Select(s => s!).ToList();
             ds.quality[m] = BuildQualityStats(sims);
         }
+        var post2Sims = g.Select(f => f.Results.FirstOrDefault(r => r.Mode == "post-2")?.Similarity).Where(s => s != null).Select(s => s!).ToList();
+        ds.tables = BuildTablesAggregate(post2Sims);
         data.by_dataset[g.Key] = ds;
     }
     var global = new GlobalAggregate();
@@ -501,9 +512,11 @@ static AggregateData BuildAggregateData(List<BenchFileData> files, string[] mode
     {
         var times = files.SelectMany(f => f.Results.First(r => r.Mode == m).Trials).ToList();
         global.timing[m] = BuildTimingStats(times);
-        var sims = files.Select(f => f.Results.First(r => r.Mode == m).Similarity).Where(s => s != null).Select(s=>s!).ToList();
+        var sims = files.Select(f => f.Results.First(r => r.Mode == m).Similarity).Where(s => s != null).Select(s => s!).ToList();
         global.quality[m] = BuildQualityStats(sims);
     }
+    var postAll = files.Select(f => f.Results.FirstOrDefault(r => r.Mode == "post-2")?.Similarity).Where(s => s != null).Select(s => s!).ToList();
+    global.tables = BuildTablesAggregate(postAll);
     data.global = global;
     return data;
 }
@@ -555,6 +568,14 @@ static QualityStats BuildQualityStats(List<Similarity> sims)
     };
 }
 
+static TablesAggregate BuildTablesAggregate(List<Similarity> sims)
+{
+    double sum = sims.Sum(s => s.Tables);
+    var f1s = sims.Where(s => s.TableCellF1.HasValue).Select(s => s.TableCellF1!.Value).ToList();
+    double? f1avg = f1s.Count > 0 ? f1s.Average() : null;
+    return new TablesAggregate { tables_count_sum = sum, table_cell_f1_avg = f1avg };
+}
+
 static string GetDatasetName(string rootDir, string filePath)
 {
     var rel = Path.GetRelativePath(rootDir, filePath);
@@ -568,11 +589,11 @@ static string BuildBenchHtml(AggregateData agg, RunConfig cfg, List<BenchFileDat
     sb.AppendLine("<html><body>");
     sb.AppendLine("<h1>Benchmark</h1>");
     sb.AppendLine("<h2>Run config</h2><ul>");
-    sb.AppendLine($"<li>OS: {WebUtility.HtmlEncode(cfg.os)} ({WebUtility.HtmlEncode(cfg.hw)})</li>");
+    sb.AppendLine($"<li>OS: {WebUtility.HtmlEncode(cfg.os)} ({WebUtility.HtmlEncode(cfg.cpu)})</li>");
     sb.AppendLine($"<li>.NET: {WebUtility.HtmlEncode(cfg.dotnet)}</li>");
     sb.AppendLine($"<li>Python: {WebUtility.HtmlEncode(cfg.python)} markitdown {WebUtility.HtmlEncode(cfg.markitdown)}</li>");
     sb.AppendLine($"<li>threads bench: {cfg.threads}</li>");
-    sb.AppendLine($"<li>Tesseract langs: {WebUtility.HtmlEncode(cfg.tesseract_langs)} psm: {WebUtility.HtmlEncode(cfg.tesseract_psm)}</li>");
+    sb.AppendLine($"<li>Tesseract: {WebUtility.HtmlEncode(cfg.tesseract.langs)} psm {WebUtility.HtmlEncode(cfg.tesseract.psm)}</li>");
     sb.AppendLine("</ul>");
 
     sb.AppendLine("<h2>Timing (global)</h2><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>");
@@ -663,11 +684,11 @@ static string BuildSummaryMarkdown(AggregateData agg, RunConfig cfg)
 {
     var sb = new System.Text.StringBuilder();
     sb.AppendLine("## Run config");
-    sb.AppendLine($"- OS: {cfg.os} ({cfg.hw})");
+    sb.AppendLine($"- OS: {cfg.os} ({cfg.cpu})");
     sb.AppendLine($"- .NET: {cfg.dotnet}");
     sb.AppendLine($"- Python: {cfg.python} markitdown {cfg.markitdown}");
     sb.AppendLine($"- threads bench: {cfg.threads}");
-    sb.AppendLine($"- Tesseract: {cfg.tesseract_langs} psm {cfg.tesseract_psm}");
+    sb.AppendLine($"- Tesseract: {cfg.tesseract.langs} psm {cfg.tesseract.psm}");
     sb.AppendLine();
 
     sb.AppendLine("## Timing");
@@ -716,7 +737,7 @@ static string BuildSummaryMarkdown(AggregateData agg, RunConfig cfg)
     }
 
     sb.AppendLine("## Tables");
-    bool anyTables = agg.global.quality.Values.Any(q => q.tables.tables_count > 0);
+    bool anyTables = agg.global.tables.tables_count_sum > 0;
     if (!anyTables)
     {
         sb.AppendLine("Tables: none detected in this validation set.");
@@ -1018,13 +1039,18 @@ record BenchFileData
 record RunConfig
 {
     public string os { get; set; } = "";
-    public string hw { get; set; } = "";
+    public string cpu { get; set; } = "";
     public string dotnet { get; set; } = "";
     public string python { get; set; } = "";
     public string markitdown { get; set; } = "";
     public int threads { get; set; }
-    public string tesseract_langs { get; set; } = "";
-    public string tesseract_psm { get; set; } = "";
+    public TesseractConfig tesseract { get; set; } = new();
+}
+
+record TesseractConfig
+{
+    public string langs { get; set; } = "";
+    public string psm { get; set; } = "";
 }
 
 record AggregateData
@@ -1034,17 +1060,25 @@ record AggregateData
 }
 
 record DatasetAggregate
-{
-    public int files { get; set; }
-    public Dictionary<string, TimingStats> timing { get; set; } = new();
-    public Dictionary<string, QualityStats> quality { get; set; } = new();
-}
-
-record GlobalAggregate
-{
+{ 
     public int n_files { get; set; }
     public Dictionary<string, TimingStats> timing { get; set; } = new();
     public Dictionary<string, QualityStats> quality { get; set; } = new();
+    public TablesAggregate tables { get; set; } = new();
+}
+
+record GlobalAggregate
+{ 
+    public int n_files { get; set; }
+    public Dictionary<string, TimingStats> timing { get; set; } = new();
+    public Dictionary<string, QualityStats> quality { get; set; } = new();
+    public TablesAggregate tables { get; set; } = new();
+}
+
+record TablesAggregate
+{
+    public double tables_count_sum { get; set; }
+    public double? table_cell_f1_avg { get; set; }
 }
 
 record TimingStats

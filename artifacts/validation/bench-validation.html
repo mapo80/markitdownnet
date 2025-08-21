@@ -1,56 +1,56 @@
 <html><body>
 <h1>Benchmark</h1>
 <h2>Run config</h2><ul>
-<li>OS: Ubuntu 24.04.2 LTS (X64)</li>
+<li>OS: Ubuntu 24.04.2 LTS (Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz)</li>
 <li>.NET: 9.0.0</li>
 <li>Python: Python 3.12.10 markitdown 0.1.2</li>
 <li>threads bench: 1</li>
-<li>Tesseract langs: eng+ita psm: 6</li>
+<li>Tesseract: eng+ita psm 6</li>
 </ul>
 <h2>Timing (global)</h2><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>
-<tr><td>pre</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
-<tr><td>post-1S</td><td>0.2±0.1</td><td>0.2</td><td>0.4</td><td>0.5</td></tr>
-<tr><td>post-2</td><td>0.3±0.3</td><td>0.3</td><td>0.6</td><td>0.7</td></tr>
-<tr><td>python-hot</td><td>4.2±0.8</td><td>4.1</td><td>5.4</td><td>5.8</td></tr>
+<tr><td>pre</td><td>0.0±0.0</td><td>0.0</td><td>0.1</td><td>0.1</td></tr>
+<tr><td>post-1S</td><td>0.4±0.5</td><td>0.3</td><td>0.6</td><td>0.8</td></tr>
+<tr><td>post-2</td><td>0.7±1.9</td><td>0.5</td><td>0.8</td><td>1.2</td></tr>
+<tr><td>python-hot</td><td>7.1±2.7</td><td>6.4</td><td>8.9</td><td>13.3</td></tr>
 </table>
-<p>Δ post-2 vs post-1S: 46.3%</p>
-<p>Δ .NET vs python-hot: -92.1%</p>
+<p>Δ post-2 vs post-1S: 77.1%</p>
+<p>Δ .NET vs python-hot: -89.4%</p>
 <h2>Timing by dataset</h2>
 <h3>FUNSD</h3><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>
 <tr><td>pre</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
-<tr><td>post-1S</td><td>0.2±0.0</td><td>0.2</td><td>0.3</td><td>0.3</td></tr>
-<tr><td>post-2</td><td>0.3±0.1</td><td>0.2</td><td>0.4</td><td>0.4</td></tr>
-<tr><td>python-hot</td><td>4.2±0.8</td><td>4.1</td><td>5.2</td><td>5.6</td></tr>
+<tr><td>post-1S</td><td>0.6±1.0</td><td>0.3</td><td>0.5</td><td>0.8</td></tr>
+<tr><td>post-2</td><td>0.5±0.1</td><td>0.5</td><td>0.7</td><td>0.7</td></tr>
+<tr><td>python-hot</td><td>6.0±1.1</td><td>5.7</td><td>7.7</td><td>7.9</td></tr>
 </table>
-<p>Δ post-2 vs post-1S: 24.1% &nbsp; Δ .NET vs python-hot: -93.6%</p>
+<p>Δ post-2 vs post-1S: -9.5% &nbsp; Δ .NET vs python-hot: -91.4%</p>
 <h3>ICDAR</h3><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>
-<tr><td>pre</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
-<tr><td>post-1S</td><td>0.3±0.1</td><td>0.3</td><td>0.5</td><td>0.5</td></tr>
-<tr><td>post-2</td><td>0.4±0.1</td><td>0.3</td><td>0.6</td><td>0.6</td></tr>
-<tr><td>python-hot</td><td>4.6±0.7</td><td>4.6</td><td>5.5</td><td>5.6</td></tr>
-</table>
-<p>Δ post-2 vs post-1S: 19.0% &nbsp; Δ .NET vs python-hot: -92.1%</p>
-<h3>MARMOT</h3><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>
-<tr><td>pre</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
-<tr><td>post-1S</td><td>0.3±0.1</td><td>0.3</td><td>0.4</td><td>0.4</td></tr>
-<tr><td>post-2</td><td>0.6±0.7</td><td>0.3</td><td>1.8</td><td>1.8</td></tr>
-<tr><td>python-hot</td><td>4.5±0.9</td><td>4.3</td><td>6.1</td><td>6.3</td></tr>
-</table>
-<p>Δ post-2 vs post-1S: 139.3% &nbsp; Δ .NET vs python-hot: -85.6%</p>
-<h3>PUBTABLES</h3><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>
 <tr><td>pre</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.1</td></tr>
-<tr><td>post-1S</td><td>0.2±0.2</td><td>0.1</td><td>0.5</td><td>0.6</td></tr>
-<tr><td>post-2</td><td>0.2±0.2</td><td>0.1</td><td>0.7</td><td>0.7</td></tr>
-<tr><td>python-hot</td><td>4.0±0.9</td><td>3.7</td><td>5.3</td><td>5.6</td></tr>
+<tr><td>post-1S</td><td>0.5±0.5</td><td>0.4</td><td>0.5</td><td>0.7</td></tr>
+<tr><td>post-2</td><td>1.6±4.1</td><td>0.6</td><td>0.8</td><td>1.8</td></tr>
+<tr><td>python-hot</td><td>8.9±3.3</td><td>7.3</td><td>15.0</td><td>15.5</td></tr>
 </table>
-<p>Δ post-2 vs post-1S: 30.6% &nbsp; Δ .NET vs python-hot: -94.3%</p>
-<h3>SROIE2019</h3><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>
+<p>Δ post-2 vs post-1S: 199.0% &nbsp; Δ .NET vs python-hot: -82.3%</p>
+<h3>MARMOT</h3><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>
+<tr><td>pre</td><td>0.1±0.1</td><td>0.0</td><td>0.1</td><td>0.2</td></tr>
+<tr><td>post-1S</td><td>0.8±0.5</td><td>0.6</td><td>1.6</td><td>1.9</td></tr>
+<tr><td>post-2</td><td>1.5±1.5</td><td>0.7</td><td>4.2</td><td>4.3</td></tr>
+<tr><td>python-hot</td><td>6.8±2.2</td><td>6.3</td><td>9.1</td><td>11.8</td></tr>
+</table>
+<p>Δ post-2 vs post-1S: 99.9% &nbsp; Δ .NET vs python-hot: -77.4%</p>
+<h3>PUBTABLES</h3><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>
 <tr><td>pre</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
 <tr><td>post-1S</td><td>0.2±0.1</td><td>0.2</td><td>0.3</td><td>0.3</td></tr>
-<tr><td>post-2</td><td>0.3±0.1</td><td>0.3</td><td>0.3</td><td>0.3</td></tr>
-<tr><td>python-hot</td><td>4.0±0.6</td><td>4.0</td><td>5.1</td><td>5.1</td></tr>
+<tr><td>post-2</td><td>0.2±0.1</td><td>0.2</td><td>0.3</td><td>0.3</td></tr>
+<tr><td>python-hot</td><td>6.8±2.0</td><td>6.6</td><td>8.6</td><td>10.6</td></tr>
 </table>
-<p>Δ post-2 vs post-1S: 18.4% &nbsp; Δ .NET vs python-hot: -93.4%</p>
+<p>Δ post-2 vs post-1S: 9.3% &nbsp; Δ .NET vs python-hot: -97.3%</p>
+<h3>SROIE2019</h3><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>
+<tr><td>pre</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
+<tr><td>post-1S</td><td>0.3±0.1</td><td>0.3</td><td>0.5</td><td>0.5</td></tr>
+<tr><td>post-2</td><td>0.5±0.1</td><td>0.5</td><td>0.6</td><td>0.6</td></tr>
+<tr><td>python-hot</td><td>6.9±3.8</td><td>5.9</td><td>7.2</td><td>8.4</td></tr>
+</table>
+<p>Δ post-2 vs post-1S: 44.8% &nbsp; Δ .NET vs python-hot: -93.2%</p>
 <h2>Quality vs python-hot (global)</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th></tr>
 <tr><td>pre</td><td>0.000</td><td>1.000</td><td>0.999</td></tr>
 <tr><td>post-1S</td><td>0.006</td><td>1.000</td><td>0.797</td></tr>

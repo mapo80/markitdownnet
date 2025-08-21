@@ -1,5 +1,5 @@
 ## Run config
-- OS: Ubuntu 24.04.2 LTS (X64)
+- OS: Ubuntu 24.04.2 LTS (Intel(R) Xeon(R) Platinum 8272CL CPU @ 2.60GHz)
 - .NET: 9.0.0
 - Python: Python 3.12.10 markitdown 0.1.2
 - threads bench: 1
@@ -9,57 +9,57 @@
 ### Global
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
-|pre|0.0±0.0|0.0|0.0|0.0|
-|post-1S|0.2±0.1|0.2|0.4|0.5|
-|post-2|0.3±0.3|0.3|0.6|0.7|
-|python-hot|4.2±0.8|4.1|5.4|5.8|
-Δ post-2 vs post-1S: 46.3%
-Δ .NET vs python-hot: -92.1%
+|pre|0.0±0.0|0.0|0.1|0.1|
+|post-1S|0.4±0.5|0.3|0.6|0.8|
+|post-2|0.7±1.9|0.5|0.8|1.2|
+|python-hot|7.1±2.7|6.4|8.9|13.3|
+Δ post-2 vs post-1S: 77.1%
+Δ .NET vs python-hot: -89.4%
 
 ### FUNSD
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
 |pre|0.0±0.0|0.0|0.0|0.0|
-|post-1S|0.2±0.0|0.2|0.3|0.3|
-|post-2|0.3±0.1|0.2|0.4|0.4|
-|python-hot|4.2±0.8|4.1|5.2|5.6|
-Δ post-2 vs post-1S: 24.1%  Δ .NET vs python-hot: -93.6%
+|post-1S|0.6±1.0|0.3|0.5|0.8|
+|post-2|0.5±0.1|0.5|0.7|0.7|
+|python-hot|6.0±1.1|5.7|7.7|7.9|
+Δ post-2 vs post-1S: -9.5%  Δ .NET vs python-hot: -91.4%
 
 ### ICDAR
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
-|pre|0.0±0.0|0.0|0.0|0.0|
-|post-1S|0.3±0.1|0.3|0.5|0.5|
-|post-2|0.4±0.1|0.3|0.6|0.6|
-|python-hot|4.6±0.7|4.6|5.5|5.6|
-Δ post-2 vs post-1S: 19.0%  Δ .NET vs python-hot: -92.1%
+|pre|0.0±0.0|0.0|0.0|0.1|
+|post-1S|0.5±0.5|0.4|0.5|0.7|
+|post-2|1.6±4.1|0.6|0.8|1.8|
+|python-hot|8.9±3.3|7.3|15.0|15.5|
+Δ post-2 vs post-1S: 199.0%  Δ .NET vs python-hot: -82.3%
 
 ### MARMOT
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
-|pre|0.0±0.0|0.0|0.0|0.0|
-|post-1S|0.3±0.1|0.3|0.4|0.4|
-|post-2|0.6±0.7|0.3|1.8|1.8|
-|python-hot|4.5±0.9|4.3|6.1|6.3|
-Δ post-2 vs post-1S: 139.3%  Δ .NET vs python-hot: -85.6%
+|pre|0.1±0.1|0.0|0.1|0.2|
+|post-1S|0.8±0.5|0.6|1.6|1.9|
+|post-2|1.5±1.5|0.7|4.2|4.3|
+|python-hot|6.8±2.2|6.3|9.1|11.8|
+Δ post-2 vs post-1S: 99.9%  Δ .NET vs python-hot: -77.4%
 
 ### PUBTABLES
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
-|pre|0.0±0.0|0.0|0.0|0.1|
-|post-1S|0.2±0.2|0.1|0.5|0.6|
-|post-2|0.2±0.2|0.1|0.7|0.7|
-|python-hot|4.0±0.9|3.7|5.3|5.6|
-Δ post-2 vs post-1S: 30.6%  Δ .NET vs python-hot: -94.3%
+|pre|0.0±0.0|0.0|0.0|0.0|
+|post-1S|0.2±0.1|0.2|0.3|0.3|
+|post-2|0.2±0.1|0.2|0.3|0.3|
+|python-hot|6.8±2.0|6.6|8.6|10.6|
+Δ post-2 vs post-1S: 9.3%  Δ .NET vs python-hot: -97.3%
 
 ### SROIE2019
 |Mode|avg±std (ms)|p50|p90|p95|
 |---|---|---|---|---|
 |pre|0.0±0.0|0.0|0.0|0.0|
-|post-1S|0.2±0.1|0.2|0.3|0.3|
-|post-2|0.3±0.1|0.3|0.3|0.3|
-|python-hot|4.0±0.6|4.0|5.1|5.1|
-Δ post-2 vs post-1S: 18.4%  Δ .NET vs python-hot: -93.4%
+|post-1S|0.3±0.1|0.3|0.5|0.5|
+|post-2|0.5±0.1|0.5|0.6|0.6|
+|python-hot|6.9±3.8|5.9|7.2|8.4|
+Δ post-2 vs post-1S: 44.8%  Δ .NET vs python-hot: -93.2%
 
 ## Quality
 ### Global
@@ -119,8 +119,8 @@
 |python-hot|0.0||
 
 ## Key findings
-- Δ post-2 vs post-1S: 46.3%
-- Δ .NET vs python-hot: -92.1%
+- Δ post-2 vs post-1S: 77.1%
+- Δ .NET vs python-hot: -89.4%
 - Global Token-F1 (post-2): 0.981
 - Global CER (post-2): 0.020
 - Tables detected (post-2): 0.2
