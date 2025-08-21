@@ -1,0 +1,43 @@
+[
+  {
+    "Mode": "pre",
+    "AvgMs": 3.4,
+    "StdMs": 6.8,
+    "Output": "artifacts/outputs/busta_paga_internet.pre.md",
+    "Similarity": {
+      "Cer": 0.0008431703204047217,
+      "Precision": 0.7839195979899497,
+      "Recall": 0.7839195979899497,
+      "F1": 0.7839195979899497,
+      "Headings": 0,
+      "ListItems": 0,
+      "CodeBlocks": 0,
+      "HorizontalRules": 0,
+      "HeadingMatch": 1
+    }
+  },
+  {
+    "Mode": "post",
+    "AvgMs": 1.8,
+    "StdMs": 3.6000000000000005,
+    "Output": "artifacts/outputs/busta_paga_internet.post.md",
+    "Similarity": {
+      "Cer": 0.02023608768971332,
+      "Precision": 0.7761194029850746,
+      "Recall": 0.7839195979899497,
+      "F1": 0.78,
+      "Headings": 2,
+      "ListItems": 0,
+      "CodeBlocks": 0,
+      "HorizontalRules": 0,
+      "HeadingMatch": 1
+    }
+  },
+  {
+    "Mode": "python",
+    "AvgMs": 2885.8,
+    "StdMs": 89.51737261559904,
+    "Output": "artifacts/outputs/busta_paga_internet.python.md",
+    "Similarity": null
+  }
+]

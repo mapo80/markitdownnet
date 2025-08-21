@@ -1,0 +1,13 @@
+{
+  "ListIndentWidth": 2,
+  "BulletChars": ["-", "*", "•", "+"],
+  "MinItemsForListBlock": 2,
+  "HeadingMinLen": 3,
+  "HeadingMaxLen": 80,
+  "HeadingPunctBlacklist": ".:;!?",
+  "HeadingLetterRatioMin": 0.6,
+  "CodeMinLines": 3,
+  "CodeMinIndent": 4,
+  "CodeSymbolDensityMin": 0.25,
+  "Dehyphenation": true
+}
