@@ -17,4 +17,10 @@ public class MarkItDownOptions
 
     /// <summary>Normalize markdown output using Markdig.</summary>
     public bool NormalizeMarkdown { get; set; } = true;
+
+    /// <summary>
+    /// Normalized vertical gap threshold above which a blank line is inserted
+    /// to separate paragraphs in the generated markdown.
+    /// </summary>
+    public double ParagraphGapThreshold { get; set; } = 0.012;
 }
