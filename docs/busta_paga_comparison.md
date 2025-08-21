@@ -4,9 +4,9 @@ Benchmarks on `dataset/busta_paga_internet.jpeg` using the shared OCR text in `a
 
 | mode   | avg ms | std ms | CER vs python | token F1 |
 |-------|-------:|-------:|-------------:|---------:|
-| pre    | 4.61 | 8.41 | 0.0008 | 0.78 |
-| post   | 3.20 | 4.66 | 0.0202 | 0.78 |
-| python | 3022.02 | 152.85 | – | – |
+| pre    | 3.41 | 6.35 | 0.0008 | 0.78 |
+| post   | 2.52 | 3.50 | 0.0067 | 0.78 |
+| python | 2045.94 | 46.22 | – | – |
 
 ### Python Markdown
 

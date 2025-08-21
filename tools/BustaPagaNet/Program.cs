@@ -23,13 +23,15 @@ var sw = Stopwatch.StartNew();
 var result = await converter.ConvertAsync(imagePath, "image/jpeg");
 sw.Stop();
 
-using var pix = Pix.LoadFromFile(imagePath);
-using var engine = new TesseractEngine(tessData ?? string.Empty, "ita", EngineMode.LstmOnly);
-engine.DefaultPageSegMode = PageSegMode.Auto;
-using var page = engine.Process(pix);
-var ocrText = page.GetText();
+var psi = new ProcessStartInfo("tesseract", $"{imagePath} {baseName}_dotnet -l ita --psm 3 --oem 3")
+{
+    RedirectStandardOutput = true,
+    RedirectStandardError = true
+};
+using (var p = Process.Start(psi)!)
+    p.WaitForExit();
 
-await File.WriteAllTextAsync(baseName + "_dotnet.txt", ocrText);
+var ocrText = await File.ReadAllTextAsync(baseName + "_dotnet.txt");
 await File.WriteAllTextAsync(baseName + "_markitdownnet.md", result.Markdown);
 
 Console.WriteLine($"Elapsed ms: {sw.Elapsed.TotalMilliseconds:F2}");
