@@ -8,30 +8,34 @@ from markitdown import MarkItDown
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert image to Markdown using pytesseract and markitdown")
-    parser.add_argument("image", help="Path to the image file")
+    parser = argparse.ArgumentParser(
+        description="Convert an image or text file to Markdown using pytesseract and markitdown"
+    )
+    parser.add_argument("input", help="Path to an image or text file")
+    parser.add_argument("-o", "--out", help="Output Markdown file", required=True)
     parser.add_argument("--lang", default="ita", help="Tesseract language, e.g. 'eng' or 'ita'")
     args = parser.parse_args()
 
-    image_path = Path(args.image)
-    img = Image.open(image_path)
+    inp = Path(args.input)
+    md_file = Path(args.out)
 
-    t0 = time.time()
-    ocr_text = pytesseract.image_to_string(img, lang=args.lang)
-    t1 = time.time()
-
-    base = image_path.with_suffix("")
-    ocr_file = base.with_name(base.name + "_pytesseract.txt")
-    md_file = base.with_name(base.name + "_markitdown.md")
-    ocr_file.write_text(ocr_text, encoding="utf-8")
+    if inp.suffix.lower() == ".txt":
+        source = str(inp)
+    else:
+        img = Image.open(inp)
+        t0 = time.time()
+        text = pytesseract.image_to_string(img, lang=args.lang)
+        t1 = time.time()
+        print(f"OCR ms: {(t1 - t0) * 1000:.2f}")
+        temp_txt = md_file.with_suffix(".tmp.txt")
+        temp_txt.write_text(text, encoding="utf-8")
+        source = str(temp_txt)
 
     md = MarkItDown()
     t2 = time.time()
-    result = md.convert(str(ocr_file))
+    result = md.convert(source)
     t3 = time.time()
     md_file.write_text(result.text_content, encoding="utf-8")
-
-    print(f"OCR ms: {(t1 - t0) * 1000:.2f}")
     print(f"Markdown ms: {(t3 - t2) * 1000:.2f}")
 
 
