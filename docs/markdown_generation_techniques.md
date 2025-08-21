@@ -13,12 +13,12 @@ This document summarizes the strategies used by the Python **markitdown** librar
 - **Bounding boxes** for pages, lines and words.
 - **Paragraph gap heuristic** to insert blank lines between distant lines.
 - **Bullet/numbered list detection** to emit proper Markdown list syntax.
+- **Line merging** joins consecutive OCR lines into coherent paragraphs.
 - **Optional normalization** of the final Markdown through Markdig.
 
 ## Missing features compared to markitdown
+- Heading detection and table recognition to better structure complex layouts.
 - EXIF metadata extraction.
-- LLM-generated image descriptions.
-- Rich converters for formats like HTML, DOCX, PPTX or XLSX.
 
 ## Outlook
-Implementing the remaining features—especially metadata handling and richer format-specific converters—would further align MarkItDownNet with markitdown’s capabilities.
+Focusing on additional structural heuristics (headings, tables) and metadata handling will further align MarkItDownNet with markitdown’s formatting quality.
