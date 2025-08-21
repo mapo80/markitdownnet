@@ -1,74 +1,74 @@
 {
-  "SROIE2019/X51005200931.txt": {
-    "markitdownnet": 758
-  },
-  "SROIE2019/X51005230605.txt": {
-    "markitdownnet": 347
-  },
-  "SROIE2019/X00016469671.txt": {
-    "markitdownnet": 498
-  },
-  "SROIE2019/X00016469670.txt": {
-    "markitdownnet": 552
-  },
-  "ICDAR/cTDaR_t00016.txt": {
-    "markitdownnet": 3741
-  },
-  "ICDAR/cTDaR_t00014.txt": {
-    "markitdownnet": 2777
-  },
-  "ICDAR/cTDaR_t00015.txt": {
-    "markitdownnet": 3291
-  },
-  "ICDAR/cTDaR_t00080.txt": {
-    "markitdownnet": 2219
-  },
-  "PUBTABLES/PMC1064078_table_2.txt": {
-    "markitdownnet": 356
-  },
-  "PUBTABLES/PMC1064078_table_0.txt": {
-    "markitdownnet": 269
-  },
-  "PUBTABLES/PMC1064078_table_4.txt": {
-    "markitdownnet": 453
-  },
-  "PUBTABLES/PMC1064078_table_5.txt": {
-    "markitdownnet": 502
-  },
-  "PUBTABLES/PMC1064078_table_3.txt": {
-    "markitdownnet": 292
-  },
-  "PUBTABLES/PMC1064078_table_6.txt": {
-    "markitdownnet": 251
-  },
-  "PUBTABLES/PMC1064082_table_0.txt": {
-    "markitdownnet": 159
-  },
-  "PUBTABLES/PMC1064082_table_1.txt": {
-    "markitdownnet": 354
-  },
-  "FUNSD/82092117.txt": {
-    "markitdownnet": 517
-  },
-  "FUNSD/82200067_0069.txt": {
-    "markitdownnet": 620
-  },
-  "FUNSD/82251504.txt": {
-    "markitdownnet": 404
-  },
-  "FUNSD/82250337_0338.txt": {
-    "markitdownnet": 463
-  },
   "MARMOT/10.1.1.1.2013_64.txt": {
-    "markitdownnet": 501
-  },
-  "MARMOT/10.1.1.1.2014_4.txt": {
-    "markitdownnet": 865
+    "markitdownnet": 1204
   },
   "MARMOT/10.1.1.1.2013_63.txt": {
-    "markitdownnet": 534
+    "markitdownnet": 1065
+  },
+  "MARMOT/10.1.1.1.2014_4.txt": {
+    "markitdownnet": 1473
   },
   "MARMOT/10.1.1.1.2006_3.txt": {
-    "markitdownnet": 1423
+    "markitdownnet": 2126
+  },
+  "FUNSD/82251504.txt": {
+    "markitdownnet": 926
+  },
+  "FUNSD/82250337_0338.txt": {
+    "markitdownnet": 687
+  },
+  "FUNSD/82200067_0069.txt": {
+    "markitdownnet": 943
+  },
+  "FUNSD/82092117.txt": {
+    "markitdownnet": 783
+  },
+  "PUBTABLES/PMC1064078_table_6.txt": {
+    "markitdownnet": 366
+  },
+  "PUBTABLES/PMC1064082_table_1.txt": {
+    "markitdownnet": 469
+  },
+  "PUBTABLES/PMC1064078_table_0.txt": {
+    "markitdownnet": 429
+  },
+  "PUBTABLES/PMC1064082_table_0.txt": {
+    "markitdownnet": 192
+  },
+  "PUBTABLES/PMC1064078_table_5.txt": {
+    "markitdownnet": 758
+  },
+  "PUBTABLES/PMC1064078_table_3.txt": {
+    "markitdownnet": 471
+  },
+  "PUBTABLES/PMC1064078_table_2.txt": {
+    "markitdownnet": 570
+  },
+  "PUBTABLES/PMC1064078_table_4.txt": {
+    "markitdownnet": 665
+  },
+  "SROIE2019/X00016469671.txt": {
+    "markitdownnet": 789
+  },
+  "SROIE2019/X51005230605.txt": {
+    "markitdownnet": 493
+  },
+  "SROIE2019/X51005200931.txt": {
+    "markitdownnet": 800
+  },
+  "SROIE2019/X00016469670.txt": {
+    "markitdownnet": 806
+  },
+  "ICDAR/cTDaR_t00016.txt": {
+    "markitdownnet": 5460
+  },
+  "ICDAR/cTDaR_t00014.txt": {
+    "markitdownnet": 4334
+  },
+  "ICDAR/cTDaR_t00080.txt": {
+    "markitdownnet": 3593
+  },
+  "ICDAR/cTDaR_t00015.txt": {
+    "markitdownnet": 4730
   }
 }

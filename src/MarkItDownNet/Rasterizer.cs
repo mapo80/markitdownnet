@@ -43,8 +43,11 @@ static class Rasterizer
 
     static (Pix pix, double angle, bool deskewed) Preprocess(Pix pix, MarkItDownOptions opt)
     {
-        pix.XRes = opt.OcrUserDpi;
-        pix.YRes = opt.OcrUserDpi;
+        if (opt.OcrSetDpiMetadata)
+        {
+            pix.XRes = opt.OcrUserDpi;
+            pix.YRes = opt.OcrUserDpi;
+        }
         Pix work = pix.Depth == 8 ? pix : pix.ConvertTo8(0);
         if (!ReferenceEquals(work, pix)) pix.Dispose();
         Pix result = work;

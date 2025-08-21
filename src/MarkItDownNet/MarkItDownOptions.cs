@@ -41,6 +41,9 @@ public class MarkItDownOptions
     /// <summary>Color depth for images passed to Tesseract.</summary>
     public OcrColorDepth OcrColorDepth { get; set; } = OcrColorDepth.Grayscale8bpp;
 
+    /// <summary>Set X/Y resolution on Pix before OCR.</summary>
+    public bool OcrSetDpiMetadata { get; set; } = true;
+
     /// <summary>Minimum number of native words required before falling back to OCR.</summary>
     public int MinimumNativeWordThreshold { get; set; } = 1;
 

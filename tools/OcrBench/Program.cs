@@ -76,7 +76,8 @@ static void Extract(Dictionary<string, string> o)
         OcrUserDpi = 300,
         OcrPreBinarize = false,
         OcrDeskewMinAngleDeg = 2.0,
-        OcrColorDepth = OcrColorDepth.Grayscale8bpp
+        OcrColorDepth = OcrColorDepth.Grayscale8bpp,
+        OcrSetDpiMetadata = true
     };
     var converter = new MarkItDownConverter(options);
 
