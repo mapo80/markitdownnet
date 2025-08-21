@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using MarkItDownNet;
 using Tesseract;
 using SkiaSharp;
+using System.Security.Cryptography;
 
 if (args.Length == 0)
 {
@@ -54,35 +54,33 @@ static void Extract(Dictionary<string, string> o)
     var langs = o["--langs"];
     var psm = o["--psm"];
     var threads = o["--threads"];
-    var python = o.GetValueOrDefault("--python-exe", "python3");
-    var refresh = o.GetValueOrDefault("--refresh", "both");
-    var doMark = refresh.Contains("markitdownnet");
-    var doPy = refresh.Contains("pytesseract");
+    var engineOpt = o.GetValueOrDefault("--engine", "markitdownnet");
+    var refresh = o.GetValueOrDefault("--refresh", engineOpt);
+    var doNet = engineOpt == "markitdownnet" || engineOpt == "both";
+    var doCli = engineOpt == "markitdownnet-cli" || engineOpt == "both";
+    var refNet = refresh.Contains("markitdownnet");
+    var refCli = refresh.Contains("markitdownnet-cli");
 
     Environment.SetEnvironmentVariable("OMP_THREAD_LIMIT", threads);
 
-    var markDir = Path.Combine(outDir, "markitdownnet");
-    var pyDir = Path.Combine(outDir, "pytesseract");
-    var rasterRoot = Path.Combine(outDir, "_raster");
+    var netDir = Path.Combine(outDir, "markitdownnet");
+    var cliDir = Path.Combine(outDir, "markitdownnet-cli");
     Directory.CreateDirectory(outDir);
-    if (doMark && Directory.Exists(markDir)) Directory.Delete(markDir, true);
-    if (doPy && Directory.Exists(pyDir)) Directory.Delete(pyDir, true);
-    if (doMark) Directory.CreateDirectory(markDir);
-    if (doPy) Directory.CreateDirectory(pyDir);
+    if (refNet && Directory.Exists(netDir)) Directory.Delete(netDir, true);
+    if (refCli && Directory.Exists(cliDir)) Directory.Delete(cliDir, true);
+    if (doNet) Directory.CreateDirectory(netDir);
+    if (doCli) Directory.CreateDirectory(cliDir);
+    var rasterRoot = Path.Combine("artifacts/_sanity/raster");
     Directory.CreateDirectory(rasterRoot);
 
-    var options = new MarkItDownOptions
+    TesseractEngine? engine = null;
+    if (doNet)
     {
-        OcrLanguages = langs,
-        OcrDataPath = "/usr/share/tesseract-ocr/5/tessdata",
-        PageSegMode = (Tesseract.PageSegMode)6,
-        NormalizeMarkdown = false,
-        DetectBulletLists = false,
-        MergeLines = false,
-        MinimumNativeWordThreshold = int.MaxValue,
-        PdfRasterDpi = 300
-    };
-    var converter = new MarkItDownConverter(options);
+        engine = new TesseractEngine("/usr/share/tesseract-ocr/5/tessdata", langs, EngineMode.LstmOnly);
+        engine.DefaultPageSegMode = (PageSegMode)6;
+        engine.SetVariable("user_defined_dpi", "300");
+        engine.SetVariable("preserve_interword_spaces", "1");
+    }
 
     var exts = new HashSet<string>(new[] { ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp", ".pdf" }, StringComparer.OrdinalIgnoreCase);
     var datasets = Directory.GetDirectories(inputDir).Where(d => Path.GetFileName(d) != "_ocr");
@@ -90,7 +88,7 @@ static void Extract(Dictionary<string, string> o)
     var timings = File.Exists(timingsPath)
         ? JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, long>>>(File.ReadAllText(timingsPath))!
         : new Dictionary<string, Dictionary<string, long>>();
-    long totalMark = 0, totalPy = 0;
+    long totalNet = 0, totalCli = 0;
 
     foreach (var datasetPath in datasets)
     {
@@ -102,7 +100,6 @@ static void Extract(Dictionary<string, string> o)
             var name = Path.GetFileNameWithoutExtension(file) + ".txt";
             var rel = dataset + "/" + name;
             var images = GetImages(file).ToList();
-
             var rasterDir = Path.Combine(rasterRoot, dataset);
             Directory.CreateDirectory(rasterDir);
             var rasterPath = Path.Combine(rasterDir, Path.GetFileNameWithoutExtension(file) + ".png");
@@ -110,43 +107,63 @@ static void Extract(Dictionary<string, string> o)
             using var rpix = Pix.LoadFromFile(rasterPath);
             var depth = rpix.Depth;
 
-            long tMark = 0, tPy = 0;
-            if (doMark)
+            long tNet = 0, tCli = 0;
+            if (doNet)
             {
                 var sw = Stopwatch.StartNew();
-                var textMark = OcrMark(converter, images);
+                using var page = engine!.Process(rpix);
+                var text = page.GetText().Trim();
                 sw.Stop();
-                tMark = sw.ElapsedMilliseconds;
-                var outMarkDir = Path.Combine(outDir, "markitdownnet", dataset);
-                Directory.CreateDirectory(outMarkDir);
-                File.WriteAllText(Path.Combine(outMarkDir, name), textMark);
-                totalMark += tMark;
+                tNet = sw.ElapsedMilliseconds;
+                var outNetDir = Path.Combine(outDir, "markitdownnet", dataset);
+                Directory.CreateDirectory(outNetDir);
+                File.WriteAllText(Path.Combine(outNetDir, name), text);
+                totalNet += tNet;
+                var entryNet = timings.ContainsKey(rel) ? timings[rel] : new Dictionary<string, long>();
+                entryNet["markitdownnet"] = tNet;
+                timings[rel] = entryNet;
+                Console.WriteLine($"engine=net file={dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} psm=6 oem=1 preserve_spaces=1 time_ms={tNet} raster={rasterPath}");
             }
 
-            if (doPy)
+            if (doCli)
             {
                 var sw = Stopwatch.StartNew();
-                var textPy = OcrPy(images, python, langs, psm);
+                var psi = new ProcessStartInfo("tesseract")
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                };
+                psi.ArgumentList.Add(rasterPath);
+                psi.ArgumentList.Add("stdout");
+                psi.ArgumentList.Add("--psm");
+                psi.ArgumentList.Add(psm);
+                psi.ArgumentList.Add("-l");
+                psi.ArgumentList.Add(langs);
+                psi.ArgumentList.Add("-c");
+                psi.ArgumentList.Add("preserve_interword_spaces=1");
+                psi.ArgumentList.Add("-c");
+                psi.ArgumentList.Add("user_defined_dpi=300");
+                using var p = Process.Start(psi);
+                var output = p!.StandardOutput.ReadToEnd();
+                p.WaitForExit();
                 sw.Stop();
-                tPy = sw.ElapsedMilliseconds;
-                var outPyDir = Path.Combine(outDir, "pytesseract", dataset);
-                Directory.CreateDirectory(outPyDir);
-                File.WriteAllText(Path.Combine(outPyDir, name), textPy);
-                totalPy += tPy;
+                tCli = sw.ElapsedMilliseconds;
+                var outCliDir = Path.Combine(outDir, "markitdownnet-cli", dataset);
+                Directory.CreateDirectory(outCliDir);
+                File.WriteAllText(Path.Combine(outCliDir, name), output.Trim());
+                totalCli += tCli;
+                var entryCli = timings.ContainsKey(rel) ? timings[rel] : new Dictionary<string, long>();
+                entryCli["markitdownnet-cli"] = tCli;
+                timings[rel] = entryCli;
+                Console.WriteLine($"engine=cli file={dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} psm=6 oem=1 preserve_spaces=1 time_ms={tCli} raster={rasterPath}");
             }
-
-            var entry = timings.ContainsKey(rel) ? timings[rel] : new Dictionary<string, long>();
-            if (doMark) entry["markitdownnet"] = tMark;
-            if (doPy) entry["pytesseract"] = tPy;
-            timings[rel] = entry;
-
-            Console.WriteLine($"{dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} deskew=skipped xdpi=300 ydpi=300 psm=6 oem=1 user_defined_dpi=300 preserve_spaces=1 time_ms={tMark} raster={rasterPath}");
         }
     }
 
     File.WriteAllText(timingsPath, JsonSerializer.Serialize(timings, new JsonSerializerOptions { WriteIndented = true }));
-    if (doMark) Console.WriteLine($"TOTAL markitdownnet {totalMark} ms");
-    if (doPy) Console.WriteLine($"TOTAL pytesseract {totalPy} ms");
+    if (doNet) Console.WriteLine($"TOTAL markitdownnet {totalNet} ms");
+    if (doCli) Console.WriteLine($"TOTAL markitdownnet-cli {totalCli} ms");
+    engine?.Dispose();
 }
 
 static IEnumerable<string> GetImages(string path)
@@ -172,57 +189,6 @@ static IEnumerable<string> GetImages(string path)
     }
 }
 
-static string OcrMark(MarkItDownConverter conv, IEnumerable<string> images)
-{
-    var sb = new StringBuilder();
-    foreach (var img in images)
-    {
-        var res = conv.ConvertAsync(img, GetMime(img)).Result;
-        sb.AppendLine(res.Markdown.Trim());
-    }
-    return sb.ToString().Trim();
-}
-
-static string OcrPy(IEnumerable<string> images, string py, string lang, string psm)
-{
-    var sb = new StringBuilder();
-    foreach (var img in images)
-    {
-        var psi = new ProcessStartInfo(py)
-        {
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false
-        };
-        psi.ArgumentList.Add("-c");
-        psi.ArgumentList.Add("from PIL import Image;import pytesseract,sys;print(pytesseract.image_to_string(Image.open(sys.argv[1]), lang=sys.argv[2], config='--psm '+sys.argv[3]))");
-        psi.ArgumentList.Add(img);
-        psi.ArgumentList.Add(lang);
-        psi.ArgumentList.Add(psm);
-        psi.Environment["TESSDATA_PREFIX"] = "/usr/share/tesseract-ocr/5/tessdata";
-        using var p = Process.Start(psi);
-        var output = p!.StandardOutput.ReadToEnd();
-        p.WaitForExit();
-        sb.AppendLine(output.Trim());
-    }
-    return sb.ToString().Trim();
-}
-
-static string GetMime(string path)
-{
-    var ext = Path.GetExtension(path).ToLowerInvariant();
-    return ext switch
-    {
-        ".png" => "image/png",
-        ".jpg" => "image/jpeg",
-        ".jpeg" => "image/jpeg",
-        ".tif" => "image/tiff",
-        ".tiff" => "image/tiff",
-        ".bmp" => "image/bmp",
-        _ => "image/png"
-    };
-}
-
 static void Compare(Dictionary<string, string> o)
 {
     var ocrDir = o["--ocr-dir"];
@@ -230,12 +196,13 @@ static void Compare(Dictionary<string, string> o)
     var outMd = o["--out-md"];
     var runCliSanity = o.ContainsKey("--run-cli-sanity");
 
-    var markDir = Path.Combine(ocrDir, "markitdownnet");
-    var pyDir = Path.Combine(ocrDir, "pytesseract");
+    var netDir = Path.Combine(ocrDir, "markitdownnet");
+    var cliDir = Path.Combine(ocrDir, "markitdownnet-cli");
+    var gtDir = Path.Combine(ocrDir, "pytesseract");
     var timings = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, long>>>(File.ReadAllText(Path.Combine(ocrDir, "timings.json")))!;
 
     var files = new List<FileMetrics>();
-    foreach (var dataset in Directory.GetDirectories(pyDir))
+    foreach (var dataset in Directory.GetDirectories(gtDir))
     {
         var ds = Path.GetFileName(dataset);
         foreach (var file in Directory.GetFiles(dataset, "*.txt"))
@@ -243,100 +210,156 @@ static void Compare(Dictionary<string, string> o)
             var name = Path.GetFileName(file);
             var rel = ds + "/" + name;
             var gt = Normalize(File.ReadAllText(file));
-            var hyp = Normalize(File.ReadAllText(Path.Combine(markDir, ds, name)));
+            var runs = new Dictionary<string, FileRun>();
 
-            var cer = Cer(gt, hyp);
-            var (tp, tr, tf) = TokenScores(gt, hyp);
-            var (lcRef, lcHyp, lf) = LineScores(gt, hyp);
-            timings.TryGetValue(rel, out var t);
-            files.Add(new FileMetrics
+            if (File.Exists(Path.Combine(netDir, ds, name)))
             {
-                dataset = ds,
-                file = Path.GetFileNameWithoutExtension(name),
-                cer_char = cer,
-                token_precision = tp,
-                token_recall = tr,
-                token_f1 = tf,
-                line_count_ref = lcRef,
-                line_count_hyp = lcHyp,
-                line_f1 = lf,
-                timing_markitdownnet = t?["markitdownnet"] ?? 0,
-                timing_pytesseract = t?["pytesseract"] ?? 0
-            });
+                var hyp = Normalize(File.ReadAllText(Path.Combine(netDir, ds, name)));
+                var (tp, tr, tf) = TokenScores(gt, hyp);
+                var (lcRef, lcHyp, lf) = LineScores(gt, hyp);
+                var cer = Cer(gt, hyp);
+                timings.TryGetValue(rel, out var t);
+                runs["markitdownnet"] = new FileRun
+                {
+                    cer_char = cer,
+                    token_precision = tp,
+                    token_recall = tr,
+                    token_f1 = tf,
+                    line_count_ref = lcRef,
+                    line_count_hyp = lcHyp,
+                    line_f1 = lf,
+                    time_ms = t?["markitdownnet"] ?? 0
+                };
+            }
+
+            if (File.Exists(Path.Combine(cliDir, ds, name)))
+            {
+                var hyp = Normalize(File.ReadAllText(Path.Combine(cliDir, ds, name)));
+                var (tp, tr, tf) = TokenScores(gt, hyp);
+                var (lcRef, lcHyp, lf) = LineScores(gt, hyp);
+                var cer = Cer(gt, hyp);
+                timings.TryGetValue(rel, out var t);
+                runs["markitdownnet-cli"] = new FileRun
+                {
+                    cer_char = cer,
+                    token_precision = tp,
+                    token_recall = tr,
+                    token_f1 = tf,
+                    line_count_ref = lcRef,
+                    line_count_hyp = lcHyp,
+                    line_f1 = lf,
+                    time_ms = t?["markitdownnet-cli"] ?? 0
+                };
+            }
+
+            files.Add(new FileMetrics { dataset = ds, file = Path.GetFileNameWithoutExtension(name), runs = runs });
         }
     }
 
-    var byDataset = files.GroupBy(f => f.dataset).ToDictionary(g => g.Key, g => new Aggregate
+    var byDataset = new Dictionary<string, Dictionary<string, Aggregate>>();
+    var global = new Dictionary<string, Aggregate>();
+    foreach (var f in files)
     {
-        cer_avg = g.Average(x => x.cer_char),
-        token_f1_avg = g.Average(x => x.token_f1),
-        line_f1_avg = g.Average(x => x.line_f1),
-        n_files = g.Count()
-    });
-    var global = new Aggregate
-    {
-        cer_avg = files.Average(x => x.cer_char),
-        token_f1_avg = files.Average(x => x.token_f1),
-        line_f1_avg = files.Average(x => x.line_f1),
-        n_files = files.Count
-    };
+        foreach (var kv in f.runs)
+        {
+            var eng = kv.Key;
+            var m = kv.Value;
+            if (!byDataset.TryGetValue(f.dataset, out var d))
+                byDataset[f.dataset] = d = new Dictionary<string, Aggregate>();
+            if (!d.TryGetValue(eng, out var a))
+                d[eng] = a = new Aggregate();
+            a.cer_sum += m.cer_char; a.token_f1_sum += m.token_f1; a.line_f1_sum += m.line_f1; a.n_files++;
 
-    var runConfig = new Dictionary<string, string>
+            if (!global.TryGetValue(eng, out var g))
+                global[eng] = g = new Aggregate();
+            g.cer_sum += m.cer_char; g.token_f1_sum += m.token_f1; g.line_f1_sum += m.line_f1; g.n_files++;
+        }
+    }
+
+    var runConfig = new Dictionary<string, object>
     {
         ["os"] = RuntimeInformation.OSDescription.Trim(),
         ["cpu"] = CpuName(),
         ["dotnet"] = Environment.Version.ToString(),
-        ["python"] = Proc(o.GetValueOrDefault("--python-exe", "python3"), "--version").Trim(),
-        ["tesseract"] = Proc("tesseract", "--version").Split('\n')[0].Trim(),
         ["langs"] = o.GetValueOrDefault("--langs", "eng"),
         ["psm"] = o.GetValueOrDefault("--psm", "6"),
         ["threads"] = o.GetValueOrDefault("--threads", "1"),
-        ["timings_unit"] = "ms"
+        ["timings_unit"] = "ms",
+        ["engines"] = global.Keys.ToArray()
     };
+
+    if (global.ContainsKey("markitdownnet"))
+    {
+        using var e = new TesseractEngine("/usr/share/tesseract-ocr/5/tessdata", o.GetValueOrDefault("--langs", "eng"), EngineMode.LstmOnly);
+        var tv = e.Version;
+        string lv;
+        if (!e.TryGetStringVariable("leptonica_version", out lv))
+            lv = Proc("tesseract", "--version").Split('\n').ElementAtOrDefault(1)?.Trim() ?? "";
+        var engPath = Path.Combine("/usr/share/tesseract-ocr/5/tessdata", "eng.traineddata");
+        runConfig["markitdownnet"] = new
+        {
+            tesseract_version = tv,
+            leptonica_version = lv,
+            tessdata_path = "/usr/share/tesseract-ocr/5/tessdata",
+            eng_checksum = File.Exists(engPath) ? Checksum(engPath) : ""
+        };
+    }
+    if (global.ContainsKey("markitdownnet-cli"))
+    {
+        var ver = Proc("tesseract", "--version").Split('\n');
+        var tessdata = "/usr/share/tesseract-ocr/5/tessdata";
+        var engPath = Path.Combine(tessdata, "eng.traineddata");
+        runConfig["markitdownnet-cli"] = new
+        {
+            tesseract_version = ver.ElementAtOrDefault(0)?.Trim() ?? "",
+            leptonica_version = ver.ElementAtOrDefault(1)?.Trim() ?? "",
+            tessdata_path = tessdata,
+            eng_checksum = File.Exists(engPath) ? Checksum(engPath) : ""
+        };
+    }
 
     var bench = new
     {
         task = "OCR-BENCH",
         run_config = runConfig,
         files,
-        aggregate = new { by_dataset = byDataset, global }
+        aggregate = new
+        {
+            by_dataset = byDataset.ToDictionary(k => k.Key, v => v.Value.ToDictionary(e => e.Key, a => new { cer_avg = a.Value.cer_sum / a.Value.n_files, token_f1_avg = a.Value.token_f1_sum / a.Value.n_files, line_f1_avg = a.Value.line_f1_sum / a.Value.n_files, n_files = a.Value.n_files })),
+            global = global.ToDictionary(e => e.Key, a => new { cer_avg = a.Value.cer_sum / a.Value.n_files, token_f1_avg = a.Value.token_f1_sum / a.Value.n_files, line_f1_avg = a.Value.line_f1_sum / a.Value.n_files, n_files = a.Value.n_files })
+        }
     };
     Directory.CreateDirectory(Path.GetDirectoryName(outJson)!);
     File.WriteAllText(outJson, JsonSerializer.Serialize(bench, new JsonSerializerOptions { WriteIndented = true }));
 
     var sb = new StringBuilder();
-    sb.AppendLine("# OCR Benchmark (markitdownnet vs pytesseract)\n");
+    sb.AppendLine("# OCR Benchmark\n");
     sb.AppendLine("## Global");
-    sb.AppendLine("| scope | CER | Token-F1 | line_F1 | n_files |");
-    sb.AppendLine($"| Global | {global.cer_avg:F4} | {global.token_f1_avg:F4} | {global.line_f1_avg:F4} | {global.n_files} |");
-    sb.AppendLine();
-    sb.AppendLine("## By dataset");
-    sb.AppendLine("| scope | CER | Token-F1 | line_F1 | n_files |");
-    foreach (var kv in byDataset)
+    sb.AppendLine("| engine | CER | Token-F1 | line_F1 | n_files |");
+    foreach (var kv in bench.aggregate.global)
         sb.AppendLine($"| {kv.Key} | {kv.Value.cer_avg:F4} | {kv.Value.token_f1_avg:F4} | {kv.Value.line_f1_avg:F4} | {kv.Value.n_files} |");
     sb.AppendLine();
-    sb.AppendLine("## Top-5 worst files");
-    sb.AppendLine("| dataset/file | cer_char | token_f1 | line_f1 | note |");
-    foreach (var f in files.OrderByDescending(x => x.cer_char).Take(5))
-        sb.AppendLine($"| {f.dataset}/{f.file} | {f.cer_char:F4} | {f.token_f1:F4} | {f.line_f1:F4} | |");
+    sb.AppendLine("## By dataset");
+    sb.AppendLine("| dataset | engine | CER | Token-F1 | line_F1 | n_files |");
+    foreach (var ds in bench.aggregate.by_dataset)
+        foreach (var eng in ds.Value)
+            sb.AppendLine($"| {ds.Key} | {eng.Key} | {eng.Value.cer_avg:F4} | {eng.Value.token_f1_avg:F4} | {eng.Value.line_f1_avg:F4} | {eng.Value.n_files} |");
     sb.AppendLine();
     sb.AppendLine("## Run config");
     foreach (var kv in runConfig)
-        sb.AppendLine($"- {kv.Key}: {kv.Value}");
+        sb.AppendLine($"- {kv.Key}: {JsonSerializer.Serialize(kv.Value)}");
     Directory.CreateDirectory(Path.GetDirectoryName(outMd)!);
     File.WriteAllText(outMd, sb.ToString());
 
     var fails = new List<string>();
-    if (global.token_f1_avg < 0.80 || global.line_f1_avg < 0.50)
-        fails.Add($"GLOBAL Token-F1={global.token_f1_avg:F2} line_F1={global.line_f1_avg:F2}");
-    foreach (var ds in new[] { "ICDAR", "PUBTABLES" })
-    {
-        if (byDataset.TryGetValue(ds, out var m))
-        {
-            if (m.token_f1_avg < 0.80 || m.line_f1_avg < 0.50)
-                fails.Add($"{ds} Token-F1={m.token_f1_avg:F2} line_F1={m.line_f1_avg:F2}");
-        }
-    }
+    foreach (var kv in bench.aggregate.global)
+        if (kv.Value.token_f1_avg < 0.80 || kv.Value.line_f1_avg < 0.50)
+            fails.Add($"GLOBAL {kv.Key} Token-F1={kv.Value.token_f1_avg:F2} line_F1={kv.Value.line_f1_avg:F2}");
+    foreach (var dsName in new[] { "ICDAR", "PUBTABLES" })
+        if (bench.aggregate.by_dataset.TryGetValue(dsName, out var engs))
+            foreach (var kv in engs)
+                if (kv.Value.token_f1_avg < 0.80 || kv.Value.line_f1_avg < 0.50)
+                    fails.Add($"{dsName} {kv.Key} Token-F1={kv.Value.token_f1_avg:F2} line_F1={kv.Value.line_f1_avg:F2}");
     if (fails.Count > 0)
     {
         Console.WriteLine("Gate check failed:");
@@ -346,11 +369,11 @@ static void Compare(Dictionary<string, string> o)
 
     if (runCliSanity)
     {
-        var worst = files.OrderByDescending(x => x.cer_char).Take(2).ToList();
+        var worst = files.Where(f => f.runs.ContainsKey("markitdownnet")).OrderByDescending(f => f.runs["markitdownnet"].cer_char).Take(2).ToList();
         Directory.CreateDirectory("artifacts/_sanity");
         foreach (var f in worst)
         {
-            var img = Path.Combine(ocrDir, "_raster", f.dataset, f.file + ".png");
+            var img = Path.Combine("artifacts/_sanity/raster", f.dataset, f.file + ".png");
             var baseName = f.dataset + "_" + f.file;
             var out6 = Path.Combine("artifacts/_sanity", baseName + ".psm6.cli.txt");
             var out11 = Path.Combine("artifacts/_sanity", baseName + ".psm11.cli.txt");
@@ -367,7 +390,10 @@ static void Compare(Dictionary<string, string> o)
 static void SaveRaster(string src, string dest)
 {
     using var bmp = SKBitmap.Decode(src);
-    using var img = SKImage.FromBitmap(bmp);
+    var gray = new SKBitmap(bmp.Width, bmp.Height, SKColorType.Gray8, SKAlphaType.Opaque);
+    using (var canvas = new SKCanvas(gray))
+        canvas.DrawBitmap(bmp, 0, 0);
+    using var img = SKImage.FromBitmap(gray);
     using var data = img.Encode(SKEncodedImageFormat.Png, 100);
     File.WriteAllBytes(dest, data.ToArray());
 }
@@ -465,10 +491,23 @@ static string Proc(string file, string args)
     catch { return string.Empty; }
 }
 
+static string Checksum(string path)
+{
+    using var sha = SHA256.Create();
+    using var fs = File.OpenRead(path);
+    var hash = sha.ComputeHash(fs);
+    return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+}
+
 class FileMetrics
 {
     public string dataset { get; set; } = "";
     public string file { get; set; } = "";
+    public Dictionary<string, FileRun> runs { get; set; } = new();
+}
+
+class FileRun
+{
     public double cer_char { get; set; }
     public double token_precision { get; set; }
     public double token_recall { get; set; }
@@ -476,15 +515,14 @@ class FileMetrics
     public int line_count_ref { get; set; }
     public int line_count_hyp { get; set; }
     public double line_f1 { get; set; }
-    public long timing_markitdownnet { get; set; }
-    public long timing_pytesseract { get; set; }
+    public long time_ms { get; set; }
 }
 
 class Aggregate
 {
-    public double cer_avg { get; set; }
-    public double token_f1_avg { get; set; }
-    public double line_f1_avg { get; set; }
+    public double cer_sum { get; set; }
+    public double token_f1_sum { get; set; }
+    public double line_f1_sum { get; set; }
     public int n_files { get; set; }
 }
 
