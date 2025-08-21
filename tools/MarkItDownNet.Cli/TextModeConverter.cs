@@ -7,7 +7,7 @@ namespace MarkItDownNet;
 public class TextModeConfig
 {
     public int ListIndentWidth { get; set; } = 2;
-    public string[] BulletChars { get; set; } = new[] {"-", "*", "•", "+"};
+    public string[] BulletChars { get; set; } = new[] {"-", "*", "•", "+", "–", "—", "·"};
     public int MinItemsForListBlock { get; set; } = 2;
     public int HeadingMinLen { get; set; } = 3;
     public int HeadingMaxLen { get; set; } = 80;
@@ -32,18 +32,19 @@ public static class TextModeConverter
     public static string Convert(string text, string mode, TextModeConfig config)
     {
         text = Normalize(text);
-        if (mode == "post-v0" || mode == "post-v01")
+        if (mode == "post-v0" || mode == "post-v01" || mode=="post-v02")
         {
-            text = Reflow(text, config);
-            text = DetectLists(text, config);
-            text = DetectHeadings(text, config, mode == "post-v01");
+            bool v02 = mode=="post-v02";
+            text = Reflow(text, config, v02);
+            text = DetectLists(text, config, v02);
+            text = DetectHeadings(text, config, mode == "post-v01" || mode=="post-v02", v02);
             text = DetectCodeBlocks(text, config);
-            text = DetectHorizontalRules(text);
-            if (mode == "post-v01")
+            text = DetectHorizontalRules(text, config, v02);
+            if (mode == "post-v01" || mode=="post-v02")
             {
                 if (config.KeyValueToTableEnabled)
-                    text = DetectKeyValueTables(text, config);
-                text = DetectMonoTables(text, config);
+                    text = DetectKeyValueTables(text, config, v02);
+                text = DetectMonoTables(text, config, v02);
             }
         }
         return text.TrimEnd() + "\n"; // ensure newline at end
@@ -64,7 +65,7 @@ public static class TextModeConverter
         return string.Join("\n", lines);
     }
 
-    private static string Reflow(string text, TextModeConfig config)
+    private static string Reflow(string text, TextModeConfig config, bool v02)
     {
         var lines = text.Split('\n');
         var sb = new StringBuilder();
@@ -84,10 +85,10 @@ public static class TextModeConverter
                 continue;
             }
             var paragraph = new StringBuilder(line.TrimEnd());
-            while (i + 1 < lines.Length && !string.IsNullOrWhiteSpace(lines[i+1]) && !IsListLine(lines[i+1], config) && !IsCodeLine(lines[i+1], config.CodeMinIndent))
+            while (i + 1 < lines.Length && !string.IsNullOrWhiteSpace(lines[i+1]) && !IsListLine(lines[i+1], config) && !IsCodeLine(lines[i+1], config.CodeMinIndent) && !(v02 && IsKeyValueLine(lines[i+1])) && !(v02 && paragraph.ToString().EndsWith(":")))
             {
                 var next = lines[i+1].TrimStart();
-                if (config.Dehyphenation && paragraph.ToString().EndsWith("-") && Regex.IsMatch(next, "^[A-Za-z].*"))
+                if (config.Dehyphenation && paragraph.ToString().EndsWith("-") && Regex.IsMatch(next, v02?"^[a-z0-9].*":"^[A-Za-z].*"))
                 {
                     paragraph.Length--; // remove hyphen
                     paragraph.Append(next);
@@ -117,30 +118,53 @@ public static class TextModeConverter
     private static bool IsCodeLine(string line, int minIndent)
         => line.StartsWith(new string(' ', minIndent));
 
-    private static string DetectLists(string text, TextModeConfig config)
+    private static string DetectLists(string text, TextModeConfig config, bool v02)
     {
         var lines = text.Split('\n');
         var sb = new StringBuilder();
         int i = 0;
         while (i < lines.Length)
         {
-            if (IsListLine(lines[i], config))
+            if (TryParseBullet(lines[i], config, out int indent, out int? num, out string content))
             {
-                var items = new List<string>();
-                while (i < lines.Length && IsListLine(lines[i], config))
+                var items = new List<(int indent,int? num,string content)>();
+                while (i < lines.Length && TryParseBullet(lines[i], config, out indent, out num, out content))
                 {
-                    items.Add(NormalizeBullet(lines[i], config));
-                    i++;
+                    var builder = new StringBuilder(content);
+                    int j = i + 1;
+                    while (j < lines.Length && !TryParseBullet(lines[j], config, out _, out _, out _) )
+                    {
+                        if (lines[j].StartsWith(new string(' ', indent + config.ListIndentWidth + 2)) ||
+                            (v02 && lines[j].StartsWith(new string(' ', indent)) && builder.Length>0 && (builder[^1]==',' || builder[^1]==';')) )
+                        {
+                            builder.Append(' ').Append(lines[j].Trim());
+                            j++;
+                        }
+                        else break;
+                    }
+                    items.Add((indent,num,builder.ToString()));
+                    i = j;
                 }
                 if (items.Count >= config.MinItemsForListBlock)
                 {
-                    foreach (var item in items)
-                        sb.AppendLine(item);
+                    bool numeric = items.All(it => it.num.HasValue);
+                    if (numeric)
+                    {
+                        bool coherent = true;
+                        for (int k=0;k<items.Count;k++) if (items[k].num != k+1) { coherent=false; break; }
+                        if (!coherent)
+                            for (int k=0;k<items.Count;k++) items[k]= (items[k].indent,1,items[k].content);
+                    }
+                    foreach (var it in items)
+                    {
+                        string bullet = it.num.HasValue? $"{it.num}. ":"- ";
+                        sb.AppendLine(new string(' ', it.indent) + bullet + it.content);
+                    }
                 }
                 else
                 {
-                    foreach (var item in items)
-                        sb.AppendLine(item.Substring(2)); // drop bullet
+                    foreach (var it in items)
+                        sb.AppendLine(new string(' ', it.indent) + it.content);
                 }
             }
             else
@@ -152,34 +176,30 @@ public static class TextModeConverter
         return sb.ToString();
     }
 
-    private static string NormalizeBullet(string line, TextModeConfig config)
+    private static bool TryParseBullet(string line, TextModeConfig config, out int indent, out int? number, out string content)
     {
+        indent = 0; number = null; content = string.Empty;
         var trimmed = line.TrimStart();
-        int indent = line.Length - trimmed.Length;
-        string content;
-        string bullet;
-        if (Regex.IsMatch(trimmed, @"^[0-9]+\)\s"))
+        indent = line.Length - trimmed.Length;
+        if (Regex.IsMatch(trimmed, @"^([0-9]+)[\.)]\s"))
         {
-            var m = Regex.Match(trimmed, @"^([0-9]+)\)\s(.*)");
-            bullet = m.Groups[1].Value + ". ";
+            var m = Regex.Match(trimmed, @"^([0-9]+)[\.)]\s(.*)");
+            number = int.Parse(m.Groups[1].Value);
             content = m.Groups[2].Value;
+            return true;
         }
-        else if (Regex.IsMatch(trimmed, @"^[0-9]+\.\s"))
+        foreach (var b in config.BulletChars)
         {
-            var m = Regex.Match(trimmed, @"^([0-9]+)\.\s(.*)");
-            bullet = m.Groups[1].Value + ". ";
-            content = m.Groups[2].Value;
+            if (trimmed.StartsWith(b + " "))
+            {
+                content = trimmed.Substring(b.Length + 1);
+                return true;
+            }
         }
-        else
-        {
-            bullet = "- ";
-            content = trimmed.Substring(2);
-        }
-        var nesting = indent / config.ListIndentWidth;
-        return new string(' ', nesting * config.ListIndentWidth) + bullet + content;
+        return false;
     }
 
-    private static string DetectHeadings(string text, TextModeConfig config, bool v01)
+    private static string DetectHeadings(string text, TextModeConfig config, bool allowWhitelist, bool v02)
     {
         var lines = text.Split('\n');
         string[] whitelist = new[]{"Dettaglio","Riepilogo","Totali","Contributi","Trattenute"};
@@ -190,7 +210,7 @@ public static class TextModeConverter
             bool prevBlank = i == 0 || string.IsNullOrWhiteSpace(lines[i-1]);
             bool nextBlank = i == lines.Length-1 || string.IsNullOrWhiteSpace(lines[i+1]);
 
-            if (v01 && whitelist.Any(w => string.Equals(line, w, StringComparison.OrdinalIgnoreCase)) && prevBlank)
+            if (allowWhitelist && whitelist.Any(w => string.Equals(line, w, StringComparison.OrdinalIgnoreCase)) && prevBlank)
             {
                 lines[i] = "## " + line;
                 continue;
@@ -199,9 +219,10 @@ public static class TextModeConverter
             if (line.Length < config.HeadingMinLen || line.Length > config.HeadingMaxLen) continue;
             if (config.HeadingPunctBlacklist.Contains(line[^1]))
             {
-                if (!(v01 && line.EndsWith(":") && nextBlank))
+                if (!(allowWhitelist && line.EndsWith(":") && nextBlank))
                     continue;
             }
+            if (v02 && line.Contains(':') && !nextBlank) continue;
             double letters = line.Count(char.IsLetter);
             double ratio = letters / line.Replace(" ", "").Length;
             if (ratio < config.HeadingLetterRatioMin) continue;
@@ -250,21 +271,24 @@ public static class TextModeConverter
         return sb.ToString();
     }
 
-    private static string DetectHorizontalRules(string text)
+    private static string DetectHorizontalRules(string text, TextModeConfig config, bool v02)
     {
         var lines = text.Split('\n');
         for (int i = 0; i < lines.Length; i++)
         {
             var original = lines[i];
-            if (original.StartsWith(" ")) continue; // avoid inside lists
             var t = original.Replace(" ", "");
             if (t.Length >=3 && t.Distinct().Count()==1 && "-_*".Contains(t[0]))
-                lines[i] = "---";
+            {
+                if (v02 && TryParseBullet(original, config, out _, out _, out _)) continue;
+                if (original.TrimStart().TrimEnd(t[0]).Length==0)
+                    lines[i] = "---";
+            }
         }
         return string.Join('\n', lines);
     }
 
-    private static string DetectKeyValueTables(string text, TextModeConfig config)
+    private static string DetectKeyValueTables(string text, TextModeConfig config, bool v02)
     {
         var lines = text.Split('\n');
         var sb = new StringBuilder();
@@ -281,7 +305,7 @@ public static class TextModeConverter
                     string key=m.Groups[1].Value.Trim();
                     string val=m.Groups[2].Value.Trim();
                     int j=i+1;
-                    while(j<lines.Length && Regex.IsMatch(lines[j],"^ {2,}\\S"))
+                    while(j<lines.Length && (Regex.IsMatch(lines[j],"^ {2,}\\S") || (v02 && Regex.IsMatch(lines[j].TrimStart(),"^(di |per |dal )",RegexOptions.IgnoreCase))))
                     {
                         val += " " + lines[j].Trim();
                         j++;
@@ -289,7 +313,7 @@ public static class TextModeConverter
                     rows.Add((key,val));
                     i=j;
                 }
-                if (rows.Count>=config.MinKeyValueRows)
+                if (rows.Count>=config.MinKeyValueRows && (!v02 || rows.Count(r=>r.key.EndsWith("."))<=rows.Count*0.3))
                 {
                     sb.AppendLine("| Key | Value |");
                     sb.AppendLine("| --- | ----- |");
@@ -309,7 +333,7 @@ public static class TextModeConverter
         return sb.ToString();
     }
 
-    private static string DetectMonoTables(string text, TextModeConfig config)
+    private static string DetectMonoTables(string text, TextModeConfig config, bool v02)
     {
         var lines=text.Split('\n');
         var sb=new StringBuilder();
@@ -319,25 +343,34 @@ public static class TextModeConverter
         {
             if(rowRegex.IsMatch(lines[i]))
             {
-                var rows=new List<string[]>();
+                var rows=new List<List<string>>();
                 while(i<lines.Length && rowRegex.IsMatch(lines[i]))
                 {
-                    var cols=Regex.Split(lines[i].TrimEnd(),@"\s{"+config.MonoTableMinSpaceGap+@",}");
+                    var cols=Regex.Split(lines[i].TrimEnd(),@"\s{"+config.MonoTableMinSpaceGap+@",}").ToList();
                     rows.Add(cols);
                     i++;
                 }
-                int colCount=rows[0].Length;
-                bool uniform=rows.All(r=>Math.Abs(r.Length-colCount)<=config.MonoTableColTolerance);
+                int colCount=rows[0].Count;
+                bool uniform=rows.All(r=>Math.Abs(r.Count-colCount)<=config.MonoTableColTolerance);
+                if(v02)
+                {
+                    for(int c=colCount-1;c>=0;c--)
+                    {
+                        if(rows.All(r=>c>=r.Count || string.IsNullOrWhiteSpace(r[c])))
+                            foreach(var r in rows) if(c<r.Count) r.RemoveAt(c);
+                    }
+                    colCount=rows[0].Count;
+                }
                 if(rows.Count>=config.MonoTableMinRows && colCount>=config.MonoTableMinCols && uniform)
                 {
-                    bool header=rows.Count>1 && NumericDensity(rows[0])<NumericDensity(rows[1]);
-                    string[] headerRow=header?rows[0]:Enumerable.Range(1,colCount).Select(c=>"Col"+c).ToArray();
+                    bool header=rows.Count>1 && NumericDensity(rows[0].ToArray())<NumericDensity(rows[1].ToArray());
+                    var headerRow=header?rows[0]:Enumerable.Range(1,colCount).Select(c=>"Col"+c).ToList();
                     var dataRows=header?rows.Skip(1):rows.AsEnumerable();
                     sb.AppendLine("| "+string.Join(" | ",headerRow)+" |");
                     var aligns=new List<string>();
                     for(int c=0;c<colCount;c++)
                     {
-                        bool numeric=dataRows.All(r=>c<r.Length && Regex.IsMatch(r[c].Trim(),@"^-?[0-9.,]+$"));
+                        bool numeric=dataRows.All(r=>c<r.Count && Regex.IsMatch(r[c].Trim(),@"^-?[0-9.,]+$"));
                         aligns.Add(numeric?"---:":"---");
                     }
                     sb.AppendLine("|"+string.Join("|",aligns)+"|");
@@ -363,4 +396,7 @@ public static class TextModeConverter
         foreach(var c in cols){digits+=c.Count(char.IsDigit); chars+=c.Replace(" ","").Length;}
         return chars==0?0:digits/chars;
     }
+
+    private static bool IsKeyValueLine(string line)
+        => Regex.IsMatch(line.TrimStart(), @"^[A-Za-zÀ-ÖØ-öø-ÿ0-9 ._/()-]{2,40}\s*:\s+\S");
 }
