@@ -1,0 +1,87 @@
+<h1>FVR-FIX Validation Report</h1>
+<h2>Run config</h2>
+<ul>
+<li>os: Ubuntu 24.04.2 LTS</li>
+<li>cpu: Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz</li>
+<li>dotnet: 9.0.0</li>
+<li>python: Python 3.12.10</li>
+<li>markitdown: 0.1.2</li>
+<li>threads: 1</li>
+<li>tesseract langs: eng+ita</li>
+<li>tesseract psm: 6</li>
+<li>timings_unit: ms</li>
+</ul>
+<h2>Timing (conversion-only, ms)</h2>
+<table border="1"><tr><th>scope</th><th>pre avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th><th>post-1S avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th><th>post-2 avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th><th>python-hot avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th><th>Δ% post-2 vs post-1S</th><th>Δ% post-2 vs py-hot</th></tr>
+<tr><td>global</td><td>0.0±0.1</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.2±0.2</td><td>0.2</td><td>0.3</td><td>0.4</td><td>0.4±0.5</td><td>0.2</td><td>0.4</td><td>1.9</td><td>4.4±0.6</td><td>4.4</td><td>5.3</td><td>5.5</td><td>62.6%</td><td>-91.0%</td></tr>
+<tr><td>FUNSD</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.2±0.0</td><td>0.2</td><td>0.2</td><td>0.2</td><td>0.3±0.1</td><td>0.2</td><td>0.3</td><td>0.3</td><td>4.5±0.8</td><td>4.6</td><td>5.4</td><td>5.4</td><td>25.8%</td><td>-94.4%</td></tr>
+<tr><td>ICDAR</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.3±0.0</td><td>0.3</td><td>0.3</td><td>0.3</td><td>0.8±0.8</td><td>0.4</td><td>1.7</td><td>1.9</td><td>4.9±0.5</td><td>5.0</td><td>5.3</td><td>5.4</td><td>204.4%</td><td>-83.4%</td></tr>
+<tr><td>MARMOT</td><td>0.1±0.1</td><td>0.0</td><td>0.2</td><td>0.2</td><td>0.5±0.5</td><td>0.4</td><td>1.0</td><td>1.2</td><td>0.8±0.8</td><td>0.4</td><td>1.6</td><td>1.9</td><td>3.9±0.3</td><td>3.9</td><td>4.2</td><td>4.2</td><td>44.4%</td><td>-79.7%</td></tr>
+<tr><td>PUBTABLES</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.1±0.1</td><td>0.1</td><td>0.2</td><td>0.2</td><td>0.1±0.1</td><td>0.2</td><td>0.2</td><td>0.2</td><td>4.5±0.5</td><td>4.4</td><td>5.1</td><td>5.3</td><td>12.6%</td><td>-97.2%</td></tr>
+<tr><td>SROIE2019</td><td>0.0±0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.2±0.0</td><td>0.2</td><td>0.3</td><td>0.3</td><td>0.3±0.1</td><td>0.3</td><td>0.4</td><td>0.4</td><td>4.3±0.4</td><td>4.3</td><td>4.6</td><td>4.6</td><td>23.1%</td><td>-93.3%</td></tr>
+</table>
+<h2>Quality vs python-hot</h2>
+<table border="1"><tr><th>scope</th><th>mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th><th>line_count</th><th>list_items</th><th>max_list_depth</th></tr>
+<tr><td>global</td><td>pre</td><td>0.000045</td><td>1.000000</td><td>0.998958</td><td>32</td><td>0</td><td>0</td></tr>
+<tr><td>global</td><td>post-1S</td><td>0.006085</td><td>0.999517</td><td>0.797336</td><td>28</td><td>0</td><td>0</td></tr>
+<tr><td>global</td><td>post-2</td><td>0.019746</td><td>0.981154</td><td>0.776976</td><td>29</td><td>0</td><td>0</td></tr>
+<tr><td>global</td><td>python-hot</td><td>0.000000</td><td>1.000000</td><td>1.000000</td><td>32</td><td>0</td><td>0</td></tr>
+<tr><td>FUNSD</td><td>pre</td><td>0.000271</td><td>1.000000</td><td>0.993750</td><td>40</td><td>0</td><td>0</td></tr>
+<tr><td>FUNSD</td><td>post-1S</td><td>0.010670</td><td>0.999158</td><td>0.704246</td><td>31</td><td>0</td><td>0</td></tr>
+<tr><td>FUNSD</td><td>post-2</td><td>0.036098</td><td>0.961907</td><td>0.663497</td><td>32</td><td>0</td><td>0</td></tr>
+<tr><td>FUNSD</td><td>python-hot</td><td>0.000000</td><td>1.000000</td><td>1.000000</td><td>40</td><td>0</td><td>0</td></tr>
+<tr><td>ICDAR</td><td>pre</td><td>0.000000</td><td>1.000000</td><td>1.000000</td><td>42</td><td>0</td><td>0</td></tr>
+<tr><td>ICDAR</td><td>post-1S</td><td>0.001219</td><td>1.000000</td><td>0.938682</td><td>40</td><td>0</td><td>0</td></tr>
+<tr><td>ICDAR</td><td>post-2</td><td>0.001219</td><td>1.000000</td><td>0.938682</td><td>40</td><td>0</td><td>0</td></tr>
+<tr><td>ICDAR</td><td>python-hot</td><td>0.000000</td><td>1.000000</td><td>1.000000</td><td>42</td><td>0</td><td>0</td></tr>
+<tr><td>MARMOT</td><td>pre</td><td>0.000000</td><td>1.000000</td><td>1.000000</td><td>50</td><td>0</td><td>0</td></tr>
+<tr><td>MARMOT</td><td>post-1S</td><td>0.003178</td><td>0.999559</td><td>0.830606</td><td>47</td><td>0</td><td>0</td></tr>
+<tr><td>MARMOT</td><td>post-2</td><td>0.003178</td><td>0.999559</td><td>0.830606</td><td>47</td><td>0</td><td>0</td></tr>
+<tr><td>MARMOT</td><td>python-hot</td><td>0.000000</td><td>1.000000</td><td>1.000000</td><td>50</td><td>0</td><td>0</td></tr>
+<tr><td>PUBTABLES</td><td>pre</td><td>0.000000</td><td>1.000000</td><td>1.000000</td><td>15</td><td>0</td><td>0</td></tr>
+<tr><td>PUBTABLES</td><td>post-1S</td><td>0.007456</td><td>0.999194</td><td>0.757602</td><td>12</td><td>0</td><td>0</td></tr>
+<tr><td>PUBTABLES</td><td>post-2</td><td>0.007456</td><td>0.999194</td><td>0.757602</td><td>12</td><td>0</td><td>0</td></tr>
+<tr><td>PUBTABLES</td><td>python-hot</td><td>0.000000</td><td>1.000000</td><td>1.000000</td><td>15</td><td>0</td><td>0</td></tr>
+<tr><td>SROIE2019</td><td>pre</td><td>0.000000</td><td>1.000000</td><td>1.000000</td><td>32</td><td>0</td><td>0</td></tr>
+<tr><td>SROIE2019</td><td>post-1S</td><td>0.006533</td><td>1.000000</td><td>0.795276</td><td>27</td><td>0</td><td>0</td></tr>
+<tr><td>SROIE2019</td><td>post-2</td><td>0.063069</td><td>0.927072</td><td>0.713865</td><td>29</td><td>0</td><td>0</td></tr>
+<tr><td>SROIE2019</td><td>python-hot</td><td>0.000000</td><td>1.000000</td><td>1.000000</td><td>32</td><td>0</td><td>0</td></tr>
+</table>
+<h2>Tables</h2>
+<table border="1"><tr><th>scope</th><th>mode</th><th>tables_count</th><th>table_cell_F1</th><th>pipes_lines_avg</th><th>median_pipes_avg</th><th>max_pipes_avg</th></tr>
+<tr><td>global</td><td>pre</td><td>0</td><td>-</td><td>5.791667</td><td>0.708333</td><td>1.791667</td></tr>
+<tr><td>global</td><td>post-1S</td><td>0</td><td>-</td><td>5.750000</td><td>0.708333</td><td>1.791667</td></tr>
+<tr><td>global</td><td>post-2</td><td>0</td><td>-</td><td>6.875000</td><td>1.250000</td><td>2.333333</td></tr>
+<tr><td>global</td><td>python-hot</td><td>0</td><td>-</td><td>5.791667</td><td>0.708333</td><td>1.791667</td></tr>
+<tr><td>FUNSD</td><td>pre</td><td>0</td><td>-</td><td>2.500000</td><td>0.750000</td><td>1.250000</td></tr>
+<tr><td>FUNSD</td><td>post-1S</td><td>0</td><td>-</td><td>2.500000</td><td>0.750000</td><td>1.250000</td></tr>
+<tr><td>FUNSD</td><td>post-2</td><td>0</td><td>-</td><td>5.250000</td><td>1.750000</td><td>2.250000</td></tr>
+<tr><td>FUNSD</td><td>python-hot</td><td>0</td><td>-</td><td>2.500000</td><td>0.750000</td><td>1.250000</td></tr>
+<tr><td>ICDAR</td><td>pre</td><td>0</td><td>-</td><td>30.250000</td><td>2.500000</td><td>8.500000</td></tr>
+<tr><td>ICDAR</td><td>post-1S</td><td>0</td><td>-</td><td>30.000000</td><td>2.500000</td><td>8.500000</td></tr>
+<tr><td>ICDAR</td><td>post-2</td><td>0</td><td>-</td><td>30.000000</td><td>2.500000</td><td>8.500000</td></tr>
+<tr><td>ICDAR</td><td>python-hot</td><td>0</td><td>-</td><td>30.250000</td><td>2.500000</td><td>8.500000</td></tr>
+<tr><td>MARMOT</td><td>pre</td><td>0</td><td>-</td><td>1.250000</td><td>0.500000</td><td>0.500000</td></tr>
+<tr><td>MARMOT</td><td>post-1S</td><td>0</td><td>-</td><td>1.250000</td><td>0.500000</td><td>0.500000</td></tr>
+<tr><td>MARMOT</td><td>post-2</td><td>0</td><td>-</td><td>1.250000</td><td>0.500000</td><td>0.500000</td></tr>
+<tr><td>MARMOT</td><td>python-hot</td><td>0</td><td>-</td><td>1.250000</td><td>0.500000</td><td>0.500000</td></tr>
+<tr><td>PUBTABLES</td><td>pre</td><td>0</td><td>-</td><td>0.375000</td><td>0.250000</td><td>0.250000</td></tr>
+<tr><td>PUBTABLES</td><td>post-1S</td><td>0</td><td>-</td><td>0.375000</td><td>0.250000</td><td>0.250000</td></tr>
+<tr><td>PUBTABLES</td><td>post-2</td><td>0</td><td>-</td><td>0.375000</td><td>0.250000</td><td>0.250000</td></tr>
+<tr><td>PUBTABLES</td><td>python-hot</td><td>0</td><td>-</td><td>0.375000</td><td>0.250000</td><td>0.250000</td></tr>
+<tr><td>SROIE2019</td><td>pre</td><td>0</td><td>-</td><td>0.000000</td><td>0.000000</td><td>0.000000</td></tr>
+<tr><td>SROIE2019</td><td>post-1S</td><td>0</td><td>-</td><td>0.000000</td><td>0.000000</td><td>0.000000</td></tr>
+<tr><td>SROIE2019</td><td>post-2</td><td>1</td><td>-</td><td>4.000000</td><td>2.250000</td><td>2.250000</td></tr>
+<tr><td>SROIE2019</td><td>python-hot</td><td>0</td><td>-</td><td>0.000000</td><td>0.000000</td><td>0.000000</td></tr>
+</table>
+<h2>Sample diffs (worst 3 / best 3)</h2>
+<h3>Worst 3</h3><ul>
+<li>SROIE2019/X51005230605: <a href="artifacts/validation/outputs/SROIE2019/img/X51005230605.post-2.norm.md">post-2</a> vs <a href="artifacts/validation/outputs/SROIE2019/img/X51005230605.python-hot.norm.md">python-hot</a></li>
+<li>SROIE2019/X00016469670: <a href="artifacts/validation/outputs/SROIE2019/img/X00016469670.post-2.norm.md">post-2</a> vs <a href="artifacts/validation/outputs/SROIE2019/img/X00016469670.python-hot.norm.md">python-hot</a></li>
+<li>FUNSD/82251504: <a href="artifacts/validation/outputs/FUNSD/images/82251504.post-2.norm.md">post-2</a> vs <a href="artifacts/validation/outputs/FUNSD/images/82251504.python-hot.norm.md">python-hot</a></li>
+</ul>
+<h3>Best 3</h3><ul>
+<li>ICDAR/cTDaR_t00016: <a href="artifacts/validation/outputs/ICDAR/cTDaR_t00016.post-2.norm.md">post-2</a> vs <a href="artifacts/validation/outputs/ICDAR/cTDaR_t00016.python-hot.norm.md">python-hot</a></li>
+<li>PUBTABLES/PMC1064082_table_0: <a href="artifacts/validation/outputs/PUBTABLES/PMC1064082_table_0.post-2.norm.md">post-2</a> vs <a href="artifacts/validation/outputs/PUBTABLES/PMC1064082_table_0.python-hot.norm.md">python-hot</a></li>
+<li>MARMOT/10.1.1.1.2006_3: <a href="artifacts/validation/outputs/MARMOT/10.1.1.1.2006_3.post-2.norm.md">post-2</a> vs <a href="artifacts/validation/outputs/MARMOT/10.1.1.1.2006_3.python-hot.norm.md">python-hot</a></li>
+</ul>
