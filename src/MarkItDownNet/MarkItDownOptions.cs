@@ -23,4 +23,9 @@ public class MarkItDownOptions
     /// to separate paragraphs in the generated markdown.
     /// </summary>
     public double ParagraphGapThreshold { get; set; } = 0.012;
+
+    /// <summary>
+    /// Detect bullet or numbered list items and emit proper Markdown list syntax.
+    /// </summary>
+    public bool DetectBulletLists { get; set; } = true;
 }
