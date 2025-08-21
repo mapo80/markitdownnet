@@ -7,10 +7,10 @@
 ## By dataset
 | scope | CER | Token-F1 | line_F1 | n_files |
 | MARMOT | 0.0807 | 0.8319 | 0.4025 | 4 |
-| FUNSD | 0.0148 | 1.0000 | 1.0000 | 4 |
-| PUBTABLES | 0.2689 | 0.5715 | 0.0899 | 8 |
 | SROIE2019 | 0.1066 | 0.8367 | 0.6941 | 4 |
+| PUBTABLES | 0.2689 | 0.5715 | 0.0899 | 8 |
 | ICDAR | 0.7281 | 0.3611 | 0.0000 | 4 |
+| FUNSD | 0.0148 | 1.0000 | 1.0000 | 4 |
 
 ## Top-5 worst files
 | dataset/file | cer_char | token_f1 | line_f1 | note |
