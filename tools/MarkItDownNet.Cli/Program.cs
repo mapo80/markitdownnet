@@ -222,23 +222,23 @@ static string HtmlReport(List<BenchResult> results)
         bool refHasTable = pyHot.Similarity?.Tables > 0;
         if (refHasTable)
         {
-            sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th><th>line_count</th><th>list_items</th><th>tables_count</th><th>table_cell_F1</th></tr>");
+            sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th><th>tables_count</th><th>line_count</th><th>list_items</th><th>table_cell_F1</th></tr>");
             foreach(var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
             {
                 var s=r.Similarity;
                 if (s!=null)
-                    sb.AppendLine($"<tr><td>{r.Mode}</td><td>{s.Cer:F3}</td><td>{s.F1:F3}</td><td>{s.LineF1:F3}</td><td>{s.LineCount}</td><td>{s.ListItems}</td><td>{s.Tables}</td><td>{s.TableCellF1:F3}</td></tr>");
+                    sb.AppendLine($"<tr><td>{r.Mode}</td><td>{s.Cer:F3}</td><td>{s.F1:F3}</td><td>{s.LineF1:F3}</td><td>{s.Tables}</td><td>{s.LineCount}</td><td>{s.ListItems}</td><td>{s.TableCellF1:F3}</td></tr>");
             }
             sb.AppendLine("</table>");
         }
         else
         {
-            sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th><th>line_count</th><th>list_items</th><th>tables_count</th><th>pipes_lines</th><th>median_pipes</th><th>max_pipes</th></tr>");
+            sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th><th>tables_count</th><th>line_count</th><th>list_items</th><th>pipes_lines</th><th>median_pipes</th><th>max_pipes</th></tr>");
             foreach(var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
             {
                 var s=r.Similarity;
                 if (s!=null)
-                    sb.AppendLine($"<tr><td>{r.Mode}</td><td>{s.Cer:F3}</td><td>{s.F1:F3}</td><td>{s.LineF1:F3}</td><td>{s.LineCount}</td><td>{s.ListItems}</td><td>{s.Tables}</td><td>{s.PipeLines}</td><td>{s.MedianPipesPerLine:F1}</td><td>{s.MaxPipesPerLine}</td></tr>");
+                    sb.AppendLine($"<tr><td>{r.Mode}</td><td>{s.Cer:F3}</td><td>{s.F1:F3}</td><td>{s.LineF1:F3}</td><td>{s.Tables}</td><td>{s.LineCount}</td><td>{s.ListItems}</td><td>{s.PipeLines}</td><td>{s.MedianPipesPerLine:F1}</td><td>{s.MaxPipesPerLine}</td></tr>");
             }
             sb.AppendLine("</table>");
         }
@@ -307,28 +307,43 @@ static string SummaryMarkdown(List<BenchResult> results)
     sb.AppendLine("\n## Quality vs python-hot");
     if (pyHot!=null && pyHot.Similarity?.Tables > 0)
     {
-        sb.AppendLine("| mode | CER | Token-F1 | line_F1 | line_count | list_items | tables_count | table_cell_F1 |");
+        sb.AppendLine("| mode | CER | Token-F1 | line_F1 | tables_count | line_count | list_items | table_cell_F1 |");
         sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- |");
         foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
         {
             var s = r.Similarity;
             if (s != null)
-                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.LineCount} | {s.ListItems} | {s.Tables} | {s.TableCellF1:F3} |");
+                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.Tables} | {s.LineCount} | {s.ListItems} | {s.TableCellF1:F3} |");
         }
     }
     else if (pyHot!=null)
     {
-        sb.AppendLine("| mode | CER | Token-F1 | line_F1 | line_count | list_items | tables_count | pipes_lines | median_pipes | max_pipes |");
+        sb.AppendLine("| mode | CER | Token-F1 | line_F1 | tables_count | line_count | list_items | pipes_lines | median_pipes | max_pipes |");
         sb.AppendLine("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |");
         foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2"))
         {
             var s = r.Similarity;
             if (s != null)
-                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.LineCount} | {s.ListItems} | {s.Tables} | {s.PipeLines} | {s.MedianPipesPerLine:F1} | {s.MaxPipesPerLine} |");
+                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineF1:F3} | {s.Tables} | {s.LineCount} | {s.ListItems} | {s.PipeLines} | {s.MedianPipesPerLine:F1} | {s.MaxPipesPerLine} |");
         }
     }
+
     if (pyHot!=null)
     {
+        var counts = results.Where(r=>r.Mode=="pre" || r.Mode=="post-1S" || r.Mode=="post-2" || r.Mode=="python-hot")
+            .ToDictionary(r=>r.Mode, r=>r.Similarity?.Tables ?? 0);
+        if (counts.Values.All(c=>c==0))
+            sb.AppendLine("\n**Tables:** none detected in this sample (all modes).");
+        else
+        {
+            var list = string.Join(", ", counts.Select(kv=>$"{kv.Key}={kv.Value}"));
+            var tcF1 = results.FirstOrDefault(r=>r.Mode=="post-2")?.Similarity?.TableCellF1;
+            if ((pyHot.Similarity?.Tables ?? 0) > 0 && tcF1 != null)
+                sb.AppendLine($"\n**Tables:** {list} (table_cell_F1={tcF1:F3})");
+            else
+                sb.AppendLine($"\n**Tables:** {list}");
+        }
+
         sb.AppendLine("\n### Observations");
         var preS = results.FirstOrDefault(r=>r.Mode=="pre")?.Similarity;
         var post2S = results.FirstOrDefault(r=>r.Mode=="post-2")?.Similarity;
