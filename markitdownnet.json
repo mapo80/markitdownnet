@@ -1,6 +1,6 @@
 {
   "ListIndentWidth": 2,
-  "BulletChars": ["-", "*", "•", "+", "–", "—", "·"],
+  "BulletChars": ["-", "*", "+", "•", "·", "–", "—"],
   "MinItemsForListBlock": 2,
   "HeadingMinLen": 3,
   "HeadingMaxLen": 80,
@@ -10,9 +10,8 @@
   "CodeMinIndent": 4,
   "CodeSymbolDensityMin": 0.25,
   "Dehyphenation": true,
-  "KeyValueToTableEnabled": true,
-  "KeyMaxLen": 40,
   "MinKeyValueRows": 3,
+  "KeyMaxLen": 40,
   "MonoTableMinCols": 2,
   "MonoTableMinRows": 3,
   "MonoTableMinSpaceGap": 2,

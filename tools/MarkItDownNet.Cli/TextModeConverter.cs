@@ -1,13 +1,14 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
+using System.Linq;
 
 namespace MarkItDownNet;
 
 public class TextModeConfig
 {
     public int ListIndentWidth { get; set; } = 2;
-    public string[] BulletChars { get; set; } = new[] {"-", "*", "•", "+", "–", "—", "·"};
+    public string[] BulletChars { get; set; } = new[] {"-", "*", "+", "•", "·", "–", "—"};
     public int MinItemsForListBlock { get; set; } = 2;
     public int HeadingMinLen { get; set; } = 3;
     public int HeadingMaxLen { get; set; } = 80;
@@ -17,10 +18,8 @@ public class TextModeConfig
     public int CodeMinIndent { get; set; } = 4;
     public double CodeSymbolDensityMin { get; set; } = 0.25;
     public bool Dehyphenation { get; set; } = true;
-    // v01 options
-    public bool KeyValueToTableEnabled { get; set; } = true;
-    public int KeyMaxLen { get; set; } = 40;
     public int MinKeyValueRows { get; set; } = 3;
+    public int KeyMaxLen { get; set; } = 40;
     public int MonoTableMinCols { get; set; } = 2;
     public int MonoTableMinRows { get; set; } = 3;
     public int MonoTableMinSpaceGap { get; set; } = 2;
@@ -32,19 +31,21 @@ public static class TextModeConverter
     public static string Convert(string text, string mode, TextModeConfig config)
     {
         text = Normalize(text);
-        if (mode == "post-v0" || mode == "post-v01" || mode=="post-v02")
+        if (mode == "post-v0" || mode == "post-v01" || mode=="post-v02" || mode=="post-v03")
         {
-            bool v02 = mode=="post-v02";
-            text = Reflow(text, config, v02);
-            text = DetectLists(text, config, v02);
-            text = DetectHeadings(text, config, mode == "post-v01" || mode=="post-v02", v02);
+            bool v02 = mode=="post-v02" || mode=="post-v03";
+            bool v03 = mode=="post-v03";
+            if (v03)
+                text = StripHeaders(text);
+            text = Reflow(text, config, v02, v03);
+            text = DetectLists(text, config, v02, v03);
+            text = DetectHeadings(text, config, mode == "post-v01" || mode=="post-v02", v02, v03);
             text = DetectCodeBlocks(text, config);
             text = DetectHorizontalRules(text, config, v02);
-            if (mode == "post-v01" || mode=="post-v02")
+            if (mode != "post-v0")
             {
-                if (config.KeyValueToTableEnabled)
-                    text = DetectKeyValueTables(text, config, v02);
-                text = DetectMonoTables(text, config, v02);
+                text = DetectKeyValueTables(text, config, v02, v03);
+                text = DetectMonoTables(text, config, v02 || v03);
             }
         }
         return text.TrimEnd() + "\n"; // ensure newline at end
@@ -65,7 +66,41 @@ public static class TextModeConverter
         return string.Join("\n", lines);
     }
 
-    private static string Reflow(string text, TextModeConfig config, bool v02)
+    private static string StripHeaders(string text)
+    {
+        var lines = text.Split('\n');
+        var occ = new Dictionary<string, List<int>>();
+        for (int i = 0; i < lines.Length; i++)
+        {
+            var t = lines[i].Trim();
+            if (t.Length == 0) continue;
+            if (!occ.ContainsKey(t)) occ[t] = new List<int>();
+            occ[t].Add(i);
+        }
+        var remove = new HashSet<int>();
+        foreach (var kv in occ)
+        {
+            var idxs = kv.Value;
+            if (idxs.Count >= 2 && idxs.Zip(idxs.Skip(1), (a, b) => b - a).Any(g => g > 1))
+                foreach (var idx in idxs) remove.Add(idx);
+        }
+        var sb = new StringBuilder();
+        for (int i = 0; i < lines.Length; i++)
+        {
+            var trimmed = lines[i].Trim();
+            if (Regex.IsMatch(trimmed, @"^(page|pagina|seite|página)\s*\d+(\s*[/\-]\s*\d+)?$", RegexOptions.IgnoreCase) ||
+                Regex.IsMatch(trimmed, @"^\d+\s*[/\-]\s*\d+$"))
+            {
+                sb.AppendLine("---");
+                continue;
+            }
+            if (!remove.Contains(i))
+                sb.AppendLine(lines[i]);
+        }
+        return sb.ToString();
+    }
+
+    private static string Reflow(string text, TextModeConfig config, bool v02, bool v03)
     {
         var lines = text.Split('\n');
         var sb = new StringBuilder();
@@ -85,12 +120,28 @@ public static class TextModeConverter
                 continue;
             }
             var paragraph = new StringBuilder(line.TrimEnd());
-            while (i + 1 < lines.Length && !string.IsNullOrWhiteSpace(lines[i+1]) && !IsListLine(lines[i+1], config) && !IsCodeLine(lines[i+1], config.CodeMinIndent) && !(v02 && IsKeyValueLine(lines[i+1])) && !(v02 && paragraph.ToString().EndsWith(":")))
+            bool CanMerge(int idx)
+            {
+                if (idx + 1 >= lines.Length) return false;
+                var nl = lines[idx + 1];
+                if (string.IsNullOrWhiteSpace(nl)) return false;
+                if (IsListLine(nl, config) || IsCodeLine(nl, config.CodeMinIndent)) return false;
+                if ((v02 || v03) && IsKeyValueLine(nl)) return false;
+                if (v02 && paragraph.ToString().EndsWith(":")) return false;
+                if (v03)
+                {
+                    var trimmed = nl.TrimStart();
+                    if (IsTableLikeLine(nl, config) || IsProbableCode(nl, config) || trimmed.StartsWith("|") || trimmed.StartsWith("```"))
+                        return false;
+                }
+                return true;
+            }
+            while (CanMerge(i))
             {
                 var next = lines[i+1].TrimStart();
-                if (config.Dehyphenation && paragraph.ToString().EndsWith("-") && Regex.IsMatch(next, v02?"^[a-z0-9].*":"^[A-Za-z].*"))
+                if (config.Dehyphenation && paragraph.ToString().EndsWith("-") && Regex.IsMatch(next, "^[a-z0-9].*") && !(v03 && Regex.IsMatch(paragraph.ToString(), @"[A-Z]{2,}\d+$")))
                 {
-                    paragraph.Length--; // remove hyphen
+                    paragraph.Length--;
                     paragraph.Append(next);
                 }
                 else
@@ -118,7 +169,21 @@ public static class TextModeConverter
     private static bool IsCodeLine(string line, int minIndent)
         => line.StartsWith(new string(' ', minIndent));
 
-    private static string DetectLists(string text, TextModeConfig config, bool v02)
+    private static bool IsProbableCode(string line, TextModeConfig config)
+    {
+        var trimmed = line.Trim();
+        if (trimmed.Length == 0) return false;
+        double symbols = Regex.Matches(trimmed, "[{}();<>:=/#]").Count;
+        return symbols / trimmed.Length >= config.CodeSymbolDensityMin;
+    }
+
+    private static bool IsTableLikeLine(string line, TextModeConfig config)
+    {
+        if (line.Count(c => c == '|') >= 2) return true;
+        return Regex.IsMatch(line, @"\S+\s{" + config.MonoTableMinSpaceGap + @",}\S+\s{" + config.MonoTableMinSpaceGap + @",}\S+");
+    }
+
+    private static string DetectLists(string text, TextModeConfig config, bool v02, bool v03)
     {
         var lines = text.Split('\n');
         var sb = new StringBuilder();
@@ -135,7 +200,7 @@ public static class TextModeConverter
                     while (j < lines.Length && !TryParseBullet(lines[j], config, out _, out _, out _) )
                     {
                         if (lines[j].StartsWith(new string(' ', indent + config.ListIndentWidth + 2)) ||
-                            (v02 && lines[j].StartsWith(new string(' ', indent)) && builder.Length>0 && (builder[^1]==',' || builder[^1]==';')) )
+                            ((v02 || v03) && lines[j].StartsWith(new string(' ', indent)) && builder.Length>0 && (builder[^1]==',' || builder[^1]==';')) )
                         {
                             builder.Append(' ').Append(lines[j].Trim());
                             j++;
@@ -181,28 +246,34 @@ public static class TextModeConverter
         indent = 0; number = null; content = string.Empty;
         var trimmed = line.TrimStart();
         indent = line.Length - trimmed.Length;
-        if (Regex.IsMatch(trimmed, @"^([0-9]+)[\.)]\s"))
+
+        var numMatch = Regex.Match(trimmed, @"^([0-9]+|[ivxlcdm]+)[\.)]\s+(.*)", RegexOptions.IgnoreCase);
+        if (numMatch.Success)
         {
-            var m = Regex.Match(trimmed, @"^([0-9]+)[\.)]\s(.*)");
-            number = int.Parse(m.Groups[1].Value);
-            content = m.Groups[2].Value;
+            var raw = numMatch.Groups[1].Value;
+            number = int.TryParse(raw, out var n) ? n : RomanToInt(raw);
+            content = numMatch.Groups[2].Value;
+            if (LooksLikeFalseBullet(content)) { number=null; return false; }
             return true;
         }
         foreach (var b in config.BulletChars)
         {
             if (trimmed.StartsWith(b + " "))
             {
-                content = trimmed.Substring(b.Length + 1);
+                var after = trimmed.Substring(b.Length + 1);
+                if (LooksLikeFalseBullet(after)) return false;
+                content = after;
                 return true;
             }
         }
         return false;
     }
 
-    private static string DetectHeadings(string text, TextModeConfig config, bool allowWhitelist, bool v02)
+    private static string DetectHeadings(string text, TextModeConfig config, bool allowWhitelist, bool v02, bool v03)
     {
         var lines = text.Split('\n');
         string[] whitelist = new[]{"Dettaglio","Riepilogo","Totali","Contributi","Trattenute"};
+        bool first=false;
         for (int i = 0; i < lines.Length; i++)
         {
             var line = lines[i].Trim();
@@ -222,15 +293,18 @@ public static class TextModeConverter
                 if (!(allowWhitelist && line.EndsWith(":") && nextBlank))
                     continue;
             }
-            if (v02 && line.Contains(':') && !nextBlank) continue;
+            if ((v02 || v03) && line.Contains(':') && !nextBlank) continue;
             double letters = line.Count(char.IsLetter);
             double ratio = letters / line.Replace(" ", "").Length;
             if (ratio < config.HeadingLetterRatioMin) continue;
-            if (prevBlank && nextBlank)
+            if (!prevBlank || !nextBlank) continue;
+            if (v03)
             {
-                int level = i==0 ? 1 : 2;
-                lines[i] = new string('#', level) + " " + line;
+                if (!(IsTitleCase(line) || line.ToUpper()==line) || LooksLikeFalseBullet(line)) continue;
             }
+            int level = !first ? 1 : 2;
+            lines[i] = new string('#', level) + " " + line;
+            first=true;
         }
         return string.Join('\n', lines);
     }
@@ -288,7 +362,7 @@ public static class TextModeConverter
         return string.Join('\n', lines);
     }
 
-    private static string DetectKeyValueTables(string text, TextModeConfig config, bool v02)
+    private static string DetectKeyValueTables(string text, TextModeConfig config, bool v02, bool v03)
     {
         var lines = text.Split('\n');
         var sb = new StringBuilder();
@@ -305,7 +379,8 @@ public static class TextModeConverter
                     string key=m.Groups[1].Value.Trim();
                     string val=m.Groups[2].Value.Trim();
                     int j=i+1;
-                    while(j<lines.Length && (Regex.IsMatch(lines[j],"^ {2,}\\S") || (v02 && Regex.IsMatch(lines[j].TrimStart(),"^(di |per |dal )",RegexOptions.IgnoreCase))))
+                    string contPattern = v03?"^(di |of |for |per |con |dal )":(v02?"^(di |per |dal )":"");
+                    while(j<lines.Length && (Regex.IsMatch(lines[j],"^ {2,}\\S") || (!string.IsNullOrEmpty(contPattern) && Regex.IsMatch(lines[j].TrimStart(),contPattern,RegexOptions.IgnoreCase))))
                     {
                         val += " " + lines[j].Trim();
                         j++;
@@ -313,7 +388,7 @@ public static class TextModeConverter
                     rows.Add((key,val));
                     i=j;
                 }
-                if (rows.Count>=config.MinKeyValueRows && (!v02 || rows.Count(r=>r.key.EndsWith("."))<=rows.Count*0.3))
+                if (rows.Count>=config.MinKeyValueRows && (!(v02||v03) || rows.Count(r=>r.key.EndsWith("."))<=rows.Count*0.3))
                 {
                     sb.AppendLine("| Key | Value |");
                     sb.AppendLine("| --- | ----- |");
@@ -397,6 +472,37 @@ public static class TextModeConverter
         return chars==0?0:digits/chars;
     }
 
+    private static bool LooksLikeFalseBullet(string text)
+    {
+        return Regex.IsMatch(text, @"^\d{1,2}([./-])\d{1,2}\1\d{2,4}\b") ||
+               Regex.IsMatch(text, @"^[\p{Sc}]?\s*\d{1,3}([.,]\d{3})*([.,]\d{2})?\b") ||
+               Regex.IsMatch(text, @"^\d{1,3}([.,]\d{1,2})?%") ||
+               Regex.IsMatch(text, @"^[A-Z]{2,}\d+[A-Z0-9-]*\b");
+    }
+
+    private static bool IsTitleCase(string line)
+    {
+        var words = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (words.Length==0) return false;
+        foreach(var w in words)
+        {
+            if (!char.IsUpper(w[0])) return false;
+            for(int i=1;i<w.Length;i++) if (!char.IsLower(w[i])) return false;
+        }
+        return true;
+    }
+
+    private static int RomanToInt(string s)
+    {
+        int total=0, prev=0;
+        foreach(char c in s.ToUpper())
+        {
+            int val = c switch { 'I'=>1,'V'=>5,'X'=>10,'L'=>50,'C'=>100,'D'=>500,'M'=>1000,_=>0 };
+            if (val>prev) total += val - 2*prev; else total += val; prev=val;
+        }
+        return total;
+    }
+
     private static bool IsKeyValueLine(string line)
-        => Regex.IsMatch(line.TrimStart(), @"^[A-Za-zÀ-ÖØ-öø-ÿ0-9 ._/()-]{2,40}\s*:\s+\S");
+        => Regex.IsMatch(line.TrimStart(), @"^[^:]{2,40}:\s+\S");
 }

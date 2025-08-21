@@ -15,14 +15,15 @@ dotnet run --project tools/MarkItDownNet.Cli -- convert --input artifacts/busta_
 dotnet run --project tools/MarkItDownNet.Cli -- convert --input artifacts/busta_paga_internet.txt --mode post-v0 --out artifacts/outputs/busta_paga_internet.post-v0.md --config markitdownnet.json
 dotnet run --project tools/MarkItDownNet.Cli -- convert --input artifacts/busta_paga_internet.txt --mode post-v01 --out artifacts/outputs/busta_paga_internet.post-v01.md --config markitdownnet.json
 dotnet run --project tools/MarkItDownNet.Cli -- convert --input artifacts/busta_paga_internet.txt --mode post-v02 --out artifacts/outputs/busta_paga_internet.post-v02.md --config markitdownnet.json
+dotnet run --project tools/MarkItDownNet.Cli -- convert --input artifacts/busta_paga_internet.txt --mode post-v03 --out artifacts/outputs/busta_paga_internet.post-v03.md --config markitdownnet.json
 python -m markitdown artifacts/busta_paga_internet.txt -o artifacts/outputs/busta_paga_internet.python.md
 
 # 4. benchmarking
 DOTNET_CLI_TELEMETRY_OPTOUT=1 dotnet run --project tools/MarkItDownNet.Cli -- bench \
   --input artifacts/busta_paga_internet.txt \
-  --modes pre,post-v0,post-v01,post-v02,python \
-  --out-json artifacts/bench-v02.json --out-html artifacts/bench-v02.html \
-  --summary-md artifacts/summary-v02.md --config markitdownnet.json
+  --modes pre,post-v0,post-v01,post-v02,post-v03,python \
+  --out-json artifacts/bench-v03.json --out-html artifacts/bench-v03.html \
+  --summary-md artifacts/summary-v03.md --config markitdownnet.json
 ```
 
 Artifacts are written under `artifacts/`.
