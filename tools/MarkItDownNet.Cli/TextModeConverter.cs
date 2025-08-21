@@ -31,7 +31,12 @@ public static class TextModeConverter
     public static string Convert(string text, string mode, TextModeConfig config)
     {
         text = Normalize(text);
-        if (mode == "post-v0" || mode == "post-v01" || mode=="post-v02" || mode=="post-v03")
+        if (mode == "post-1R")
+        {
+            text = Reflow(text, config, false, false);
+            text = DetectLists(text, config, false, false);
+        }
+        else if (mode == "post-v0" || mode == "post-v01" || mode=="post-v02" || mode=="post-v03")
         {
             bool v02 = mode=="post-v02" || mode=="post-v03";
             bool v03 = mode=="post-v03";

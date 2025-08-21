@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.Globalization;
+using System.Linq;
 using MarkItDownNet;
 
 if (args.Length == 0)
@@ -43,11 +44,13 @@ static void ConvertCommand(string[] args)
 static void BenchCommand(string[] args)
 {
     string input = GetOption(args, "--input") ?? throw new ArgumentException("--input required");
-    string modes = GetOption(args, "--modes") ?? "pre,post-v0,post-v01,post-v02,post-v03,python";
+    string modes = GetOption(args, "--modes") ?? "pre,post-1R,python-cold,python-hot";
     string outJson = GetOption(args, "--out-json") ?? throw new ArgumentException("--out-json required");
     string outHtml = GetOption(args, "--out-html") ?? throw new ArgumentException("--out-html required");
     string summaryMd = GetOption(args, "--summary-md") ?? "";
     string pythonExe = GetOption(args, "--python-exe") ?? "python";
+    string pythonMarkCmd = GetOption(args, "--python-markitdown-cmd") ?? "python -m markitdown";
+    string pythonHotCmd = GetOption(args, "--python-hot-cmd") ?? "python tools/run_markitdown_hot.py";
     string configPath = GetOption(args, "--config");
     TextModeConfig config = configPath != null ?
         JsonSerializer.Deserialize<TextModeConfig>(File.ReadAllText(configPath))! : new TextModeConfig();
@@ -56,8 +59,15 @@ static void BenchCommand(string[] args)
     var results = new List<BenchResult>();
     foreach (var mode in modeList)
     {
-        var br = RunMode(mode.Trim(), input, pythonExe, config);
+        var br = RunMode(mode.Trim(), input, pythonExe, pythonMarkCmd, pythonHotCmd, config);
         results.Add(br);
+    }
+
+    var reference = results.FirstOrDefault(r=>r.Mode=="python-hot")?.Output;
+    if (reference != null)
+    {
+        foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1R"))
+            r.Similarity = CompareOutputs(r.Output, reference);
     }
 
     var env = new {
@@ -71,7 +81,8 @@ static void BenchCommand(string[] args)
         trials = r.Trials.Select(t => new { md_ms = t }).ToArray(),
         avg = new { md_ms = r.AvgMs },
         stddev = new { md_ms = r.StdMs },
-        output = r.Output
+        output = r.Output,
+        similarity = r.Similarity
     }).ToArray();
 
     var jsonObj = new { file = input, runs = runs, env = env };
@@ -82,36 +93,36 @@ static void BenchCommand(string[] args)
         File.WriteAllText(summaryMd, SummaryMarkdown(results));
 }
 
-static BenchResult RunMode(string mode, string input, string pythonExe, TextModeConfig config)
+static BenchResult RunMode(string mode, string input, string pythonExe, string pythonMarkCmd, string pythonHotCmd, TextModeConfig config)
 {
     string tempOut = Path.GetTempFileName();
     var times = new List<double>();
     var text = File.ReadAllText(input);
 
-    if (mode == "python")
+    if (mode == "python-cold")
     {
-        // warm-up run
-        var warmPsi = new ProcessStartInfo(pythonExe, $"tools/markitdown_ocr.py {input} -o {tempOut}")
-        {
-            RedirectStandardOutput = true,
-            RedirectStandardError = true
-        };
+        var (file, argsBase) = SplitCmd(pythonMarkCmd);
+        var warmPsi = new ProcessStartInfo(file, $"{argsBase} {input} -o {tempOut}") { RedirectStandardOutput=true, RedirectStandardError=true };
         using (var warm = Process.Start(warmPsi)!) { warm.WaitForExit(); }
-
-        for (int i = 0; i < 5; i++)
+        for (int i=0;i<5;i++)
         {
-            var psi = new ProcessStartInfo(pythonExe, $"tools/markitdown_ocr.py {input} -o {tempOut}")
-            {
-                RedirectStandardOutput = true,
-                RedirectStandardError = true
-            };
+            var psi = new ProcessStartInfo(file, $"{argsBase} {input} -o {tempOut}") { RedirectStandardOutput=true, RedirectStandardError=true };
+            var sw = Stopwatch.StartNew();
             using var p = Process.Start(psi)!;
-            string outText = p.StandardOutput.ReadToEnd();
             p.WaitForExit();
-            var m = Regex.Match(outText, @"Markdown ms: ([0-9.]+)");
-            if (m.Success)
-                times.Add(double.Parse(m.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture));
+            sw.Stop();
+            times.Add(sw.Elapsed.TotalMilliseconds);
         }
+    }
+    else if (mode == "python-hot")
+    {
+        var (file, argsBase) = SplitCmd(pythonHotCmd);
+        var psi = new ProcessStartInfo(file, $"{argsBase} {input} {tempOut}") { RedirectStandardOutput=true, RedirectStandardError=true };
+        using var p = Process.Start(psi)!;
+        string outText = p.StandardOutput.ReadToEnd();
+        p.WaitForExit();
+        var doc = JsonDocument.Parse(outText);
+        times = doc.RootElement.GetProperty("trials").EnumerateArray().Select(e=>e.GetDouble()).ToList();
     }
     else
     {
@@ -141,7 +152,27 @@ static string HtmlReport(List<BenchResult> results)
     sb.AppendLine("<html><body><table border='1'><tr><th>Mode</th><th>md_ms avg</th><th>md_ms std</th></tr>");
     foreach (var r in results)
         sb.AppendLine($"<tr><td>{r.Mode}</td><td>{r.AvgMs:F1}</td><td>{r.StdMs:F1}</td></tr>");
-    sb.AppendLine("</table></body></html>");
+    sb.AppendLine("</table>");
+    var pre = results.FirstOrDefault(r=>r.Mode=="pre");
+    var post = results.FirstOrDefault(r=>r.Mode=="post-1R");
+    var pyHot = results.FirstOrDefault(r=>r.Mode=="python-hot");
+    var pyCold = results.FirstOrDefault(r=>r.Mode=="python-cold");
+    if (pre!=null && post!=null)
+    {
+        var delta = (post.AvgMs - pre.AvgMs)/pre.AvgMs*100.0;
+        sb.AppendLine($"<p>post-1R vs pre: {delta:F1}%</p>");
+    }
+    if (pyHot!=null && pyCold!=null)
+    {
+        var delta = (pyHot.AvgMs - pyCold.AvgMs)/pyCold.AvgMs*100.0;
+        sb.AppendLine($"<p>python-hot vs python-cold: {delta:F1}%</p>");
+    }
+    if (pyHot!=null && post!=null)
+    {
+        var delta = (post.AvgMs - pyHot.AvgMs)/pyHot.AvgMs*100.0;
+        sb.AppendLine($"<p>post-1R vs python-hot: {delta:F1}%</p>");
+    }
+    sb.AppendLine("</body></html>");
     return sb.ToString();
 }
 
@@ -155,17 +186,30 @@ static string SummaryMarkdown(List<BenchResult> results)
         sb.AppendLine($"| {r.Mode} | {r.AvgMs:F1} | {r.StdMs:F1} |");
 
     var pre = results.FirstOrDefault(r=>r.Mode=="pre");
-    var post = results.FirstOrDefault(r=>r.Mode=="post-v0");
-    var py = results.FirstOrDefault(r=>r.Mode=="python");
+    var post = results.FirstOrDefault(r=>r.Mode=="post-1R");
+    var pyHot = results.FirstOrDefault(r=>r.Mode=="python-hot");
     if (pre!=null && post!=null)
     {
         var delta = (post.AvgMs - pre.AvgMs) / pre.AvgMs * 100.0;
-        sb.AppendLine($"\npost-v0 vs pre: {delta:F1}%");
+        sb.AppendLine($"\npost-1R vs pre: {delta:F1}%");
     }
-    if (py!=null && post!=null)
+    if (pyHot!=null && post!=null)
     {
-        var delta = (post.AvgMs - py.AvgMs) / py.AvgMs * 100.0;
-        sb.AppendLine($"\npost-v0 vs python: {delta:F1}%");
+        var delta = (post.AvgMs - pyHot.AvgMs) / pyHot.AvgMs * 100.0;
+        sb.AppendLine($"\npost-1R vs python-hot: {delta:F1}%");
+    }
+
+    sb.AppendLine("\n## Quality vs python-hot");
+    sb.AppendLine("| mode | CER | Token-F1 | line_ratio | list_items |");
+    sb.AppendLine("| --- | --- | --- | --- | --- |");
+    if (pyHot!=null)
+    {
+        foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1R"))
+        {
+            var s = r.Similarity;
+            if (s != null)
+                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineRatio:F2} | {s.ListItems} |");
+        }
     }
     return sb.ToString();
 }
@@ -198,6 +242,14 @@ static string? GetOption(string[] args, string name)
         if (args[i]==name && i+1<args.Length)
             return args[i+1];
     return null;
+}
+
+static (string file, string args) SplitCmd(string cmd)
+{
+    var parts = cmd.Split(' ',2,StringSplitOptions.RemoveEmptyEntries);
+    var file = parts[0];
+    var args = parts.Length>1?parts[1]:string.Empty;
+    return (file,args);
 }
 
 static Similarity CompareOutputs(string candidatePath, string referencePath)
