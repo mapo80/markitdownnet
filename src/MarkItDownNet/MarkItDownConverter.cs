@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Markdig;
@@ -214,11 +215,30 @@ public class MarkItDownConverter
 
     private string BuildMarkdown(IEnumerable<Line> lines)
     {
-        var raw = string.Join("\n", lines.Select(l => l.Text));
-        if (_options.NormalizeMarkdown)
+        var ordered = lines
+            .OrderBy(l => l.Page)
+            .ThenBy(l => l.BBox.Y)
+            .ToList();
+
+        var sb = new StringBuilder();
+        Line? prev = null;
+        foreach (var line in ordered)
         {
-            return Markdown.Normalize(raw);
+            if (prev != null)
+            {
+                var gap = line.BBox.Y - (prev.BBox.Y + prev.BBox.Height);
+                sb.AppendLine();
+                if (gap > _options.ParagraphGapThreshold)
+                {
+                    sb.AppendLine();
+                }
+            }
+
+            sb.Append(line.Text);
+            prev = line;
         }
-        return raw;
+
+        var raw = sb.ToString();
+        return _options.NormalizeMarkdown ? Markdown.Normalize(raw) : raw;
     }
 }

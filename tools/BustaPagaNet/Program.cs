@@ -14,8 +14,7 @@ var tessData = Environment.GetEnvironmentVariable("TESSDATA_PREFIX");
 var options = new MarkItDownOptions
 {
     OcrDataPath = tessData,
-    OcrLanguages = "ita",
-    NormalizeMarkdown = false
+    OcrLanguages = "ita"
 };
 var converter = new MarkItDownConverter(options);
 TesseractEnviornment.CustomSearchPath = "/usr/lib/x86_64-linux-gnu";
