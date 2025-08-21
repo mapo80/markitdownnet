@@ -38,3 +38,9 @@ sudo apt-get install -y tesseract-ocr-eng tesseract-ocr-ita tesseract-ocr-osd
 ```
 
 Indicare quindi il percorso tramite `OcrDataPath`.
+
+## Python reference Markdown
+- Install system Tesseract languages as above and set `TESSDATA_PREFIX=/usr/share/tesseract-ocr/5/tessdata`.
+- Install Python dependencies: `pip install 'markitdown[all]' pytesseract`.
+- Generate Markdown with `python tools/markitdown_ocr.py <image_or_text> -o <out.md>`.
+- When running benchmarks, the CLI automatically calls this script for `python` mode.
