@@ -28,4 +28,7 @@ public record MarkItDownResult(
     string Markdown,
     IReadOnlyList<Page> Pages,
     IReadOnlyList<Line> Lines,
-    IReadOnlyList<Word> Words);
+    IReadOnlyList<Word> Words,
+    double? DeskewAngleDeg = null,
+    int Dpi = 0,
+    int ColorDepth = 0);

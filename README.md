@@ -64,7 +64,8 @@ var options = new MarkItDownOptions
 {
     OcrDataPath = "/usr/share/tesseract-ocr/5/tessdata",
     OcrLanguages = "eng",
-    PdfRasterDpi = 300
+    OcrPsm = 6,
+    OcrUserDpi = 300
 };
 var converter = new MarkItDownConverter(options);
 var result = await converter.ConvertAsync("sample.pdf", "application/pdf");
@@ -77,7 +78,8 @@ Console.WriteLine(result.Markdown);
 
 * `OcrDataPath` – location of Tesseract language data (`TESSDATA_PREFIX`)
 * `OcrLanguages` – languages passed to Tesseract (e.g. `ita+eng`)
-* `PdfRasterDpi` – DPI for rasterising PDFs during OCR fallback
+* `OcrUserDpi` – DPI used for rasterisation and metadata
+* `OcrPsm` – Tesseract page segmentation mode
 * `MinimumNativeWordThreshold` – minimum words before OCR is triggered
 * `NormalizeMarkdown` – toggle Markdig normalisation
 

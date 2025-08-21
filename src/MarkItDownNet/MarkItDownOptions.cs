@@ -2,6 +2,12 @@ namespace MarkItDownNet;
 
 using Tesseract;
 
+public enum OcrColorDepth
+{
+    Grayscale8bpp,
+    Color32bpp
+}
+
 /// <summary>Runtime options for conversion.</summary>
 public class MarkItDownOptions
 {
@@ -11,11 +17,32 @@ public class MarkItDownOptions
     /// <summary>Languages for OCR, e.g. "eng" or "ita+eng".</summary>
     public string OcrLanguages { get; set; } = "eng";
 
-    /// <summary>Page segmentation mode used by Tesseract.</summary>
-    public PageSegMode PageSegMode { get; set; } = PageSegMode.SingleBlock;
+    /// <summary>User provided DPI metadata and rendering target.</summary>
+    public int OcrUserDpi { get; set; } = 300;
 
-    /// <summary>DPI used when rasterizing PDFs for OCR fallback.</summary>
-    public int PdfRasterDpi { get; set; } = 300;
+    /// <summary>Tesseract page segmentation mode (PSM).</summary>
+    public int OcrPsm { get; set; } = 6;
+
+    /// <summary>Tesseract engine mode (OEM).</summary>
+    public EngineMode OcrOem { get; set; } = EngineMode.LstmOnly;
+
+    /// <summary>Number of threads to use for Tesseract OCR.</summary>
+    public int OcrThreads { get; set; } = 1;
+
+    /// <summary>Force PDF rasterization even when native text is available.</summary>
+    public bool OcrForceRaster { get; set; } = true;
+
+    /// <summary>Apply binarization before OCR.</summary>
+    public bool OcrPreBinarize { get; set; } = false;
+
+    /// <summary>Minimum deskew angle in degrees to trigger rotation.</summary>
+    public double OcrDeskewMinAngleDeg { get; set; } = 2.0;
+
+    /// <summary>Color depth for OCR input.</summary>
+    public OcrColorDepth OcrColorDepth { get; set; } = OcrColorDepth.Grayscale8bpp;
+
+    /// <summary>Set DPI metadata on images passed to Tesseract.</summary>
+    public bool OcrSetDpiMetadata { get; set; } = true;
 
     /// <summary>Minimum number of native words required before falling back to OCR.</summary>
     public int MinimumNativeWordThreshold { get; set; } = 1;

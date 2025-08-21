@@ -38,26 +38,41 @@ static void Extract(Dictionary<string, string> o)
     var inputDir = o["--input-dir"];
     var outDir = o["--out-dir"];
     var langs = o["--langs"];
-    var psm = o["--psm"];
-    var threads = o["--threads"];
-    var python = o["--python-exe"];
+    var psm = int.Parse(o["--psm"]);
+    var threads = int.Parse(o["--threads"]);
+    var python = o.GetValueOrDefault("--python-exe", "python3");
+    var refresh = o.ContainsKey("--refresh") ? o["--refresh"] : "markitdownnet";
 
-    Environment.SetEnvironmentVariable("OMP_THREAD_LIMIT", threads);
+    Environment.SetEnvironmentVariable("OMP_THREAD_LIMIT", threads.ToString());
 
-    if (Directory.Exists(outDir)) Directory.Delete(outDir, true);
-    Directory.CreateDirectory(Path.Combine(outDir, "markitdownnet"));
-    Directory.CreateDirectory(Path.Combine(outDir, "pytesseract"));
+    Directory.CreateDirectory(outDir);
+    var refreshSet = new HashSet<string>(refresh.Split(',', StringSplitOptions.RemoveEmptyEntries));
+    var refreshMark = refreshSet.Contains("markitdownnet");
+    var refreshPy = refreshSet.Contains("pytesseract");
+    if (refreshMark)
+    {
+        var mdDir = Path.Combine(outDir, "markitdownnet");
+        if (Directory.Exists(mdDir)) Directory.Delete(mdDir, true);
+        Directory.CreateDirectory(mdDir);
+    }
+    if (refreshPy)
+    {
+        var pyDir = Path.Combine(outDir, "pytesseract");
+        if (Directory.Exists(pyDir)) Directory.Delete(pyDir, true);
+        Directory.CreateDirectory(pyDir);
+    }
 
     var options = new MarkItDownOptions
     {
         OcrLanguages = langs,
         OcrDataPath = "/usr/share/tesseract-ocr/5/tessdata",
-        PageSegMode = (Tesseract.PageSegMode)6,
+        OcrPsm = psm,
+        OcrThreads = threads,
         NormalizeMarkdown = false,
         DetectBulletLists = false,
         MergeLines = false,
         MinimumNativeWordThreshold = int.MaxValue,
-        PdfRasterDpi = 300
+        OcrForceRaster = true
     };
     var converter = new MarkItDownConverter(options);
 
@@ -77,33 +92,44 @@ static void Extract(Dictionary<string, string> o)
             var rel = dataset + "/" + name;
             var images = GetImages(file).ToList();
 
-            var sw = Stopwatch.StartNew();
-            var textMark = OcrMark(converter, images);
-            sw.Stop();
-            var tMark = sw.ElapsedMilliseconds;
-            var outMarkDir = Path.Combine(outDir, "markitdownnet", dataset);
-            Directory.CreateDirectory(outMarkDir);
-            File.WriteAllText(Path.Combine(outMarkDir, name), textMark);
-            totalMark += tMark;
-            Console.WriteLine($"{dataset} | {Path.GetFileName(file)} | markitdownnet | {tMark} ms");
+            long tMark = 0, tPy = 0;
+            if (refreshMark)
+            {
+                var sw = Stopwatch.StartNew();
+                var (textMark, dpiEff, depth, angle) = OcrMark(converter, images);
+                sw.Stop();
+                tMark = sw.ElapsedMilliseconds;
+                var outMarkDir = Path.Combine(outDir, "markitdownnet", dataset);
+                Directory.CreateDirectory(outMarkDir);
+                File.WriteAllText(Path.Combine(outMarkDir, name), textMark);
+                totalMark += tMark;
+                var angleStr = angle.HasValue ? angle.Value.ToString("F2") : "skipped";
+                Console.WriteLine($"{dataset}/{Path.GetFileName(file)} | dpi {dpiEff} | depth {depth} | deskew {angleStr} | psm {psm} | oem {options.OcrOem} | {tMark} ms");
+            }
 
-            sw.Restart();
-            var textPy = OcrPy(images, python, langs, psm);
-            sw.Stop();
-            var tPy = sw.ElapsedMilliseconds;
-            var outPyDir = Path.Combine(outDir, "pytesseract", dataset);
-            Directory.CreateDirectory(outPyDir);
-            File.WriteAllText(Path.Combine(outPyDir, name), textPy);
-            totalPy += tPy;
-            Console.WriteLine($"{dataset} | {Path.GetFileName(file)} | pytesseract | {tPy} ms");
+            if (refreshPy)
+            {
+                var sw = Stopwatch.StartNew();
+                var textPy = OcrPy(images, python, langs, psm.ToString());
+                sw.Stop();
+                tPy = sw.ElapsedMilliseconds;
+                var outPyDir = Path.Combine(outDir, "pytesseract", dataset);
+                Directory.CreateDirectory(outPyDir);
+                File.WriteAllText(Path.Combine(outPyDir, name), textPy);
+                totalPy += tPy;
+                Console.WriteLine($"{dataset} | {Path.GetFileName(file)} | pytesseract | {tPy} ms");
+            }
 
-            timings[rel] = new Dictionary<string, long> { { "markitdownnet", tMark }, { "pytesseract", tPy } };
+            var dict = new Dictionary<string, long>();
+            if (refreshMark) dict["markitdownnet"] = tMark;
+            if (refreshPy) dict["pytesseract"] = tPy;
+            timings[rel] = dict;
         }
     }
 
     File.WriteAllText(Path.Combine(outDir, "timings.json"), JsonSerializer.Serialize(timings, new JsonSerializerOptions { WriteIndented = true }));
-    Console.WriteLine($"TOTAL markitdownnet {totalMark} ms");
-    Console.WriteLine($"TOTAL pytesseract {totalPy} ms");
+    if (refreshMark) Console.WriteLine($"TOTAL markitdownnet {totalMark} ms");
+    if (refreshPy) Console.WriteLine($"TOTAL pytesseract {totalPy} ms");
 }
 
 static IEnumerable<string> GetImages(string path)
@@ -129,15 +155,19 @@ static IEnumerable<string> GetImages(string path)
     }
 }
 
-static string OcrMark(MarkItDownConverter conv, IEnumerable<string> images)
+static (string text, int dpi, int depth, double? angle) OcrMark(MarkItDownConverter conv, IEnumerable<string> images)
 {
     var sb = new StringBuilder();
+    int dpi = 0, depth = 0; double? angle = null;
     foreach (var img in images)
     {
         var res = conv.ConvertAsync(img, GetMime(img)).Result;
         sb.AppendLine(res.Markdown.Trim());
+        angle ??= res.DeskewAngleDeg;
+        if (dpi == 0) dpi = res.Dpi;
+        if (depth == 0) depth = res.ColorDepth;
     }
-    return sb.ToString().Trim();
+    return (sb.ToString().Trim(), dpi, depth, angle);
 }
 
 static string OcrPy(IEnumerable<string> images, string py, string lang, string psm)
@@ -216,8 +246,8 @@ static void Compare(Dictionary<string, string> o)
                 line_count_ref = lcRef,
                 line_count_hyp = lcHyp,
                 line_f1 = lf,
-                timing_markitdownnet = t?["markitdownnet"] ?? 0,
-                timing_pytesseract = t?["pytesseract"] ?? 0
+                timing_markitdownnet = t != null && t.TryGetValue("markitdownnet", out var tm) ? tm : 0,
+                timing_pytesseract = t != null && t.TryGetValue("pytesseract", out var tpVal) ? tpVal : 0
             });
         }
     }
@@ -281,6 +311,20 @@ static void Compare(Dictionary<string, string> o)
         sb.AppendLine($"- {kv.Key}: {kv.Value}");
     Directory.CreateDirectory(Path.GetDirectoryName(outMd)!);
     File.WriteAllText(outMd, sb.ToString());
+
+    Console.WriteLine($"GLOBAL Token-F1 {global.token_f1_avg:F4} line_F1 {global.line_f1_avg:F4}");
+    foreach (var kv in byDataset)
+        Console.WriteLine($"{kv.Key} Token-F1 {kv.Value.token_f1_avg:F4} line_F1 {kv.Value.line_f1_avg:F4}");
+
+    int exitCode = 0;
+    if (global.token_f1_avg < 0.80 || global.line_f1_avg < 0.50)
+        exitCode = 1;
+    foreach (var kv in byDataset)
+        if ((kv.Key.Equals("ICDAR", StringComparison.OrdinalIgnoreCase) || kv.Key.Equals("PUBTABLES", StringComparison.OrdinalIgnoreCase)) &&
+            (kv.Value.token_f1_avg < 0.80 || kv.Value.line_f1_avg < 0.50))
+            exitCode = 1;
+
+    Environment.Exit(exitCode);
 }
 
 static string Normalize(string text)

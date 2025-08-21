@@ -65,6 +65,9 @@ public class MarkItDownConverter
         var lines = new List<Line>();
         var words = new List<Word>();
 
+        if (_options.OcrForceRaster)
+            return ProcessPdfWithOcr(path, ct);
+
         foreach (var page in document.GetPages())
         {
             ct.ThrowIfCancellationRequested();
@@ -101,46 +104,105 @@ public class MarkItDownConverter
         var lines = new List<Line>();
         var words = new List<Word>();
 
+        double? deskew = null;
+        int dpi = 0, depth = 0;
+
         // Rasterize PDF into images using PDFtoImage
-        var renderOptions = new RenderOptions { Dpi = _options.PdfRasterDpi };
+        var renderOptions = new RenderOptions { Dpi = _options.OcrUserDpi };
         using var stream = File.OpenRead(path);
         foreach (var bitmap in Conversion.ToImages(stream, leaveOpen: false, password: null, renderOptions))
         {
             ct.ThrowIfCancellationRequested();
             using (bitmap)
             {
-                pages.Add(new Page(pages.Count + 1, bitmap.Width, bitmap.Height));
                 using var image = SKImage.FromBitmap(bitmap);
                 using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                using var pix = Pix.LoadFromMemory(data.ToArray());
-                var result = ProcessPix(pix, pages.Count, ct);
-                lines.AddRange(result.lines);
-                words.AddRange(result.words);
+                using var rawPix = Pix.LoadFromMemory(data.ToArray());
+                var prep = PreparePix(rawPix, out var angle);
+                pages.Add(new Page(pages.Count + 1, prep.Width, prep.Height));
+                var res = RunOcr(prep, pages.Count, ct);
+                prep.Dispose();
+                lines.AddRange(res.lines);
+                words.AddRange(res.words);
+                deskew ??= angle;
+                dpi = prep.XRes;
+                depth = prep.Depth;
             }
         }
 
         var markdown = BuildMarkdown(lines);
-        return new MarkItDownResult(markdown, pages, lines, words);
+        return new MarkItDownResult(markdown, pages, lines, words, deskew, dpi, depth);
     }
 
     private MarkItDownResult ProcessImage(string path, CancellationToken ct)
     {
-        using var pix = Pix.LoadFromFile(path);
-        var (lines, words) = ProcessPix(pix, 1, ct);
-        var pages = new List<Page> { new Page(1, pix.Width, pix.Height) };
+        using var rawPix = Pix.LoadFromFile(path);
+        var prep = PreparePix(rawPix, out var angle);
+        var (lines, words) = RunOcr(prep, 1, ct);
+        var pages = new List<Page> { new Page(1, prep.Width, prep.Height) };
         var markdown = BuildMarkdown(lines);
-        return new MarkItDownResult(markdown, pages, lines, words);
+        var result = new MarkItDownResult(markdown, pages, lines, words, angle, prep.XRes, prep.Depth);
+        prep.Dispose();
+        return result;
     }
 
-    private (List<Line> lines, List<Word> words) ProcessPix(Pix pix, int pageNumber, CancellationToken ct)
+    private Pix PreparePix(Pix pix, out double? deskewAngle)
+    {
+        deskewAngle = null;
+
+        if (_options.OcrSetDpiMetadata)
+        {
+            pix.XRes = _options.OcrUserDpi;
+            pix.YRes = _options.OcrUserDpi;
+        }
+
+        if (pix.XRes < 220 || pix.YRes < 220)
+        {
+            float scale = (float)_options.OcrUserDpi / Math.Max(1, Math.Min(pix.XRes, pix.YRes));
+            var scaled = pix.Scale(scale, scale);
+            pix.Dispose();
+            pix = scaled;
+            pix.XRes = _options.OcrUserDpi;
+            pix.YRes = _options.OcrUserDpi;
+        }
+
+        if (_options.OcrColorDepth == OcrColorDepth.Grayscale8bpp && pix.Depth != 8)
+        {
+            var gray = pix.ConvertRGBToGray();
+            pix.Dispose();
+            pix = gray;
+        }
+
+        if (_options.OcrPreBinarize)
+        {
+            // Binarization disabled by default; placeholder for future use
+        }
+
+        var deskewed = pix.Deskew(out var skew);
+        if (Math.Abs(skew.Angle) >= _options.OcrDeskewMinAngleDeg)
+        {
+            pix.Dispose();
+            pix = deskewed;
+            deskewAngle = skew.Angle;
+        }
+        else
+        {
+            deskewed.Dispose();
+        }
+
+        return pix;
+    }
+
+    private (List<Line> lines, List<Word> words) RunOcr(Pix pix, int pageNumber, CancellationToken ct)
     {
         var lines = new List<Line>();
         var words = new List<Word>();
         using var engine = new TesseractEngine(
             _options.OcrDataPath ?? string.Empty,
             _options.OcrLanguages,
-            EngineMode.LstmOnly);
-        engine.DefaultPageSegMode = _options.PageSegMode;
+            _options.OcrOem);
+        engine.DefaultPageSegMode = (PageSegMode)_options.OcrPsm;
+        engine.SetVariable("num_threads", _options.OcrThreads.ToString());
         using var page = engine.Process(pix);
         using var iter = page.GetIterator();
         iter.Begin();
