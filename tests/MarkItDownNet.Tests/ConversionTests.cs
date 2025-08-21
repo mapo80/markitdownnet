@@ -18,7 +18,7 @@ public class ConversionTests
         page.AddText("Hello world", 12, new PdfPoint(10, 150), font);
         await File.WriteAllBytesAsync(tmp, builder.Build());
 
-        var converter = new MarkItDownConverter(new MarkItDownOptions { NormalizeMarkdown = false });
+        var converter = new MarkItDownConverter(new MarkItDownOptions { NormalizeMarkdown = false, OcrForceRaster = false });
         var result = await converter.ConvertAsync(tmp, "application/pdf");
 
         Assert.False(string.IsNullOrWhiteSpace(result.Markdown));

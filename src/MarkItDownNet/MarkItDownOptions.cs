@@ -11,11 +11,32 @@ public class MarkItDownOptions
     /// <summary>Languages for OCR, e.g. "eng" or "ita+eng".</summary>
     public string OcrLanguages { get; set; } = "eng";
 
-    /// <summary>Page segmentation mode used by Tesseract.</summary>
-    public PageSegMode PageSegMode { get; set; } = PageSegMode.SingleBlock;
+    /// <summary>DPI hint for user-provided images.</summary>
+    public int OcrUserDpi { get; set; } = 300;
 
-    /// <summary>DPI used when rasterizing PDFs for OCR fallback.</summary>
-    public int PdfRasterDpi { get; set; } = 300;
+    /// <summary>Page segmentation mode used by Tesseract.</summary>
+    public int OcrPsm { get; set; } = 6;
+
+    /// <summary>OCR Engine mode (OEM).</summary>
+    public EngineMode OcrOem { get; set; } = EngineMode.LstmOnly;
+
+    /// <summary>Maximum number of OCR threads.</summary>
+    public int OcrThreads { get; set; } = 1;
+
+    /// <summary>Force rasterization of PDFs for OCR.</summary>
+    public bool OcrForceRaster { get; set; } = true;
+
+    /// <summary>Pre-binarize images before OCR.</summary>
+    public bool OcrPreBinarize { get; set; } = false;
+
+    /// <summary>Minimum absolute angle (deg) to trigger deskew.</summary>
+    public double OcrDeskewMinAngleDeg { get; set; } = 2.0;
+
+    /// <summary>Preferred color depth for OCR input.</summary>
+    public OcrColorDepth OcrColorDepth { get; set; } = OcrColorDepth.Grayscale8bpp;
+
+    /// <summary>Set DPI metadata on images before OCR.</summary>
+    public bool OcrSetDpiMetadata { get; set; } = true;
 
     /// <summary>Minimum number of native words required before falling back to OCR.</summary>
     public int MinimumNativeWordThreshold { get; set; } = 1;
@@ -38,4 +59,11 @@ public class MarkItDownOptions
     /// Merge consecutive lines into paragraphs instead of preserving line breaks.
     /// </summary>
     public bool MergeLines { get; set; } = true;
+}
+
+/// <summary>Supported color depths for OCR input.</summary>
+public enum OcrColorDepth
+{
+    Grayscale8bpp,
+    Color32bpp
 }

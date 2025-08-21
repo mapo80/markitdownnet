@@ -14,6 +14,19 @@
   "files": [
     {
       "dataset": "FUNSD",
+      "file": "82251504",
+      "cer_char": 0.015776699029126214,
+      "token_precision": 1,
+      "token_recall": 1,
+      "token_f1": 1,
+      "line_count_ref": 28,
+      "line_count_hyp": 28,
+      "line_f1": 1,
+      "timing_markitdownnet": 605,
+      "timing_pytesseract": 2042
+    },
+    {
+      "dataset": "FUNSD",
       "file": "82250337_0338",
       "cer_char": 0.011834319526627219,
       "token_precision": 1,
@@ -22,21 +35,8 @@
       "line_count_ref": 27,
       "line_count_hyp": 27,
       "line_f1": 1,
-      "timing_markitdownnet": 511,
+      "timing_markitdownnet": 516,
       "timing_pytesseract": 1845
-    },
-    {
-      "dataset": "FUNSD",
-      "file": "82200067_0069",
-      "cer_char": 0.020602218700475437,
-      "token_precision": 1,
-      "token_recall": 1,
-      "token_f1": 1,
-      "line_count_ref": 28,
-      "line_count_hyp": 28,
-      "line_f1": 1,
-      "timing_markitdownnet": 917,
-      "timing_pytesseract": 2055
     },
     {
       "dataset": "FUNSD",
@@ -48,73 +48,21 @@
       "line_count_ref": 32,
       "line_count_hyp": 32,
       "line_f1": 1,
-      "timing_markitdownnet": 681,
+      "timing_markitdownnet": 848,
       "timing_pytesseract": 1963
     },
     {
       "dataset": "FUNSD",
-      "file": "82251504",
-      "cer_char": 0.015776699029126214,
+      "file": "82200067_0069",
+      "cer_char": 0.020602218700475437,
       "token_precision": 1,
       "token_recall": 1,
       "token_f1": 1,
       "line_count_ref": 28,
       "line_count_hyp": 28,
       "line_f1": 1,
-      "timing_markitdownnet": 680,
-      "timing_pytesseract": 2042
-    },
-    {
-      "dataset": "SROIE2019",
-      "file": "X00016469670",
-      "cer_char": 0.09898107714701601,
-      "token_precision": 0.8468468468468469,
-      "token_recall": 0.8103448275862069,
-      "token_f1": 0.8281938325991189,
-      "line_count_ref": 29,
-      "line_count_hyp": 28,
-      "line_f1": 0.6315789473684211,
-      "timing_markitdownnet": 464,
-      "timing_pytesseract": 1928
-    },
-    {
-      "dataset": "SROIE2019",
-      "file": "X00016469671",
-      "cer_char": 0.0802675585284281,
-      "token_precision": 0.83,
-      "token_recall": 0.8645833333333334,
-      "token_f1": 0.8469387755102041,
-      "line_count_ref": 26,
-      "line_count_hyp": 26,
-      "line_f1": 0.7307692307692306,
-      "timing_markitdownnet": 408,
-      "timing_pytesseract": 1755
-    },
-    {
-      "dataset": "SROIE2019",
-      "file": "X51005230605",
-      "cer_char": 0.03929273084479371,
-      "token_precision": 0.9574468085106383,
-      "token_recall": 0.967741935483871,
-      "token_f1": 0.9625668449197862,
-      "line_count_ref": 25,
-      "line_count_hyp": 25,
-      "line_f1": 0.92,
-      "timing_markitdownnet": 458,
-      "timing_pytesseract": 1849
-    },
-    {
-      "dataset": "SROIE2019",
-      "file": "X51005200931",
-      "cer_char": 0.03384279475982533,
-      "token_precision": 0.891566265060241,
-      "token_recall": 0.8862275449101796,
-      "token_f1": 0.888888888888889,
-      "line_count_ref": 41,
-      "line_count_hyp": 41,
-      "line_f1": 0.6585365853658537,
-      "timing_markitdownnet": 642,
-      "timing_pytesseract": 2056
+      "timing_markitdownnet": 641,
+      "timing_pytesseract": 2055
     },
     {
       "dataset": "ICDAR",
@@ -126,7 +74,7 @@
       "line_count_ref": 51,
       "line_count_hyp": 44,
       "line_f1": 0,
-      "timing_markitdownnet": 3818,
+      "timing_markitdownnet": 3644,
       "timing_pytesseract": 5629
     },
     {
@@ -139,21 +87,8 @@
       "line_count_ref": 40,
       "line_count_hyp": 36,
       "line_f1": 0,
-      "timing_markitdownnet": 2935,
+      "timing_markitdownnet": 3278,
       "timing_pytesseract": 4447
-    },
-    {
-      "dataset": "ICDAR",
-      "file": "cTDaR_t00080",
-      "cer_char": 0.7515723270440252,
-      "token_precision": 0.3641732283464567,
-      "token_recall": 0.3798767967145791,
-      "token_f1": 0.37185929648241206,
-      "line_count_ref": 50,
-      "line_count_hyp": 48,
-      "line_f1": 0,
-      "timing_markitdownnet": 3762,
-      "timing_pytesseract": 5772
     },
     {
       "dataset": "ICDAR",
@@ -165,21 +100,73 @@
       "line_count_ref": 36,
       "line_count_hyp": 36,
       "line_f1": 0,
-      "timing_markitdownnet": 3387,
+      "timing_markitdownnet": 3335,
       "timing_pytesseract": 4978
     },
     {
+      "dataset": "ICDAR",
+      "file": "cTDaR_t00080",
+      "cer_char": 0.7647798742138365,
+      "token_precision": 0.3570057581573896,
+      "token_recall": 0.38193018480492813,
+      "token_f1": 0.36904761904761907,
+      "line_count_ref": 50,
+      "line_count_hyp": 48,
+      "line_f1": 0,
+      "timing_markitdownnet": 2179,
+      "timing_pytesseract": 5772
+    },
+    {
       "dataset": "PUBTABLES",
-      "file": "PMC1064078_table_0",
-      "cer_char": 0.03770739064856712,
-      "token_precision": 0.8282828282828283,
-      "token_recall": 0.8367346938775511,
-      "token_f1": 0.8324873096446701,
-      "line_count_ref": 10,
-      "line_count_hyp": 10,
-      "line_f1": 0.10000000000000002,
-      "timing_markitdownnet": 350,
-      "timing_pytesseract": 1813
+      "file": "PMC1064078_table_5",
+      "cer_char": 0.16020025031289112,
+      "token_precision": 0.6770186335403726,
+      "token_recall": 0.6646341463414634,
+      "token_f1": 0.6707692307692308,
+      "line_count_ref": 16,
+      "line_count_hyp": 15,
+      "line_f1": 0.06451612903225808,
+      "timing_markitdownnet": 512,
+      "timing_pytesseract": 2071
+    },
+    {
+      "dataset": "PUBTABLES",
+      "file": "PMC1064082_table_1",
+      "cer_char": 0.06351183063511831,
+      "token_precision": 0.7819548872180451,
+      "token_recall": 0.7938931297709924,
+      "token_f1": 0.7878787878787878,
+      "line_count_ref": 26,
+      "line_count_hyp": 26,
+      "line_f1": 0.3076923076923077,
+      "timing_markitdownnet": 346,
+      "timing_pytesseract": 1721
+    },
+    {
+      "dataset": "PUBTABLES",
+      "file": "PMC1064078_table_6",
+      "cer_char": 0.3125,
+      "token_precision": 0.47058823529411764,
+      "token_recall": 0.4528301886792453,
+      "token_f1": 0.4615384615384615,
+      "line_count_ref": 7,
+      "line_count_hyp": 7,
+      "line_f1": 0.14285714285714285,
+      "timing_markitdownnet": 261,
+      "timing_pytesseract": 1864
+    },
+    {
+      "dataset": "PUBTABLES",
+      "file": "PMC1064082_table_0",
+      "cer_char": 0.6911764705882353,
+      "token_precision": 0.3076923076923077,
+      "token_recall": 0.14814814814814814,
+      "token_f1": 0.2,
+      "line_count_ref": 5,
+      "line_count_hyp": 3,
+      "line_f1": 0,
+      "timing_markitdownnet": 99,
+      "timing_pytesseract": 1539
     },
     {
       "dataset": "PUBTABLES",
@@ -191,7 +178,7 @@
       "line_count_ref": 14,
       "line_count_hyp": 13,
       "line_f1": 0,
-      "timing_markitdownnet": 331,
+      "timing_markitdownnet": 325,
       "timing_pytesseract": 1844
     },
     {
@@ -204,34 +191,21 @@
       "line_count_ref": 18,
       "line_count_hyp": 18,
       "line_f1": 0.05555555555555555,
-      "timing_markitdownnet": 390,
+      "timing_markitdownnet": 401,
       "timing_pytesseract": 1791
     },
     {
       "dataset": "PUBTABLES",
-      "file": "PMC1064078_table_5",
-      "cer_char": 0.16020025031289112,
-      "token_precision": 0.6770186335403726,
-      "token_recall": 0.6646341463414634,
-      "token_f1": 0.6707692307692308,
-      "line_count_ref": 16,
-      "line_count_hyp": 15,
-      "line_f1": 0.06451612903225808,
-      "timing_markitdownnet": 522,
-      "timing_pytesseract": 2071
-    },
-    {
-      "dataset": "PUBTABLES",
-      "file": "PMC1064082_table_0",
-      "cer_char": 0.6911764705882353,
-      "token_precision": 0.3076923076923077,
-      "token_recall": 0.14814814814814814,
-      "token_f1": 0.2,
-      "line_count_ref": 5,
-      "line_count_hyp": 3,
-      "line_f1": 0,
-      "timing_markitdownnet": 116,
-      "timing_pytesseract": 1539
+      "file": "PMC1064078_table_0",
+      "cer_char": 0.03770739064856712,
+      "token_precision": 0.8282828282828283,
+      "token_recall": 0.8367346938775511,
+      "token_f1": 0.8324873096446701,
+      "line_count_ref": 10,
+      "line_count_hyp": 10,
+      "line_f1": 0.10000000000000002,
+      "timing_markitdownnet": 309,
+      "timing_pytesseract": 1813
     },
     {
       "dataset": "PUBTABLES",
@@ -243,73 +217,8 @@
       "line_count_ref": 20,
       "line_count_hyp": 21,
       "line_f1": 0.04878048780487805,
-      "timing_markitdownnet": 489,
+      "timing_markitdownnet": 421,
       "timing_pytesseract": 1842
-    },
-    {
-      "dataset": "PUBTABLES",
-      "file": "PMC1064078_table_6",
-      "cer_char": 0.3125,
-      "token_precision": 0.47058823529411764,
-      "token_recall": 0.4528301886792453,
-      "token_f1": 0.4615384615384615,
-      "line_count_ref": 7,
-      "line_count_hyp": 7,
-      "line_f1": 0.14285714285714285,
-      "timing_markitdownnet": 304,
-      "timing_pytesseract": 1864
-    },
-    {
-      "dataset": "PUBTABLES",
-      "file": "PMC1064082_table_1",
-      "cer_char": 0.06351183063511831,
-      "token_precision": 0.7819548872180451,
-      "token_recall": 0.7938931297709924,
-      "token_f1": 0.7878787878787878,
-      "line_count_ref": 26,
-      "line_count_hyp": 26,
-      "line_f1": 0.3076923076923077,
-      "timing_markitdownnet": 385,
-      "timing_pytesseract": 1721
-    },
-    {
-      "dataset": "MARMOT",
-      "file": "10.1.1.1.2013_63",
-      "cer_char": 0.04133545310015898,
-      "token_precision": 0.8972332015810277,
-      "token_recall": 0.8937007874015748,
-      "token_f1": 0.8954635108481263,
-      "line_count_ref": 38,
-      "line_count_hyp": 38,
-      "line_f1": 0.5789473684210527,
-      "timing_markitdownnet": 3631,
-      "timing_pytesseract": 2309
-    },
-    {
-      "dataset": "MARMOT",
-      "file": "10.1.1.1.2013_64",
-      "cer_char": 0.11729323308270677,
-      "token_precision": 0.7592592592592593,
-      "token_recall": 0.7522935779816514,
-      "token_f1": 0.7557603686635944,
-      "line_count_ref": 21,
-      "line_count_hyp": 21,
-      "line_f1": 0.47619047619047616,
-      "timing_markitdownnet": 626,
-      "timing_pytesseract": 1912
-    },
-    {
-      "dataset": "MARMOT",
-      "file": "10.1.1.1.2006_3",
-      "cer_char": 0.03347107438016529,
-      "token_precision": 0.8811013767209012,
-      "token_recall": 0.8833124215809285,
-      "token_f1": 0.8822055137844611,
-      "line_count_ref": 60,
-      "line_count_hyp": 60,
-      "line_f1": 0.31666666666666665,
-      "timing_markitdownnet": 8684,
-      "timing_pytesseract": 3309
     },
     {
       "dataset": "MARMOT",
@@ -321,27 +230,112 @@
       "line_count_ref": 37,
       "line_count_hyp": 36,
       "line_f1": 0.273972602739726,
-      "timing_markitdownnet": 991,
+      "timing_markitdownnet": 924,
       "timing_pytesseract": 2616
+    },
+    {
+      "dataset": "MARMOT",
+      "file": "10.1.1.1.2013_64",
+      "cer_char": 0.11729323308270677,
+      "token_precision": 0.7592592592592593,
+      "token_recall": 0.7522935779816514,
+      "token_f1": 0.7557603686635944,
+      "line_count_ref": 21,
+      "line_count_hyp": 21,
+      "line_f1": 0.47619047619047616,
+      "timing_markitdownnet": 560,
+      "timing_pytesseract": 1912
+    },
+    {
+      "dataset": "MARMOT",
+      "file": "10.1.1.1.2013_63",
+      "cer_char": 0.04133545310015898,
+      "token_precision": 0.8972332015810277,
+      "token_recall": 0.8937007874015748,
+      "token_f1": 0.8954635108481263,
+      "line_count_ref": 38,
+      "line_count_hyp": 38,
+      "line_f1": 0.5789473684210527,
+      "timing_markitdownnet": 631,
+      "timing_pytesseract": 2309
+    },
+    {
+      "dataset": "MARMOT",
+      "file": "10.1.1.1.2006_3",
+      "cer_char": 0.04483471074380165,
+      "token_precision": 0.8641975308641975,
+      "token_recall": 0.8782936010037641,
+      "token_f1": 0.8711885500933415,
+      "line_count_ref": 60,
+      "line_count_hyp": 61,
+      "line_f1": 0.28099173553719003,
+      "timing_markitdownnet": 1561,
+      "timing_pytesseract": 3309
+    },
+    {
+      "dataset": "SROIE2019",
+      "file": "X51005200931",
+      "cer_char": 0.03384279475982533,
+      "token_precision": 0.891566265060241,
+      "token_recall": 0.8862275449101796,
+      "token_f1": 0.888888888888889,
+      "line_count_ref": 41,
+      "line_count_hyp": 41,
+      "line_f1": 0.6585365853658537,
+      "timing_markitdownnet": 524,
+      "timing_pytesseract": 2056
+    },
+    {
+      "dataset": "SROIE2019",
+      "file": "X00016469671",
+      "cer_char": 0.18394648829431437,
+      "token_precision": 0.7227722772277227,
+      "token_recall": 0.7604166666666666,
+      "token_f1": 0.7411167512690354,
+      "line_count_ref": 26,
+      "line_count_hyp": 26,
+      "line_f1": 0.6153846153846154,
+      "timing_markitdownnet": 520,
+      "timing_pytesseract": 1755
+    },
+    {
+      "dataset": "SROIE2019",
+      "file": "X51005230605",
+      "cer_char": 0.023575638506876228,
+      "token_precision": 0.978494623655914,
+      "token_recall": 0.978494623655914,
+      "token_f1": 0.978494623655914,
+      "line_count_ref": 25,
+      "line_count_hyp": 25,
+      "line_f1": 0.96,
+      "timing_markitdownnet": 391,
+      "timing_pytesseract": 1849
+    },
+    {
+      "dataset": "SROIE2019",
+      "file": "X00016469670",
+      "cer_char": 0.1848617176128093,
+      "token_precision": 0.7350427350427351,
+      "token_recall": 0.7413793103448276,
+      "token_f1": 0.7381974248927039,
+      "line_count_ref": 29,
+      "line_count_hyp": 30,
+      "line_f1": 0.5423728813559322,
+      "timing_markitdownnet": 589,
+      "timing_pytesseract": 1928
     }
   ],
   "aggregate": {
     "by_dataset": {
       "FUNSD": {
-        "cer_avg": 0.014752644862229975,
+        "cer_avg": 0.014752644862229974,
         "token_f1_avg": 1,
         "line_f1_avg": 1,
         "n_files": 4
       },
-      "SROIE2019": {
-        "cer_avg": 0.06309604032001578,
-        "token_f1_avg": 0.8816470854794994,
-        "line_f1_avg": 0.7352211908758763,
-        "n_files": 4
-      },
       "ICDAR": {
-        "cer_avg": 0.7248124473780835,
-        "token_f1_avg": 0.36180094739698715,
+        "cer_avg": 0.7281143341705363,
+        "token_f1_avg": 0.3610980280382889,
         "line_f1_avg": 0,
         "n_files": 4
       },
@@ -352,16 +346,22 @@
         "n_files": 8
       },
       "MARMOT": {
-        "cer_avg": 0.07783383087611297,
-        "token_f1_avg": 0.8346188162139537,
-        "line_f1_avg": 0.4114442785044804,
+        "cer_avg": 0.08067473996702205,
+        "token_f1_avg": 0.8318645752911739,
+        "line_f1_avg": 0.4025255457221112,
+        "n_files": 4
+      },
+      "SROIE2019": {
+        "cer_avg": 0.1065566597934563,
+        "token_f1_avg": 0.8366744221766356,
+        "line_f1_avg": 0.6940735205266003,
         "n_files": 4
       }
     },
     "global": {
-      "cer_avg": 0.23638613783393658,
-      "token_f1_avg": 0.7035058050110908,
-      "line_f1_avg": 0.3877526458526486,
+      "cer_avg": 0.24465337372673693,
+      "token_f1_avg": 0.6954341677470338,
+      "line_f1_avg": 0.3794082453307079,
       "n_files": 24
     }
   }
