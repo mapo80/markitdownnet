@@ -205,24 +205,23 @@ static void BenchSingleCommand(string[] args)
         object? tables = null;
         if (r.Similarity != null)
         {
-            tables = refHasTables
-                ? new {
-                    tables_count = r.Similarity.Tables,
-                    table_cell_F1 = r.Similarity.TableCellF1
-                }
-                : new {
-                    tables_count = r.Similarity.Tables,
-                    pipes_lines_count = r.Similarity.PipeLines,
-                    median_pipes_per_line = r.Similarity.MedianPipesPerLine,
-                    max_pipes_per_line = r.Similarity.MaxPipesPerLine
-                };
+            tables = new {
+                tables_count = r.Similarity.Tables,
+                table_cell_f1 = refHasTables ? r.Similarity.TableCellF1 : null,
+                pipes_lines_count = r.Similarity.PipeLines,
+                median_pipes_per_line = r.Similarity.MedianPipesPerLine,
+                max_pipes_per_line = r.Similarity.MaxPipesPerLine
+            };
         }
         return new {
             mode = r.Mode,
             timing = new {
                 trials = r.Trials.Select(t => new { md_ms = t }).ToArray(),
                 avg_ms = r.AvgMs,
-                std_ms = r.StdMs
+                std_ms = r.StdMs,
+                p50_ms = r.P50Ms,
+                p90_ms = r.P90Ms,
+                p95_ms = r.P95Ms
             },
             quality_vs_python_hot = r.Similarity == null ? null : new {
                 text = new {
@@ -262,6 +261,8 @@ static void BenchDirCommand(string[] args)
     string pythonMarkCmd = GetOption(args, "--python-markitdown-cmd") ?? "python -m markitdown";
     string pythonHotCmd = GetOption(args, "--python-hot-cmd") ?? "python tools/run_markitdown_hot.py";
     int threads = int.Parse(GetOption(args, "--threads") ?? "1");
+    string tessLangs = GetOption(args, "--tesseract-langs") ?? "";
+    string tessPsm = GetOption(args, "--tesseract-psm") ?? "";
     string configPath = GetOption(args, "--config");
     TextModeConfig config = configPath != null ?
         JsonSerializer.Deserialize<TextModeConfig>(File.ReadAllText(configPath))! : new TextModeConfig();
@@ -273,6 +274,17 @@ static void BenchDirCommand(string[] args)
         dotnet = Environment.Version.ToString(),
         python = GetPythonVersion(pythonExe),
         markitdown = GetMarkitdownVersion(pythonExe)
+    };
+    var runConfig = new RunConfig
+    {
+        os = env.os,
+        hw = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString(),
+        dotnet = env.dotnet,
+        python = env.python,
+        markitdown = env.markitdown,
+        threads = threads,
+        tesseract_langs = tessLangs,
+        tesseract_psm = tessPsm
     };
 
     string outputsRoot = Path.Combine("artifacts", "validation", "outputs");
@@ -304,7 +316,10 @@ static void BenchDirCommand(string[] args)
         var runsObj = f.Results.ToDictionary(r => r.Mode, r => new {
             trials = r.Trials.Select(t => new { md_ms = t }).ToArray(),
             avg_ms = r.AvgMs,
-            std_ms = r.StdMs
+            std_ms = r.StdMs,
+            p50_ms = r.P50Ms,
+            p90_ms = r.P90Ms,
+            p95_ms = r.P95Ms
         });
         var pythonHot = f.Results.First(r => r.Mode == "python-hot");
         var post2 = f.Results.FirstOrDefault(r => r.Mode == "post-2");
@@ -312,17 +327,13 @@ static void BenchDirCommand(string[] args)
         if (post2?.Similarity != null)
         {
             bool refHasTables = pythonHot.Similarity?.Tables > 0;
-            object tables = refHasTables
-                ? new {
-                    tables_count = post2.Similarity.Tables,
-                    table_cell_F1 = post2.Similarity.TableCellF1
-                }
-                : new {
-                    tables_count = post2.Similarity.Tables,
-                    pipes_lines_count = post2.Similarity.PipeLines,
-                    median_pipes_per_line = post2.Similarity.MedianPipesPerLine,
-                    max_pipes_per_line = post2.Similarity.MaxPipesPerLine
-                };
+            object tables = new {
+                tables_count = post2.Similarity.Tables,
+                table_cell_f1 = refHasTables ? post2.Similarity.TableCellF1 : null,
+                pipes_lines_count = post2.Similarity.PipeLines,
+                median_pipes_per_line = post2.Similarity.MedianPipesPerLine,
+                max_pipes_per_line = post2.Similarity.MaxPipesPerLine
+            };
             qualityObj = new {
                 text = new {
                     cer_char = post2.Similarity.Cer,
@@ -348,12 +359,12 @@ static void BenchDirCommand(string[] args)
 
     var aggregate = BuildAggregateData(filesData, modeList, inputDir);
 
-    var rootObj = new { root = inputDir, modes = modeList, files = filesJson, aggregate = aggregate };
+    var rootObj = new { root = inputDir, modes = modeList, run_config = runConfig, files = filesJson, aggregate = aggregate };
     var json = JsonSerializer.Serialize(rootObj, new JsonSerializerOptions { WriteIndented = true });
     File.WriteAllText(outJson, json);
-    File.WriteAllText(outHtml, BuildBenchHtml(aggregate));
+    File.WriteAllText(outHtml, BuildBenchHtml(aggregate, runConfig, filesData));
     if (!string.IsNullOrEmpty(summaryMd))
-        File.WriteAllText(summaryMd, BuildSummaryMarkdown(aggregate));
+        File.WriteAllText(summaryMd, BuildSummaryMarkdown(aggregate, runConfig));
 }
 
 static BenchResult RunMode(string mode, string input, string pythonExe, string pythonMarkCmd, string pythonHotCmd, TextModeConfig config, string outputsDir, string baseName)
@@ -411,7 +422,19 @@ static BenchResult RunMode(string mode, string input, string pythonExe, string p
     File.WriteAllText(normPath, norm);
     var avg = times.Average();
     var std = Math.Sqrt(times.Select(t => Math.Pow(t - avg, 2)).Average());
-    return new BenchResult { Mode = mode, Trials = times, AvgMs = avg, StdMs = std, Output = outputPath, NormOutput = normPath };
+    times.Sort();
+    double Percentile(double p)
+    {
+        if (times.Count == 0) return 0;
+        double idx = (times.Count - 1) * p;
+        int i = (int)idx;
+        double frac = idx - i;
+        return times[i] + (i + 1 < times.Count ? (times[i + 1] - times[i]) * frac : 0);
+    }
+    var p50 = Percentile(0.5);
+    var p90 = Percentile(0.9);
+    var p95 = Percentile(0.95);
+    return new BenchResult { Mode = mode, Trials = times, AvgMs = avg, StdMs = std, P50Ms = p50, P90Ms = p90, P95Ms = p95, Output = outputPath, NormOutput = normPath };
 }
 
 
@@ -441,16 +464,16 @@ static string GetMarkitdownVersion(string pythonExe)
 {
     try
     {
-        var psi = new ProcessStartInfo(pythonExe, "-c \"import markitdown, import importlib.metadata as m; print(getattr(markitdown,'__version__',''))\"")
+        var psi = new ProcessStartInfo(pythonExe, "-c \"import markitdown, importlib.metadata as m; print(getattr(markitdown,'__version__',''))\"")
         {
             RedirectStandardOutput = true,
             RedirectStandardError = true
         };
         using var p = Process.Start(psi)!;
         string output = p.StandardOutput.ReadToEnd();
-        string err = p.StandardError.ReadToEnd();
+        p.StandardError.ReadToEnd();
         p.WaitForExit();
-        return (output + err).Trim();
+        return output.Trim();
     }
     catch { return ""; }
 }
@@ -463,22 +486,73 @@ static AggregateData BuildAggregateData(List<BenchFileData> files, string[] mode
     {
         var ds = new DatasetAggregate();
         ds.files = g.Count();
-        ds.md_ms_avg = modes.ToDictionary(m => m, m => g.Average(f => f.Results.First(r => r.Mode == m).AvgMs));
-        var post2 = g.Select(f => f.Results.First(r => r.Mode == "post-2").Similarity).Where(s => s != null).ToList();
-        ds.token_f1_avg = post2.Count > 0 ? post2.Average(s => s!.F1) : 0;
-        ds.cer_avg = post2.Count > 0 ? post2.Average(s => s!.Cer) : 0;
-        ds.tables_count_sum = post2.Sum(s => s?.Tables ?? 0);
+        foreach (var m in modes)
+        {
+            var times = g.SelectMany(f => f.Results.First(r => r.Mode == m).Trials).ToList();
+            ds.timing[m] = BuildTimingStats(times);
+            var sims = g.Select(f => f.Results.First(r => r.Mode == m).Similarity).Where(s => s != null).Select(s=>s!).ToList();
+            ds.quality[m] = BuildQualityStats(sims);
+        }
         data.by_dataset[g.Key] = ds;
     }
     var global = new GlobalAggregate();
     global.n_files = files.Count;
-    global.md_ms_avg = modes.ToDictionary(m => m, m => files.Average(f => f.Results.First(r => r.Mode == m).AvgMs));
-    var allPost2 = files.Select(f => f.Results.First(r => r.Mode == "post-2").Similarity).Where(s => s != null).ToList();
-    global.token_f1_avg = allPost2.Count > 0 ? allPost2.Average(s => s!.F1) : 0;
-    global.cer_avg = allPost2.Count > 0 ? allPost2.Average(s => s!.Cer) : 0;
-    global.tables_count_sum = allPost2.Sum(s => s?.Tables ?? 0);
+    foreach (var m in modes)
+    {
+        var times = files.SelectMany(f => f.Results.First(r => r.Mode == m).Trials).ToList();
+        global.timing[m] = BuildTimingStats(times);
+        var sims = files.Select(f => f.Results.First(r => r.Mode == m).Similarity).Where(s => s != null).Select(s=>s!).ToList();
+        global.quality[m] = BuildQualityStats(sims);
+    }
     data.global = global;
     return data;
+}
+
+static TimingStats BuildTimingStats(List<double> times)
+{
+    times.Sort();
+    double avg = times.Count > 0 ? times.Average() : 0;
+    double std = times.Count > 0 ? Math.Sqrt(times.Select(t => Math.Pow(t - avg, 2)).Average()) : 0;
+    double Percentile(double p)
+    {
+        if (times.Count == 0) return 0;
+        double idx = (times.Count - 1) * p;
+        int i = (int)idx;
+        double frac = idx - i;
+        return times[i] + (i + 1 < times.Count ? (times[i + 1] - times[i]) * frac : 0);
+    }
+    return new TimingStats
+    {
+        avg_ms = avg,
+        std_ms = std,
+        p50_ms = Percentile(0.5),
+        p90_ms = Percentile(0.9),
+        p95_ms = Percentile(0.95)
+    };
+}
+
+static QualityStats BuildQualityStats(List<Similarity> sims)
+{
+    if (sims.Count == 0) return new QualityStats();
+    var tables = new TablesStats();
+    tables.tables_count = sims.Average(s => s.Tables);
+    var tf = sims.Where(s => s.TableCellF1.HasValue).Select(s => s.TableCellF1!.Value).ToList();
+    tables.table_cell_f1 = tf.Count > 0 ? tf.Average() : null;
+    tables.pipes_lines_count = sims.Average(s => s.PipeLines);
+    tables.median_pipes_per_line = sims.Average(s => s.MedianPipesPerLine);
+    tables.max_pipes_per_line = sims.Average(s => s.MaxPipesPerLine);
+    return new QualityStats
+    {
+        cer_char = sims.Average(s => s.Cer),
+        token_precision = sims.Average(s => s.Precision),
+        token_recall = sims.Average(s => s.Recall),
+        token_f1 = sims.Average(s => s.F1),
+        line_f1 = sims.Average(s => s.LineF1),
+        line_count = sims.Average(s => s.LineCount),
+        list_items = sims.Average(s => s.ListItems),
+        max_list_depth = sims.Average(s => s.MaxListDepth),
+        tables = tables
+    };
 }
 
 static string GetDatasetName(string rootDir, string filePath)
@@ -488,42 +562,185 @@ static string GetDatasetName(string rootDir, string filePath)
     return parts.Length > 0 ? parts[0] : string.Empty;
 }
 
-static string BuildBenchHtml(AggregateData agg)
+static string BuildBenchHtml(AggregateData agg, RunConfig cfg, List<BenchFileData> files)
 {
     var sb = new System.Text.StringBuilder();
     sb.AppendLine("<html><body>");
     sb.AppendLine("<h1>Benchmark</h1>");
-    sb.AppendLine("<h2>Timing</h2><table border='1'><tr><th>Mode</th><th>avg md_ms</th></tr>");
-    foreach (var kv in agg.global.md_ms_avg)
-        sb.AppendLine($"<tr><td>{kv.Key}</td><td>{kv.Value:F2}</td></tr>");
+    sb.AppendLine("<h2>Run config</h2><ul>");
+    sb.AppendLine($"<li>OS: {WebUtility.HtmlEncode(cfg.os)} ({WebUtility.HtmlEncode(cfg.hw)})</li>");
+    sb.AppendLine($"<li>.NET: {WebUtility.HtmlEncode(cfg.dotnet)}</li>");
+    sb.AppendLine($"<li>Python: {WebUtility.HtmlEncode(cfg.python)} markitdown {WebUtility.HtmlEncode(cfg.markitdown)}</li>");
+    sb.AppendLine($"<li>threads bench: {cfg.threads}</li>");
+    sb.AppendLine($"<li>Tesseract langs: {WebUtility.HtmlEncode(cfg.tesseract_langs)} psm: {WebUtility.HtmlEncode(cfg.tesseract_psm)}</li>");
+    sb.AppendLine("</ul>");
+
+    sb.AppendLine("<h2>Timing (global)</h2><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>");
+    foreach (var kv in agg.global.timing)
+        sb.AppendLine($"<tr><td>{kv.Key}</td><td>{kv.Value.avg_ms:F1}±{kv.Value.std_ms:F1}</td><td>{kv.Value.p50_ms:F1}</td><td>{kv.Value.p90_ms:F1}</td><td>{kv.Value.p95_ms:F1}</td></tr>");
     sb.AppendLine("</table>");
-    sb.AppendLine($"<h2>Global Quality</h2><p>Token-F1 avg: {agg.global.token_f1_avg:F3} CER avg: {agg.global.cer_avg:F3}</p>");
+    double deltaPost = agg.global.timing.ContainsKey("post-1S") && agg.global.timing.ContainsKey("post-2") && agg.global.timing["post-1S"].avg_ms>0
+        ? (agg.global.timing["post-2"].avg_ms - agg.global.timing["post-1S"].avg_ms) / agg.global.timing["post-1S"].avg_ms * 100.0 : 0;
+    double deltaNetPy = agg.global.timing.ContainsKey("python-hot") && agg.global.timing.ContainsKey("post-2") && agg.global.timing["python-hot"].avg_ms>0
+        ? (agg.global.timing["post-2"].avg_ms - agg.global.timing["python-hot"].avg_ms) / agg.global.timing["python-hot"].avg_ms * 100.0 : 0;
+    sb.AppendLine($"<p>Δ post-2 vs post-1S: {deltaPost:F1}%</p>");
+    sb.AppendLine($"<p>Δ .NET vs python-hot: {deltaNetPy:F1}%</p>");
+
+    sb.AppendLine("<h2>Timing by dataset</h2>");
+    foreach (var ds in agg.by_dataset)
+    {
+        sb.AppendLine($"<h3>{ds.Key}</h3><table border='1'><tr><th>Mode</th><th>avg±std (ms)</th><th>p50</th><th>p90</th><th>p95</th></tr>");
+        foreach (var kv in ds.Value.timing)
+            sb.AppendLine($"<tr><td>{kv.Key}</td><td>{kv.Value.avg_ms:F1}±{kv.Value.std_ms:F1}</td><td>{kv.Value.p50_ms:F1}</td><td>{kv.Value.p90_ms:F1}</td><td>{kv.Value.p95_ms:F1}</td></tr>");
+        sb.AppendLine("</table>");
+        double dPost = ds.Value.timing.ContainsKey("post-1S") && ds.Value.timing.ContainsKey("post-2") && ds.Value.timing["post-1S"].avg_ms>0
+            ? (ds.Value.timing["post-2"].avg_ms - ds.Value.timing["post-1S"].avg_ms) / ds.Value.timing["post-1S"].avg_ms * 100.0 : 0;
+        double dNetPy = ds.Value.timing.ContainsKey("python-hot") && ds.Value.timing.ContainsKey("post-2") && ds.Value.timing["python-hot"].avg_ms>0
+            ? (ds.Value.timing["post-2"].avg_ms - ds.Value.timing["python-hot"].avg_ms) / ds.Value.timing["python-hot"].avg_ms * 100.0 : 0;
+        sb.AppendLine($"<p>Δ post-2 vs post-1S: {dPost:F1}% &nbsp; Δ .NET vs python-hot: {dNetPy:F1}%</p>");
+    }
+
+    sb.AppendLine("<h2>Quality vs python-hot (global)</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th></tr>");
+    foreach (var kv in agg.global.quality)
+        sb.AppendLine($"<tr><td>{kv.Key}</td><td>{kv.Value.cer_char:F3}</td><td>{kv.Value.token_f1:F3}</td><td>{kv.Value.line_f1:F3}</td></tr>");
+    sb.AppendLine("</table>");
+
+    sb.AppendLine("<h2>Quality by dataset</h2>");
+    foreach (var ds in agg.by_dataset)
+    {
+        sb.AppendLine($"<h3>{ds.Key}</h3><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_F1</th></tr>");
+        foreach (var kv in ds.Value.quality)
+            sb.AppendLine($"<tr><td>{kv.Key}</td><td>{kv.Value.cer_char:F3}</td><td>{kv.Value.token_f1:F3}</td><td>{kv.Value.line_f1:F3}</td></tr>");
+        sb.AppendLine("</table>");
+    }
+
+    sb.AppendLine("<h2>Tables</h2>");
+    sb.AppendLine("<h3>Global</h3><table border='1'><tr><th>Mode</th><th>tables_count</th><th>table_cell_F1</th><th>pipes_lines_count</th><th>median_pipes_per_line</th><th>max_pipes_per_line</th></tr>");
+    foreach (var kv in agg.global.quality)
+    {
+        var t = kv.Value.tables;
+        var f1 = t.table_cell_f1.HasValue ? t.table_cell_f1.Value.ToString("F3") : "null";
+        sb.AppendLine($"<tr><td>{kv.Key}</td><td>{t.tables_count:F1}</td><td>{f1}</td><td>{t.pipes_lines_count:F1}</td><td>{t.median_pipes_per_line:F1}</td><td>{t.max_pipes_per_line:F1}</td></tr>");
+    }
+    sb.AppendLine("</table>");
+    foreach (var ds in agg.by_dataset)
+    {
+        sb.AppendLine($"<h3>{ds.Key}</h3><table border='1'><tr><th>Mode</th><th>tables_count</th><th>table_cell_F1</th><th>pipes_lines_count</th><th>median_pipes_per_line</th><th>max_pipes_per_line</th></tr>");
+        foreach (var kv in ds.Value.quality)
+        {
+            var t = kv.Value.tables;
+            var f1 = t.table_cell_f1.HasValue ? t.table_cell_f1.Value.ToString("F3") : "null";
+            sb.AppendLine($"<tr><td>{kv.Key}</td><td>{t.tables_count:F1}</td><td>{f1}</td><td>{t.pipes_lines_count:F1}</td><td>{t.median_pipes_per_line:F1}</td><td>{t.max_pipes_per_line:F1}</td></tr>");
+        }
+        sb.AppendLine("</table>");
+    }
+
+    sb.AppendLine("<h2>Sample diffs</h2>");
+    var diffs = files.Select(f => new { file = f, sim = f.Results.First(r => r.Mode == "post-2").Similarity, post = f.Results.First(r => r.Mode == "post-2"), py = f.Results.First(r => r.Mode == "python-hot") })
+        .Where(x => x.sim != null).OrderBy(x => x.sim!.F1).ToList();
+    foreach (var item in diffs.Take(3))
+    {
+        sb.AppendLine($"<h3>Worst: {WebUtility.HtmlEncode(Path.GetFileName(item.file.Txt))}</h3><table border='1'><tr><td><pre>");
+        sb.Append(WebUtility.HtmlEncode(File.ReadAllText(item.post.NormOutput)));
+        sb.AppendLine("</pre></td><td><pre>");
+        sb.Append(WebUtility.HtmlEncode(File.ReadAllText(item.py.NormOutput)));
+        sb.AppendLine("</pre></td></tr></table>");
+    }
+    foreach (var item in diffs.TakeLast(3))
+    {
+        sb.AppendLine($"<h3>Best: {WebUtility.HtmlEncode(Path.GetFileName(item.file.Txt))}</h3><table border='1'><tr><td><pre>");
+        sb.Append(WebUtility.HtmlEncode(File.ReadAllText(item.post.NormOutput)));
+        sb.AppendLine("</pre></td><td><pre>");
+        sb.Append(WebUtility.HtmlEncode(File.ReadAllText(item.py.NormOutput)));
+        sb.AppendLine("</pre></td></tr></table>");
+    }
+
     sb.AppendLine("</body></html>");
     return sb.ToString();
 }
 
-static string BuildSummaryMarkdown(AggregateData agg)
+static string BuildSummaryMarkdown(AggregateData agg, RunConfig cfg)
 {
     var sb = new System.Text.StringBuilder();
-    sb.AppendLine("## Global timings");
-    sb.AppendLine("|Mode|md_ms avg|");
-    sb.AppendLine("|---|---|");
-    foreach (var kv in agg.global.md_ms_avg)
-        sb.AppendLine($"|{kv.Key}|{kv.Value:F2}|");
+    sb.AppendLine("## Run config");
+    sb.AppendLine($"- OS: {cfg.os} ({cfg.hw})");
+    sb.AppendLine($"- .NET: {cfg.dotnet}");
+    sb.AppendLine($"- Python: {cfg.python} markitdown {cfg.markitdown}");
+    sb.AppendLine($"- threads bench: {cfg.threads}");
+    sb.AppendLine($"- Tesseract: {cfg.tesseract_langs} psm {cfg.tesseract_psm}");
     sb.AppendLine();
-    sb.AppendLine($"Global Token-F1 avg: {agg.global.token_f1_avg:F3} CER avg: {agg.global.cer_avg:F3}");
+
+    sb.AppendLine("## Timing");
+    sb.AppendLine("### Global");
+    sb.AppendLine("|Mode|avg±std (ms)|p50|p90|p95|");
+    sb.AppendLine("|---|---|---|---|---|");
+    foreach (var kv in agg.global.timing)
+        sb.AppendLine($"|{kv.Key}|{kv.Value.avg_ms:F1}±{kv.Value.std_ms:F1}|{kv.Value.p50_ms:F1}|{kv.Value.p90_ms:F1}|{kv.Value.p95_ms:F1}|");
+    double gDeltaPost = agg.global.timing.ContainsKey("post-1S") && agg.global.timing.ContainsKey("post-2") && agg.global.timing["post-1S"].avg_ms>0
+        ? (agg.global.timing["post-2"].avg_ms - agg.global.timing["post-1S"].avg_ms) / agg.global.timing["post-1S"].avg_ms * 100.0 : 0;
+    double gDeltaNetPy = agg.global.timing.ContainsKey("python-hot") && agg.global.timing.ContainsKey("post-2") && agg.global.timing["python-hot"].avg_ms>0
+        ? (agg.global.timing["post-2"].avg_ms - agg.global.timing["python-hot"].avg_ms) / agg.global.timing["python-hot"].avg_ms * 100.0 : 0;
+    sb.AppendLine($"Δ post-2 vs post-1S: {gDeltaPost:F1}%");
+    sb.AppendLine($"Δ .NET vs python-hot: {gDeltaNetPy:F1}%");
     sb.AppendLine();
-    foreach (var kv in agg.by_dataset)
+    foreach (var ds in agg.by_dataset)
     {
-        sb.AppendLine($"### {kv.Key}");
-        sb.AppendLine($"Files: {kv.Value.files}");
-        sb.AppendLine("|Mode|md_ms avg|");
-        sb.AppendLine("|---|---|");
-        foreach (var mv in kv.Value.md_ms_avg)
-            sb.AppendLine($"|{mv.Key}|{mv.Value:F2}|");
-        sb.AppendLine($"Token-F1 avg: {kv.Value.token_f1_avg:F3} CER avg: {kv.Value.cer_avg:F3} tables_count_sum: {kv.Value.tables_count_sum}");
+        sb.AppendLine($"### {ds.Key}");
+        sb.AppendLine("|Mode|avg±std (ms)|p50|p90|p95|");
+        sb.AppendLine("|---|---|---|---|---|");
+        foreach (var kv in ds.Value.timing)
+            sb.AppendLine($"|{kv.Key}|{kv.Value.avg_ms:F1}±{kv.Value.std_ms:F1}|{kv.Value.p50_ms:F1}|{kv.Value.p90_ms:F1}|{kv.Value.p95_ms:F1}|");
+        double dPost = ds.Value.timing.ContainsKey("post-1S") && ds.Value.timing.ContainsKey("post-2") && ds.Value.timing["post-1S"].avg_ms>0
+            ? (ds.Value.timing["post-2"].avg_ms - ds.Value.timing["post-1S"].avg_ms) / ds.Value.timing["post-1S"].avg_ms * 100.0 : 0;
+        double dNetPy = ds.Value.timing.ContainsKey("python-hot") && ds.Value.timing.ContainsKey("post-2") && ds.Value.timing["python-hot"].avg_ms>0
+            ? (ds.Value.timing["post-2"].avg_ms - ds.Value.timing["python-hot"].avg_ms) / ds.Value.timing["python-hot"].avg_ms * 100.0 : 0;
+        sb.AppendLine($"Δ post-2 vs post-1S: {dPost:F1}%  Δ .NET vs python-hot: {dNetPy:F1}%");
         sb.AppendLine();
     }
+
+    sb.AppendLine("## Quality");
+    sb.AppendLine("### Global");
+    sb.AppendLine("|Mode|CER|Token-F1|line_F1|");
+    sb.AppendLine("|---|---|---|---|");
+    foreach (var kv in agg.global.quality)
+        sb.AppendLine($"|{kv.Key}|{kv.Value.cer_char:F3}|{kv.Value.token_f1:F3}|{kv.Value.line_f1:F3}|");
+    sb.AppendLine();
+    foreach (var ds in agg.by_dataset)
+    {
+        sb.AppendLine($"### {ds.Key}");
+        sb.AppendLine("|Mode|CER|Token-F1|line_F1|");
+        sb.AppendLine("|---|---|---|---|");
+        foreach (var kv in ds.Value.quality)
+            sb.AppendLine($"|{kv.Key}|{kv.Value.cer_char:F3}|{kv.Value.token_f1:F3}|{kv.Value.line_f1:F3}|");
+        sb.AppendLine();
+    }
+
+    sb.AppendLine("## Tables");
+    bool anyTables = agg.global.quality.Values.Any(q => q.tables.tables_count > 0);
+    if (!anyTables)
+    {
+        sb.AppendLine("Tables: none detected in this validation set.");
+    }
+    else
+    {
+        sb.AppendLine("|Mode|tables_count|table_cell_F1 (post-2)|");
+        sb.AppendLine("|---|---|---|");
+        foreach (var kv in agg.global.quality)
+        {
+            var t = kv.Value.tables;
+            string f1 = kv.Key == "post-2" && t.table_cell_f1.HasValue ? t.table_cell_f1.Value.ToString("F3") : "";
+            sb.AppendLine($"|{kv.Key}|{t.tables_count:F1}|{f1}|");
+        }
+    }
+    sb.AppendLine();
+
+    sb.AppendLine("## Key findings");
+    sb.AppendLine($"- Δ post-2 vs post-1S: {gDeltaPost:F1}%");
+    sb.AppendLine($"- Δ .NET vs python-hot: {gDeltaNetPy:F1}%");
+    var post2Qual = agg.global.quality.ContainsKey("post-2") ? agg.global.quality["post-2"] : new QualityStats();
+    sb.AppendLine($"- Global Token-F1 (post-2): {post2Qual.token_f1:F3}");
+    sb.AppendLine($"- Global CER (post-2): {post2Qual.cer_char:F3}");
+    sb.AppendLine($"- Tables detected (post-2): {post2Qual.tables.tables_count:F1}");
     return sb.ToString();
 }
 
@@ -739,6 +956,9 @@ record BenchResult
     public List<double> Trials { get; set; } = new();
     public double AvgMs { get; set; }
     public double StdMs { get; set; }
+    public double P50Ms { get; set; }
+    public double P90Ms { get; set; }
+    public double P95Ms { get; set; }
     public string Output { get; set; } = "";
     public string NormOutput { get; set; } = "";
     public Similarity? Similarity { get; set; }
@@ -795,6 +1015,18 @@ record BenchFileData
     public List<BenchResult> Results { get; set; } = new();
 }
 
+record RunConfig
+{
+    public string os { get; set; } = "";
+    public string hw { get; set; } = "";
+    public string dotnet { get; set; } = "";
+    public string python { get; set; } = "";
+    public string markitdown { get; set; } = "";
+    public int threads { get; set; }
+    public string tesseract_langs { get; set; } = "";
+    public string tesseract_psm { get; set; } = "";
+}
+
 record AggregateData
 {
     public Dictionary<string, DatasetAggregate> by_dataset { get; set; } = new();
@@ -804,17 +1036,44 @@ record AggregateData
 record DatasetAggregate
 {
     public int files { get; set; }
-    public Dictionary<string,double> md_ms_avg { get; set; } = new();
-    public double token_f1_avg { get; set; }
-    public double cer_avg { get; set; }
-    public int tables_count_sum { get; set; }
+    public Dictionary<string, TimingStats> timing { get; set; } = new();
+    public Dictionary<string, QualityStats> quality { get; set; } = new();
 }
 
 record GlobalAggregate
 {
     public int n_files { get; set; }
-    public Dictionary<string,double> md_ms_avg { get; set; } = new();
-    public double token_f1_avg { get; set; }
-    public double cer_avg { get; set; }
-    public int tables_count_sum { get; set; }
+    public Dictionary<string, TimingStats> timing { get; set; } = new();
+    public Dictionary<string, QualityStats> quality { get; set; } = new();
+}
+
+record TimingStats
+{
+    public double avg_ms { get; set; }
+    public double std_ms { get; set; }
+    public double p50_ms { get; set; }
+    public double p90_ms { get; set; }
+    public double p95_ms { get; set; }
+}
+
+record QualityStats
+{
+    public double cer_char { get; set; }
+    public double token_precision { get; set; }
+    public double token_recall { get; set; }
+    public double token_f1 { get; set; }
+    public double line_f1 { get; set; }
+    public double line_count { get; set; }
+    public double list_items { get; set; }
+    public double max_list_depth { get; set; }
+    public TablesStats tables { get; set; } = new();
+}
+
+record TablesStats
+{
+    public double tables_count { get; set; }
+    public double? table_cell_f1 { get; set; }
+    public double pipes_lines_count { get; set; }
+    public double median_pipes_per_line { get; set; }
+    public double max_pipes_per_line { get; set; }
 }
