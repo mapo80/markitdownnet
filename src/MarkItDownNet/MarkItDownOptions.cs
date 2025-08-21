@@ -2,6 +2,12 @@ namespace MarkItDownNet;
 
 using Tesseract;
 
+public enum OcrColorDepth
+{
+    Grayscale8bpp,
+    Bgra32bpp
+}
+
 /// <summary>Runtime options for conversion.</summary>
 public class MarkItDownOptions
 {
@@ -11,8 +17,8 @@ public class MarkItDownOptions
     /// <summary>Languages for OCR, e.g. "eng" or "ita+eng".</summary>
     public string OcrLanguages { get; set; } = "eng";
 
-    /// <summary>Target DPI for OCR rasterization.</summary>
-    public int OcrDpi { get; set; } = 300;
+    /// <summary>User-specified DPI for OCR rasterization.</summary>
+    public int OcrUserDpi { get; set; } = 300;
 
     /// <summary>Page segmentation mode.</summary>
     public int OcrPsm { get; set; } = 6;
@@ -25,6 +31,15 @@ public class MarkItDownOptions
 
     /// <summary>Force rasterization even for digital PDFs.</summary>
     public bool OcrForceRaster { get; set; } = true;
+
+    /// <summary>Apply Otsu binarization before Tesseract.</summary>
+    public bool OcrPreBinarize { get; set; } = false;
+
+    /// <summary>Deskew only if |angle| exceeds this threshold.</summary>
+    public double OcrDeskewMinAngleDeg { get; set; } = 2.0;
+
+    /// <summary>Color depth for images passed to Tesseract.</summary>
+    public OcrColorDepth OcrColorDepth { get; set; } = OcrColorDepth.Grayscale8bpp;
 
     /// <summary>Minimum number of native words required before falling back to OCR.</summary>
     public int MinimumNativeWordThreshold { get; set; } = 1;

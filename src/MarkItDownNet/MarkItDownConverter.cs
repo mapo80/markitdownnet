@@ -53,6 +53,9 @@ public class MarkItDownConverter
         };
     }
 
+    public double LastDeskewAngle { get; private set; }
+    public bool LastDeskewApplied { get; private set; }
+
     private MarkItDownResult ProcessPdf(string path, CancellationToken ct)
     {
         var pages = new List<Page>();
@@ -60,14 +63,16 @@ public class MarkItDownConverter
         var words = new List<Word>();
 
         int pageNum = 0;
-        foreach (var pix in Rasterizer.FromPdf(path, _options.OcrDpi))
+        foreach (var item in Rasterizer.FromPdf(path, _options))
         {
-            using (pix)
+            using (item.pix)
             {
+                LastDeskewAngle = item.angle;
+                LastDeskewApplied = item.deskewed;
                 ct.ThrowIfCancellationRequested();
                 pageNum++;
-                pages.Add(new Page(pageNum, pix.Width, pix.Height));
-                var result = ProcessPix(pix, pageNum, ct);
+                pages.Add(new Page(pageNum, item.pix.Width, item.pix.Height));
+                var result = ProcessPix(item.pix, pageNum, ct);
                 lines.AddRange(result.lines);
                 words.AddRange(result.words);
             }
@@ -79,7 +84,10 @@ public class MarkItDownConverter
 
     private MarkItDownResult ProcessImage(string path, CancellationToken ct)
     {
-        using var pix = Rasterizer.FromImage(path, _options.OcrDpi);
+        var item = Rasterizer.FromImage(path, _options);
+        using var pix = item.pix;
+        LastDeskewAngle = item.angle;
+        LastDeskewApplied = item.deskewed;
         var (lines, words) = ProcessPix(pix, 1, ct);
         var pages = new List<Page> { new Page(1, pix.Width, pix.Height) };
         var markdown = BuildMarkdown(lines);

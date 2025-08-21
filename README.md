@@ -64,7 +64,7 @@ var options = new MarkItDownOptions
 {
     OcrDataPath = "/usr/share/tesseract-ocr/5/tessdata",
     OcrLanguages = "eng",
-    PdfRasterDpi = 300
+    OcrUserDpi = 300
 };
 var converter = new MarkItDownConverter(options);
 var result = await converter.ConvertAsync("sample.pdf", "application/pdf");
@@ -77,7 +77,7 @@ Console.WriteLine(result.Markdown);
 
 * `OcrDataPath` – location of Tesseract language data (`TESSDATA_PREFIX`)
 * `OcrLanguages` – languages passed to Tesseract (e.g. `ita+eng`)
-* `PdfRasterDpi` – DPI for rasterising PDFs during OCR fallback
+* `OcrUserDpi` – DPI for rasterising PDFs during OCR fallback
 * `MinimumNativeWordThreshold` – minimum words before OCR is triggered
 * `NormalizeMarkdown` – toggle Markdig normalisation
 
@@ -107,6 +107,13 @@ Docling's image samples are distributed as TIFF files. The comparison tool conve
 | BBox mean absolute error | 0% | 10.74% | +10.74% |
 
 These large arXiv PDFs showed a 99.37% word match rate and a 10.74% mean absolute error in bounding boxes.
+
+## OCR benchmark
+
+```bash
+dotnet run --project tools/OcrBench -- extract --input-dir dataset/validation --out-dir dataset/validation/_ocr --threads 1 --langs eng --psm 6 --refresh markitdownnet
+dotnet run --project tools/OcrBench -- compare --ocr-dir dataset/validation/_ocr --out-json artifacts/validation/OCR/bench-ocr.json --out-md artifacts/validation/OCR/summary-ocr.md
+```
 
 ## Docling comparison
 
