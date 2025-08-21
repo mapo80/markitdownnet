@@ -63,10 +63,10 @@ static void BenchCommand(string[] args)
         results.Add(br);
     }
 
-    var reference = results.FirstOrDefault(r=>r.Mode=="python-hot")?.Output;
+    var reference = results.FirstOrDefault(r => r.Mode == "python-hot")?.Output;
     if (reference != null)
     {
-        foreach (var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1R"))
+        foreach (var r in results)
             r.Similarity = CompareOutputs(r.Output, reference);
     }
 
@@ -76,16 +76,30 @@ static void BenchCommand(string[] args)
         python = GetPythonVersion(pythonExe)
     };
 
-    var runs = results.Select(r => new {
+    var modesJson = results.Select(r => new {
         mode = r.Mode,
-        trials = r.Trials.Select(t => new { md_ms = t }).ToArray(),
-        avg = new { md_ms = r.AvgMs },
-        stddev = new { md_ms = r.StdMs },
-        output = r.Output,
-        similarity = r.Similarity
+        timing = new {
+            trials = r.Trials.Select(t => new { md_ms = t }).ToArray(),
+            avg_ms = r.AvgMs,
+            std_ms = r.StdMs
+        },
+        quality_vs_python_hot = r.Similarity == null ? null : new {
+            text = new {
+                cer_char = r.Similarity.Cer,
+                token_precision = r.Similarity.Precision,
+                token_recall = r.Similarity.Recall,
+                token_f1 = r.Similarity.F1
+            },
+            structure = new {
+                line_count = r.Similarity.LineCount,
+                list_items = r.Similarity.ListItems,
+                max_list_depth = r.Similarity.MaxListDepth
+            }
+        },
+        paths = new { md = r.Output, md_norm = r.NormOutput }
     }).ToArray();
 
-    var jsonObj = new { file = input, runs = runs, env = env };
+    var jsonObj = new { file = input, modes = modesJson, env = env };
     var json = JsonSerializer.Serialize(jsonObj, new JsonSerializerOptions { WriteIndented = true });
     File.WriteAllText(outJson, json);
     File.WriteAllText(outHtml, HtmlReport(results));
@@ -141,15 +155,19 @@ static BenchResult RunMode(string mode, string input, string pythonExe, string p
 
     string outputPath = $"artifacts/outputs/{Path.GetFileNameWithoutExtension(input)}.{mode}.md";
     File.Copy(tempOut, outputPath, true);
+    var norm = Normalize(File.ReadAllText(tempOut));
+    string normPath = $"artifacts/outputs/{Path.GetFileNameWithoutExtension(input)}.{mode}.norm.md";
+    File.WriteAllText(normPath, norm);
     var avg = times.Average();
     var std = Math.Sqrt(times.Select(t => Math.Pow(t - avg, 2)).Average());
-    return new BenchResult { Mode = mode, Trials = times, AvgMs = avg, StdMs = std, Output = outputPath };
+    return new BenchResult { Mode = mode, Trials = times, AvgMs = avg, StdMs = std, Output = outputPath, NormOutput = normPath };
 }
 
 static string HtmlReport(List<BenchResult> results)
 {
     var sb = new System.Text.StringBuilder();
-    sb.AppendLine("<html><body><table border='1'><tr><th>Mode</th><th>md_ms avg</th><th>md_ms std</th></tr>");
+    sb.AppendLine("<html><body>");
+    sb.AppendLine("<h2>Timing</h2><table border='1'><tr><th>Mode</th><th>md_ms avg</th><th>md_ms std</th></tr>");
     foreach (var r in results)
         sb.AppendLine($"<tr><td>{r.Mode}</td><td>{r.AvgMs:F1}</td><td>{r.StdMs:F1}</td></tr>");
     sb.AppendLine("</table>");
@@ -171,6 +189,36 @@ static string HtmlReport(List<BenchResult> results)
     {
         var delta = (post.AvgMs - pyHot.AvgMs)/pyHot.AvgMs*100.0;
         sb.AppendLine($"<p>post-1R vs python-hot: {delta:F1}%</p>");
+    }
+    if (pyHot!=null)
+    {
+        sb.AppendLine("<h2>Quality vs python-hot</h2><table border='1'><tr><th>Mode</th><th>CER</th><th>Token-F1</th><th>line_count</th><th>list_items</th></tr>");
+        foreach(var r in results.Where(r=>r.Mode=="pre" || r.Mode=="post-1R"))
+        {
+            var s=r.Similarity;
+            if (s!=null)
+                sb.AppendLine($"<tr><td>{r.Mode}</td><td>{s.Cer:F3}</td><td>{s.F1:F3}</td><td>{s.LineCount}</td><td>{s.ListItems}</td></tr>");
+        }
+        sb.AppendLine("</table>");
+        var pyNorm = File.ReadAllText(pyHot.NormOutput);
+        var preNorm = results.FirstOrDefault(r=>r.Mode=="pre")?.NormOutput;
+        var postNorm = results.FirstOrDefault(r=>r.Mode=="post-1R")?.NormOutput;
+        if (preNorm!=null)
+        {
+            sb.AppendLine("<h3>pre vs python-hot</h3><table border='1'><tr><td><pre>");
+            sb.Append(WebUtility.HtmlEncode(File.ReadAllText(preNorm)));
+            sb.AppendLine("</pre></td><td><pre>");
+            sb.Append(WebUtility.HtmlEncode(pyNorm));
+            sb.AppendLine("</pre></td></tr></table>");
+        }
+        if (postNorm!=null)
+        {
+            sb.AppendLine("<h3>post-1R vs python-hot</h3><table border='1'><tr><td><pre>");
+            sb.Append(WebUtility.HtmlEncode(File.ReadAllText(postNorm)));
+            sb.AppendLine("</pre></td><td><pre>");
+            sb.Append(WebUtility.HtmlEncode(pyNorm));
+            sb.AppendLine("</pre></td></tr></table>");
+        }
     }
     sb.AppendLine("</body></html>");
     return sb.ToString();
@@ -200,7 +248,7 @@ static string SummaryMarkdown(List<BenchResult> results)
     }
 
     sb.AppendLine("\n## Quality vs python-hot");
-    sb.AppendLine("| mode | CER | Token-F1 | line_ratio | list_items |");
+    sb.AppendLine("| mode | CER | Token-F1 | line_count | list_items |");
     sb.AppendLine("| --- | --- | --- | --- | --- |");
     if (pyHot!=null)
     {
@@ -208,7 +256,21 @@ static string SummaryMarkdown(List<BenchResult> results)
         {
             var s = r.Similarity;
             if (s != null)
-                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineRatio:F2} | {s.ListItems} |");
+                sb.AppendLine($"| {r.Mode} | {s.Cer:F3} | {s.F1:F3} | {s.LineCount} | {s.ListItems} |");
+        }
+    }
+    if (pyHot!=null)
+    {
+        sb.AppendLine("\n### Observations");
+        var preS = results.FirstOrDefault(r=>r.Mode=="pre")?.Similarity;
+        var postS = results.FirstOrDefault(r=>r.Mode=="post-1R")?.Similarity;
+        if (preS!=null && postS!=null)
+        {
+            sb.AppendLine($"- CER pre {preS.Cer:F3} vs post-1R {postS.Cer:F3}");
+            sb.AppendLine($"- line_count pre {preS.LineCount}, post-1R {postS.LineCount}, python {pyHot.Similarity?.LineCount}");
+            var preAvg = results.First(r=>r.Mode=="pre").AvgMs;
+            var postAvg = results.First(r=>r.Mode=="post-1R").AvgMs;
+            sb.AppendLine($"- post-1R overhead vs pre {((postAvg-preAvg)/preAvg*100):F1}%");
         }
     }
     return sb.ToString();
@@ -259,7 +321,11 @@ static Similarity CompareOutputs(string candidatePath, string referencePath)
     double cer = refText.Length==0?0:(double)Levenshtein(cand, refText) / refText.Length;
     var candTokens = cand.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
     var refTokens = refText.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
-    double tp = candTokens.Intersect(refTokens).Count();
+    var candCounts = candTokens.GroupBy(t=>t).ToDictionary(g=>g.Key,g=>g.Count());
+    var refCounts = refTokens.GroupBy(t=>t).ToDictionary(g=>g.Key,g=>g.Count());
+    double tp = 0;
+    foreach (var kv in candCounts)
+        if (refCounts.TryGetValue(kv.Key, out var rc)) tp += Math.Min(kv.Value, rc);
     double precision = tp / Math.Max(candTokens.Length,1);
     double recall = tp / Math.Max(refTokens.Length,1);
     double f1 = tp==0?0:2*precision*recall/(precision+recall);
@@ -405,6 +471,7 @@ record BenchResult
     public double AvgMs { get; set; }
     public double StdMs { get; set; }
     public string Output { get; set; } = "";
+    public string NormOutput { get; set; } = "";
     public Similarity? Similarity { get; set; }
 }
 
