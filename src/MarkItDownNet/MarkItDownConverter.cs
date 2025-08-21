@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Markdig;
@@ -21,6 +22,7 @@ public class MarkItDownConverter
 {
     private readonly MarkItDownOptions _options;
     private readonly ILogger _logger;
+    private static readonly Regex BulletRegex = new(@"^\s*(?:[-*•·]|\d+[.)])\s+");
 
     static MarkItDownConverter()
     {
@@ -222,20 +224,49 @@ public class MarkItDownConverter
 
         var sb = new StringBuilder();
         Line? prev = null;
+        var prevBullet = false;
         foreach (var line in ordered)
         {
-            if (prev != null)
+            var text = line.Text;
+            var isBullet = false;
+            if (_options.DetectBulletLists)
             {
-                var gap = line.BBox.Y - (prev.BBox.Y + prev.BBox.Height);
-                sb.AppendLine();
-                if (gap > _options.ParagraphGapThreshold)
+                var match = BulletRegex.Match(text);
+                if (match.Success)
                 {
-                    sb.AppendLine();
+                    text = text.Substring(match.Length).TrimStart();
+                    isBullet = true;
                 }
             }
 
-            sb.Append(line.Text);
+            if (prev != null)
+            {
+                var gap = line.BBox.Y - (prev.BBox.Y + prev.BBox.Height);
+                if (isBullet && prevBullet)
+                {
+                    sb.AppendLine();
+                }
+                else
+                {
+                    sb.AppendLine();
+                    if (gap > _options.ParagraphGapThreshold)
+                    {
+                        sb.AppendLine();
+                    }
+                }
+            }
+
+            if (isBullet)
+            {
+                sb.Append("- ").Append(text);
+            }
+            else
+            {
+                sb.Append(text);
+            }
+
             prev = line;
+            prevBullet = isBullet;
         }
 
         var raw = sb.ToString();
