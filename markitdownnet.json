@@ -1,6 +1,6 @@
 {
   "ListIndentWidth": 2,
-  "BulletChars": ["-", "*", "•", "+"],
+  "BulletChars": ["-", "*", "•", "+", "–", "—", "·"],
   "MinItemsForListBlock": 2,
   "HeadingMinLen": 3,
   "HeadingMaxLen": 80,

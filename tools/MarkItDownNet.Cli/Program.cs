@@ -42,7 +42,7 @@ static void ConvertCommand(string[] args)
 static void BenchCommand(string[] args)
 {
     string input = GetOption(args, "--input") ?? throw new ArgumentException("--input required");
-    string modes = GetOption(args, "--modes") ?? "pre,post-v0,post-v01,python";
+    string modes = GetOption(args, "--modes") ?? "pre,post-v0,post-v01,post-v02,python";
     string outJson = GetOption(args, "--out-json") ?? throw new ArgumentException("--out-json required");
     string outHtml = GetOption(args, "--out-html") ?? throw new ArgumentException("--out-html required");
     string summaryMd = GetOption(args, "--summary-md") ?? "";
@@ -135,12 +135,15 @@ static string SummaryMarkdown(List<BenchResult> results)
 {
     var sb = new System.Text.StringBuilder();
     sb.AppendLine("## Executive summary");
-    foreach (var mode in new[]{"pre","post-v0","post-v01"})
+    foreach (var mode in new[]{"pre","post-v0","post-v01","post-v02"})
     {
         var r = results.FirstOrDefault(x=>x.Mode==mode);
         if (r?.Similarity!=null)
             sb.AppendLine($"- {mode}: token-F1 {r.Similarity.F1:F2}, CER {r.Similarity.Cer:F2}, {r.AvgMs:F1}±{r.StdMs:F1} ms");
     }
+    var py = results.FirstOrDefault(x=>x.Mode=="python");
+    if(py!=null)
+        sb.AppendLine($"- python: {py.AvgMs:F1}±{py.StdMs:F1} ms");
     return sb.ToString();
 }
 
@@ -156,7 +159,7 @@ static Similarity CompareOutputs(string candidatePath, string referencePath)
 {
     var cand = Normalize(File.ReadAllText(candidatePath));
     var refText = Normalize(File.ReadAllText(referencePath));
-    double cer = (double)Levenshtein(cand, refText) / refText.Length;
+    double cer = refText.Length==0?0:(double)Levenshtein(cand, refText) / refText.Length;
     var candTokens = cand.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
     var refTokens = refText.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
     double tp = candTokens.Intersect(refTokens).Count();
