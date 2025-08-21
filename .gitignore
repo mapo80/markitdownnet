@@ -57,3 +57,6 @@ docling/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+
+!_sanity

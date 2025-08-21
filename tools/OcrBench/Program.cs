@@ -177,6 +177,12 @@ static IEnumerable<string> GetImages(string path)
     }
 }
 
+static bool IsImageExtension(string path)
+{
+    var ext = Path.GetExtension(path).ToLowerInvariant();
+    return ext == ".png" || ext == ".jpg" || ext == ".jpeg" || ext == ".tif" || ext == ".tiff" || ext == ".bmp";
+}
+
 static (string text, OcrMetadata? meta) OcrMark(MarkItDownConverter conv, IEnumerable<string> images)
 {
     var sb = new StringBuilder();
@@ -340,7 +346,8 @@ static void Compare(Dictionary<string, string> o)
         foreach (var w in worst)
         {
             var datasetPath = Path.Combine(Directory.GetParent(ocrDir)!.FullName, w.dataset);
-            var src = Directory.GetFiles(datasetPath, w.file + ".*").First();
+            var src = Directory.GetFiles(datasetPath, w.file + ".*")
+                .First(f => IsImageExtension(f));
             var img = GetImages(src).First();
             var rasterDir = Path.Combine("artifacts", "_sanity", "raster", w.dataset);
             Directory.CreateDirectory(rasterDir);
