@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Text.Json;
@@ -20,10 +21,19 @@ public class TextModeConfig
     public bool Dehyphenation { get; set; } = true;
     public int MinKeyValueRows { get; set; } = 3;
     public int KeyMaxLen { get; set; } = 40;
-    public int MonoTableMinCols { get; set; } = 2;
-    public int MonoTableMinRows { get; set; } = 3;
-    public int MonoTableMinSpaceGap { get; set; } = 2;
-    public int MonoTableColTolerance { get; set; } = 1;
+    public double KVMaxKeyEndPunctPct { get; set; } = 0.3;
+    public double KVMaxPipePct { get; set; } = 0.2;
+    public int MonoMinRows { get; set; } = 3;
+    public int MonoMinGap { get; set; } = 2;
+    public int MonoColTolerance { get; set; } = 1;
+    public double MonoSameColPct { get; set; } = 0.7;
+    public double MonoMinGapLinesPct { get; set; } = 0.6;
+    public double MonoShortRowPctMax { get; set; } = 0.3;
+    public double NumericColPct { get; set; } = 0.6;
+    public int MonoTableMinCols { get; set; } = 2; // legacy
+    public int MonoTableMinRows { get; set; } = 3; // legacy
+    public int MonoTableMinSpaceGap { get; set; } = 2; // legacy
+    public int MonoTableColTolerance { get; set; } = 1; // legacy
 }
 
 public static class TextModeConverter
@@ -40,6 +50,13 @@ public static class TextModeConverter
         {
             text = Reflow1S(text, config);
             text = DetectLists(text, config, false, false);
+        }
+        else if (mode == "post-2")
+        {
+            text = Reflow1S(text, config);
+            text = DetectLists(text, config, false, false);
+            text = DetectKeyValueTables2(text, config);
+            text = DetectMonoTables2(text, config);
         }
         else if (mode == "post-v0" || mode == "post-v01" || mode=="post-v02" || mode=="post-v03")
         {
@@ -109,6 +126,210 @@ public static class TextModeConverter
                 sb.AppendLine(lines[i]);
         }
         return sb.ToString();
+    }
+
+    private static string DetectKeyValueTables2(string text, TextModeConfig config)
+    {
+        var lines = text.Split('\n');
+        var sb = new StringBuilder();
+        int i = 0;
+        var kvRegex = new Regex(@"^[^:\n]{2,40}:\s+\S.*$");
+        while (i < lines.Length)
+        {
+            var trimmed = lines[i].TrimStart();
+            if (kvRegex.IsMatch(trimmed))
+            {
+                var raw = new List<string>();
+                var rows = new List<(string key, string val)>();
+                while (i < lines.Length && kvRegex.IsMatch(lines[i].TrimStart()))
+                {
+                    var line = lines[i];
+                    trimmed = line.TrimStart();
+                    var m = Regex.Match(trimmed, @"^([^:\n]{2,40}):\s+(.*)$");
+                    var key = m.Groups[1].Value.Trim();
+                    var val = m.Groups[2].Value.Trim();
+                    raw.Add(line);
+                    int j = i + 1;
+                    while (j < lines.Length)
+                    {
+                        var next = lines[j];
+                        var nextTrim = next.TrimStart();
+                        if (string.IsNullOrWhiteSpace(nextTrim)) break;
+                        bool join = false;
+                        if (next.StartsWith("  ")) join = true;
+                        else if (Regex.IsMatch(nextTrim, @"^(of|for|with|per|con|di|da|the)\b", RegexOptions.IgnoreCase)) join = true;
+                        else if (val.EndsWith(',') || val.EndsWith(';')) join = true;
+                        if (!join) break;
+                        val = (val + " " + nextTrim).Trim();
+                        raw.Add(next);
+                        j++;
+                    }
+                    val = Regex.Replace(val, @"\s+", " ").Trim();
+                    rows.Add((key, val));
+                    i = j;
+                }
+                int total = raw.Count;
+                double punctPct = rows.Count(r => r.key.EndsWith('.') || r.key.EndsWith('?') || r.key.EndsWith('!')) / (double)rows.Count;
+                double pipePct = raw.Count(r => r.Contains('|')) / (double)total;
+                double avgKey = rows.Average(r => r.key.Length);
+                int distinct = rows.Select(r => r.key).Distinct().Count();
+                if (rows.Count >= config.MinKeyValueRows && punctPct <= config.KVMaxKeyEndPunctPct && pipePct <= config.KVMaxPipePct && avgKey <= config.KeyMaxLen && distinct >= 2)
+                {
+                    sb.AppendLine("| Key | Value |");
+                    sb.AppendLine("| --- | ----- |");
+                    foreach (var r in rows)
+                        sb.AppendLine($"| {r.key} | {r.val} |");
+                }
+                else
+                {
+                    foreach (var l in raw)
+                        sb.AppendLine(l);
+                }
+                continue;
+            }
+            sb.AppendLine(lines[i]);
+            i++;
+        }
+        return sb.ToString();
+    }
+
+    private static string DetectMonoTables2(string text, TextModeConfig config)
+    {
+        var lines = text.Split('\n');
+        var sb = new StringBuilder();
+        var gapRegex = new Regex(@"\s{" + config.MonoMinGap + @",}");
+        int i = 0;
+        while (i < lines.Length)
+        {
+            if (!gapRegex.IsMatch(lines[i]))
+            {
+                sb.AppendLine(lines[i]);
+                i++;
+                continue;
+            }
+            var block = new List<string>();
+            while (i < lines.Length && gapRegex.IsMatch(lines[i]))
+            {
+                block.Add(lines[i]);
+                i++;
+            }
+            int total = block.Count;
+            int withTwo = block.Count(l => Regex.Matches(l, @"\s{" + config.MonoMinGap + @",}").Count >= 2);
+            if (total < config.MonoMinRows || withTwo < total * config.MonoMinGapLinesPct)
+            {
+                foreach (var l in block) sb.AppendLine(l);
+                continue;
+            }
+            var starts = new List<int>();
+            foreach (var l in block)
+                foreach (Match m in Regex.Matches(l, @"\s{" + config.MonoMinGap + @",}"))
+                    starts.Add(m.Index);
+            if (starts.Count == 0)
+            {
+                foreach (var l in block) sb.AppendLine(l);
+                continue;
+            }
+            starts.Sort();
+            var clusters = new List<List<int>>();
+            foreach (var pos in starts)
+            {
+                bool placed = false;
+                foreach (var c in clusters)
+                {
+                    if (Math.Abs(c.Average() - pos) <= config.MonoColTolerance)
+                    {
+                        c.Add(pos);
+                        placed = true;
+                        break;
+                    }
+                }
+                if (!placed) clusters.Add(new List<int> { pos });
+            }
+            var boundaries = clusters.Select(c => (int)Math.Round(c.Average())).OrderBy(x => x).ToList();
+            if (boundaries.Count == 0)
+            {
+                foreach (var l in block) sb.AppendLine(l);
+                continue;
+            }
+            var rows = new List<List<string>>();
+            foreach (var l in block)
+            {
+                var row = new List<string>();
+                int start = 0;
+                foreach (var b in boundaries)
+                {
+                    int end = Math.Min(b, l.Length);
+                    var cell = l.Substring(start, end - start).Trim();
+                    cell = Regex.Replace(cell, @"\s+", " ");
+                    row.Add(cell);
+                    int skip = b;
+                    while (skip < l.Length && l[skip] == ' ') skip++;
+                    start = skip;
+                }
+                var last = start < l.Length ? l.Substring(start).TrimEnd() : "";
+                last = Regex.Replace(last.Trim(), @"\s+", " ");
+                row.Add(last);
+                rows.Add(row);
+            }
+            var counts = rows.Select(r => r.Count).ToList();
+            int mode = counts.GroupBy(c => c).OrderByDescending(g => g.Count()).First().Key;
+            int modeLines = counts.Count(c => c == mode);
+            if (modeLines < config.MonoMinRows || modeLines < total * config.MonoSameColPct || mode < 2)
+            {
+                foreach (var l in block) sb.AppendLine(l);
+                continue;
+            }
+            int shortRows = block.Count(l => l.Trim().Length < 8);
+            if (shortRows > total * config.MonoShortRowPctMax)
+            {
+                foreach (var l in block) sb.AppendLine(l);
+                continue;
+            }
+            int bulletLines = block.Count(l => Regex.IsMatch(l.TrimStart(), @"^([-*•·]|\d+[.)])"));
+            if (bulletLines >= total * 0.5)
+            {
+                foreach (var l in block) sb.AppendLine(l);
+                continue;
+            }
+            var first = block[0].Trim();
+            var second = block.Count > 1 ? block[1].Trim() : "";
+            double num1 = NumericDensityLine(first);
+            double num2 = NumericDensityLine(second);
+            bool header = (num2 > 0 && num1 < num2 * 0.5) || IsTitleCase(first) || Regex.IsMatch(first, @"^[A-Z0-9\s]+$");
+            if (!header)
+            {
+                foreach (var l in block) sb.AppendLine(l);
+                continue;
+            }
+            var headerRow = rows[0];
+            var dataRows = rows.Skip(1).ToList();
+            var numRegex = new Regex(@"^[\p{Sc}]?\s*\d{1,3}([.,]\d{3})*([.,]\d+)?%?$");
+            var aligns = new List<string>();
+            for (int c = 0; c < headerRow.Count; c++)
+            {
+                int nonEmpty = dataRows.Count(r => c < r.Count && !string.IsNullOrEmpty(r[c]));
+                int numericCells = dataRows.Count(r => c < r.Count && numRegex.IsMatch(r[c]));
+                bool isNum = nonEmpty > 0 && numericCells >= nonEmpty * config.NumericColPct;
+                aligns.Add(isNum ? "---:" : "---");
+            }
+            sb.AppendLine("| " + string.Join(" | ", headerRow) + " |");
+            sb.AppendLine("| " + string.Join(" | ", aligns) + " |");
+            foreach (var r in dataRows)
+            {
+                var cells = new List<string>();
+                for (int c = 0; c < headerRow.Count; c++)
+                    cells.Add(c < r.Count ? r[c] : "");
+                sb.AppendLine("| " + string.Join(" | ", cells) + " |");
+            }
+        }
+        return sb.ToString();
+    }
+
+    private static double NumericDensityLine(string line)
+    {
+        double digits = line.Count(char.IsDigit);
+        double chars = line.Replace(" ", "").Length;
+        return chars == 0 ? 0 : digits / chars;
     }
 
     private static string Reflow(string text, TextModeConfig config, bool v02, bool v03)
