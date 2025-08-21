@@ -1,0 +1,2943 @@
+{
+  "root": "dataset/validation/_ocr",
+  "modes": [
+    "pre",
+    "post-1S",
+    "post-2",
+    "python-hot"
+  ],
+  "files": [
+    {
+      "txt": "dataset/validation/_ocr/FUNSD/images/82092117.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0144
+            },
+            {
+              "md_ms": 0.0152
+            },
+            {
+              "md_ms": 0.0151
+            },
+            {
+              "md_ms": 0.0214
+            },
+            {
+              "md_ms": 0.0227
+            }
+          ],
+          "avg_ms": 0.01776,
+          "std_ms": 0.003537569787297489
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.3343
+            },
+            {
+              "md_ms": 0.3098
+            },
+            {
+              "md_ms": 0.4394
+            },
+            {
+              "md_ms": 0.2802
+            },
+            {
+              "md_ms": 0.291
+            }
+          ],
+          "avg_ms": 0.33093999999999996,
+          "std_ms": 0.057256461644079965
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.6774
+            },
+            {
+              "md_ms": 0.553
+            },
+            {
+              "md_ms": 0.6724
+            },
+            {
+              "md_ms": 0.5957
+            },
+            {
+              "md_ms": 0.4226
+            }
+          ],
+          "avg_ms": 0.58422,
+          "std_ms": 0.09347269975773675
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 7.259468000029301
+            },
+            {
+              "md_ms": 5.1268159999153795
+            },
+            {
+              "md_ms": 6.178079999926922
+            },
+            {
+              "md_ms": 4.672844999959125
+            },
+            {
+              "md_ms": 5.679418999989139
+            }
+          ],
+          "avg_ms": 5.783325599963973,
+          "std_ms": 0.8955217497104307
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.05602716468590832,
+          "token_precision": 0.8844444444444445,
+          "token_recall": 0.9802955665024631,
+          "token_f1": 0.9299065420560748
+        },
+        "structure": {
+          "line_count": 25,
+          "line_f1": 0.4827586206896552,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 1,
+            "pipes_lines_count": 9,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/FUNSD/images/82092117.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/FUNSD/images/82092117.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/FUNSD/images/82200067_0069.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.014
+            },
+            {
+              "md_ms": 0.0144
+            },
+            {
+              "md_ms": 0.0157
+            },
+            {
+              "md_ms": 0.0223
+            },
+            {
+              "md_ms": 0.0157
+            }
+          ],
+          "avg_ms": 0.01642,
+          "std_ms": 0.0030182113908737407
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.266
+            },
+            {
+              "md_ms": 0.2375
+            },
+            {
+              "md_ms": 0.2145
+            },
+            {
+              "md_ms": 0.2312
+            },
+            {
+              "md_ms": 0.2361
+            }
+          ],
+          "avg_ms": 0.23706,
+          "std_ms": 0.016624872931845232
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.3027
+            },
+            {
+              "md_ms": 0.2888
+            },
+            {
+              "md_ms": 0.2971
+            },
+            {
+              "md_ms": 0.2784
+            },
+            {
+              "md_ms": 0.3025
+            }
+          ],
+          "avg_ms": 0.2939,
+          "std_ms": 0.00925094589758259
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 5.103933999976107
+            },
+            {
+              "md_ms": 4.5199429999911445
+            },
+            {
+              "md_ms": 4.951194000000214
+            },
+            {
+              "md_ms": 4.324387999986357
+            },
+            {
+              "md_ms": 3.910696999923857
+            }
+          ],
+          "avg_ms": 4.562031199975536,
+          "std_ms": 0.4307176051213811
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.020802377414561663,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 20,
+          "line_f1": 0.5555555555555556,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 6,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/FUNSD/images/82200067_0069.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/FUNSD/images/82200067_0069.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/FUNSD/images/82250337_0338.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0336
+            },
+            {
+              "md_ms": 0.0208
+            },
+            {
+              "md_ms": 0.019
+            },
+            {
+              "md_ms": 0.0199
+            },
+            {
+              "md_ms": 0.0202
+            }
+          ],
+          "avg_ms": 0.022699999999999998,
+          "std_ms": 0.005480875842417888
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.2259
+            },
+            {
+              "md_ms": 0.2111
+            },
+            {
+              "md_ms": 0.2214
+            },
+            {
+              "md_ms": 0.1999
+            },
+            {
+              "md_ms": 0.2434
+            }
+          ],
+          "avg_ms": 0.22033999999999998,
+          "std_ms": 0.014608025191654075
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2406
+            },
+            {
+              "md_ms": 0.262
+            },
+            {
+              "md_ms": 0.3007
+            },
+            {
+              "md_ms": 0.2295
+            },
+            {
+              "md_ms": 0.2227
+            }
+          ],
+          "avg_ms": 0.2511,
+          "std_ms": 0.028150808158914378
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.963887999906547
+            },
+            {
+              "md_ms": 5.317375000004176
+            },
+            {
+              "md_ms": 6.029494000017621
+            },
+            {
+              "md_ms": 4.6856630000320365
+            },
+            {
+              "md_ms": 4.840156999989631
+            }
+          ],
+          "avg_ms": 5.167315399990002,
+          "std_ms": 0.47880563532247283
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0014727540500736377,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 49,
+          "line_f1": 0.9400000000000001,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/FUNSD/images/82250337_0338.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/FUNSD/images/82250337_0338.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/FUNSD/images/82251504.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0187
+            },
+            {
+              "md_ms": 0.0163
+            },
+            {
+              "md_ms": 0.0163
+            },
+            {
+              "md_ms": 0.0158
+            },
+            {
+              "md_ms": 0.0194
+            }
+          ],
+          "avg_ms": 0.0173,
+          "std_ms": 0.0014573949361789348
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.3505
+            },
+            {
+              "md_ms": 0.3303
+            },
+            {
+              "md_ms": 0.3677
+            },
+            {
+              "md_ms": 0.3818
+            },
+            {
+              "md_ms": 0.3794
+            }
+          ],
+          "avg_ms": 0.36194,
+          "std_ms": 0.019310163127223973
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.5272
+            },
+            {
+              "md_ms": 0.4838
+            },
+            {
+              "md_ms": 0.5276
+            },
+            {
+              "md_ms": 0.4766
+            },
+            {
+              "md_ms": 0.4586
+            }
+          ],
+          "avg_ms": 0.49476000000000003,
+          "std_ms": 0.027886455493662136
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 6.533927999953448
+            },
+            {
+              "md_ms": 5.86693400009608
+            },
+            {
+              "md_ms": 6.020728000066811
+            },
+            {
+              "md_ms": 5.840806000037446
+            },
+            {
+              "md_ms": 6.576785999982349
+            }
+          ],
+          "avg_ms": 6.167836400027227,
+          "std_ms": 0.32261272540949404
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.06608884073672806,
+          "token_precision": 0.8682634730538922,
+          "token_recall": 0.9731543624161074,
+          "token_f1": 0.9177215189873417
+        },
+        "structure": {
+          "line_count": 34,
+          "line_f1": 0.6756756756756757,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 1,
+            "pipes_lines_count": 6,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/FUNSD/images/82251504.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/FUNSD/images/82251504.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00014.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.099
+            },
+            {
+              "md_ms": 0.2084
+            },
+            {
+              "md_ms": 0.1276
+            },
+            {
+              "md_ms": 0.1062
+            },
+            {
+              "md_ms": 0.1102
+            }
+          ],
+          "avg_ms": 0.13028,
+          "std_ms": 0.04017812340067665
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 1.1205
+            },
+            {
+              "md_ms": 1.0266
+            },
+            {
+              "md_ms": 0.826
+            },
+            {
+              "md_ms": 1.0349
+            },
+            {
+              "md_ms": 0.8689
+            }
+          ],
+          "avg_ms": 0.97538,
+          "std_ms": 0.11034338040861355
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 1.299
+            },
+            {
+              "md_ms": 1.2687
+            },
+            {
+              "md_ms": 1.4383
+            },
+            {
+              "md_ms": 1.1006
+            },
+            {
+              "md_ms": 1.342
+            }
+          ],
+          "avg_ms": 1.2897200000000002,
+          "std_ms": 0.11054731837543592
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.946340999936183
+            },
+            {
+              "md_ms": 4.818192000016097
+            },
+            {
+              "md_ms": 5.306657999994968
+            },
+            {
+              "md_ms": 4.740270999946006
+            },
+            {
+              "md_ms": 4.703787999915221
+            }
+          ],
+          "avg_ms": 4.903049999961695,
+          "std_ms": 0.21825524325112813
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.001195457262402869,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 35,
+          "line_f1": 0.9166666666666667,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 31,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 6
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00014.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00014.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00015.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0177
+            },
+            {
+              "md_ms": 0.0171
+            },
+            {
+              "md_ms": 0.0159
+            },
+            {
+              "md_ms": 0.0154
+            },
+            {
+              "md_ms": 0.0149
+            }
+          ],
+          "avg_ms": 0.0162,
+          "std_ms": 0.0010469001862641921
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.4416
+            },
+            {
+              "md_ms": 0.2816
+            },
+            {
+              "md_ms": 0.2889
+            },
+            {
+              "md_ms": 0.3252
+            },
+            {
+              "md_ms": 0.2818
+            }
+          ],
+          "avg_ms": 0.32382,
+          "std_ms": 0.061060049131981535
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.3886
+            },
+            {
+              "md_ms": 0.4221
+            },
+            {
+              "md_ms": 0.3685
+            },
+            {
+              "md_ms": 0.4698
+            },
+            {
+              "md_ms": 0.4677
+            }
+          ],
+          "avg_ms": 0.42333999999999994,
+          "std_ms": 0.04084647353199539
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.856809999978395
+            },
+            {
+              "md_ms": 4.48876999996628
+            },
+            {
+              "md_ms": 4.3759149999687
+            },
+            {
+              "md_ms": 4.43305600003896
+            },
+            {
+              "md_ms": 4.399389000013798
+            }
+          ],
+          "avg_ms": 4.5107879999932265,
+          "std_ms": 0.17712071812628
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.001087547580206634,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 35,
+          "line_f1": 0.9444444444444445,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 29,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 18
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00015.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00015.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00016.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0517
+            },
+            {
+              "md_ms": 0.0517
+            },
+            {
+              "md_ms": 0.0983
+            },
+            {
+              "md_ms": 0.0558
+            },
+            {
+              "md_ms": 0.0494
+            }
+          ],
+          "avg_ms": 0.061380000000000004,
+          "std_ms": 0.018574972409131595
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.6952
+            },
+            {
+              "md_ms": 0.7301
+            },
+            {
+              "md_ms": 0.6241
+            },
+            {
+              "md_ms": 0.6843
+            },
+            {
+              "md_ms": 0.6865
+            }
+          ],
+          "avg_ms": 0.68404,
+          "std_ms": 0.034190618596334287
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.8511
+            },
+            {
+              "md_ms": 0.8879
+            },
+            {
+              "md_ms": 0.8561
+            },
+            {
+              "md_ms": 1.3302
+            },
+            {
+              "md_ms": 1.6972
+            }
+          ],
+          "avg_ms": 1.1245,
+          "std_ms": 0.3385449630403619
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 5.770917999939229
+            },
+            {
+              "md_ms": 6.842139000013958
+            },
+            {
+              "md_ms": 6.0547409999571755
+            },
+            {
+              "md_ms": 6.2736959999938335
+            },
+            {
+              "md_ms": 6.44069899999522
+            }
+          ],
+          "avg_ms": 6.276438599979883,
+          "std_ms": 0.36102821119349826
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 45,
+          "line_f1": 1,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 40,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 7
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00016.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00016.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00080.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0309
+            },
+            {
+              "md_ms": 0.0446
+            },
+            {
+              "md_ms": 0.0293
+            },
+            {
+              "md_ms": 0.0288
+            },
+            {
+              "md_ms": 0.0302
+            }
+          ],
+          "avg_ms": 0.03276,
+          "std_ms": 0.00596409255461382
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.537
+            },
+            {
+              "md_ms": 0.4955
+            },
+            {
+              "md_ms": 0.5524
+            },
+            {
+              "md_ms": 0.4813
+            },
+            {
+              "md_ms": 0.4958
+            }
+          ],
+          "avg_ms": 0.5124,
+          "std_ms": 0.02732595835464879
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.7698
+            },
+            {
+              "md_ms": 0.6342
+            },
+            {
+              "md_ms": 0.6974
+            },
+            {
+              "md_ms": 0.6276
+            },
+            {
+              "md_ms": 0.7001
+            }
+          ],
+          "avg_ms": 0.68582,
+          "std_ms": 0.05185527552718239
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 8.79316900000049
+            },
+            {
+              "md_ms": 8.881965000000491
+            },
+            {
+              "md_ms": 13.401545999954578
+            },
+            {
+              "md_ms": 8.479136000005383
+            },
+            {
+              "md_ms": 8.622328999990714
+            }
+          ],
+          "avg_ms": 9.635628999990331,
+          "std_ms": 1.8880747906847701
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.002592352559948153,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 45,
+          "line_f1": 0.8936170212765957,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 20,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00080.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/ICDAR/cTDaR_t00080.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2006_3.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0448
+            },
+            {
+              "md_ms": 0.045
+            },
+            {
+              "md_ms": 0.0404
+            },
+            {
+              "md_ms": 0.0473
+            },
+            {
+              "md_ms": 0.0528
+            }
+          ],
+          "avg_ms": 0.046060000000000004,
+          "std_ms": 0.0040425734377992455
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.9566
+            },
+            {
+              "md_ms": 0.6955
+            },
+            {
+              "md_ms": 0.5783
+            },
+            {
+              "md_ms": 0.6021
+            },
+            {
+              "md_ms": 0.5228
+            }
+          ],
+          "avg_ms": 0.67106,
+          "std_ms": 0.1532783950855436
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.8785
+            },
+            {
+              "md_ms": 1.2751
+            },
+            {
+              "md_ms": 2.3509
+            },
+            {
+              "md_ms": 3.0267
+            },
+            {
+              "md_ms": 2.6265
+            }
+          ],
+          "avg_ms": 2.03154,
+          "std_ms": 0.8182926557167675
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 6.376542999987578
+            },
+            {
+              "md_ms": 4.416886999933922
+            },
+            {
+              "md_ms": 4.395873000021311
+            },
+            {
+              "md_ms": 5.045519999953285
+            },
+            {
+              "md_ms": 4.120407000073101
+            }
+          ],
+          "avg_ms": 4.871045999993839,
+          "std_ms": 0.811476565168991
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0004088307440719542,
+          "token_precision": 1,
+          "token_recall": 0.9987623762376238,
+          "token_f1": 0.9993808049535603
+        },
+        "structure": {
+          "line_count": 100,
+          "line_f1": 0.99,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2006_3.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2006_3.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2013_63.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0167
+            },
+            {
+              "md_ms": 0.0164
+            },
+            {
+              "md_ms": 0.016
+            },
+            {
+              "md_ms": 0.0169
+            },
+            {
+              "md_ms": 0.0145
+            }
+          ],
+          "avg_ms": 0.0161,
+          "std_ms": 0.0008555699854482969
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.4248
+            },
+            {
+              "md_ms": 0.3275
+            },
+            {
+              "md_ms": 0.4018
+            },
+            {
+              "md_ms": 0.3591
+            },
+            {
+              "md_ms": 0.3552
+            }
+          ],
+          "avg_ms": 0.37367999999999996,
+          "std_ms": 0.03490177072871805
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.429
+            },
+            {
+              "md_ms": 0.4013
+            },
+            {
+              "md_ms": 0.3695
+            },
+            {
+              "md_ms": 0.4306
+            },
+            {
+              "md_ms": 0.4047
+            }
+          ],
+          "avg_ms": 0.40702,
+          "std_ms": 0.022293442982186485
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.447359999971923
+            },
+            {
+              "md_ms": 4.503118999991784
+            },
+            {
+              "md_ms": 4.26221300006091
+            },
+            {
+              "md_ms": 4.300301000057516
+            },
+            {
+              "md_ms": 4.396450999934132
+            }
+          ],
+          "avg_ms": 4.381888800003253,
+          "std_ms": 0.08963722806206015
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0007867820613690008,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 38,
+          "line_f1": 0.9610389610389611,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2013_63.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2013_63.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2013_64.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0101
+            },
+            {
+              "md_ms": 0.0088
+            },
+            {
+              "md_ms": 0.0093
+            },
+            {
+              "md_ms": 0.0083
+            },
+            {
+              "md_ms": 0.0092
+            }
+          ],
+          "avg_ms": 0.009139999999999999,
+          "std_ms": 0.0005953150426454885
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1975
+            },
+            {
+              "md_ms": 0.1842
+            },
+            {
+              "md_ms": 0.1625
+            },
+            {
+              "md_ms": 0.1767
+            },
+            {
+              "md_ms": 0.1635
+            }
+          ],
+          "avg_ms": 0.17687999999999998,
+          "std_ms": 0.013149965779423154
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2071
+            },
+            {
+              "md_ms": 0.241
+            },
+            {
+              "md_ms": 0.1919
+            },
+            {
+              "md_ms": 0.206
+            },
+            {
+              "md_ms": 0.2056
+            }
+          ],
+          "avg_ms": 0.21032,
+          "std_ms": 0.01632095585436098
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.075258000057147
+            },
+            {
+              "md_ms": 3.7962290000450594
+            },
+            {
+              "md_ms": 4.213789000004908
+            },
+            {
+              "md_ms": 4.828276000012011
+            },
+            {
+              "md_ms": 3.643854000074498
+            }
+          ],
+          "avg_ms": 4.111481200038725,
+          "std_ms": 0.4107634207586644
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.008915304606240713,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 16,
+          "line_f1": 0.5263157894736842,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2013_64.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2013_64.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2014_4.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0785
+            },
+            {
+              "md_ms": 0.0179
+            },
+            {
+              "md_ms": 0.0185
+            },
+            {
+              "md_ms": 0.0166
+            },
+            {
+              "md_ms": 0.0172
+            }
+          ],
+          "avg_ms": 0.02974,
+          "std_ms": 0.024388407082054375
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.4374
+            },
+            {
+              "md_ms": 0.4436
+            },
+            {
+              "md_ms": 0.3829
+            },
+            {
+              "md_ms": 0.3849
+            },
+            {
+              "md_ms": 0.3613
+            }
+          ],
+          "avg_ms": 0.40202,
+          "std_ms": 0.03254974039835033
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.5271
+            },
+            {
+              "md_ms": 0.4742
+            },
+            {
+              "md_ms": 0.6642
+            },
+            {
+              "md_ms": 0.5107
+            },
+            {
+              "md_ms": 0.4824
+            }
+          ],
+          "avg_ms": 0.5317200000000001,
+          "std_ms": 0.06892771285919765
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 5.030053000041335
+            },
+            {
+              "md_ms": 4.401873999995587
+            },
+            {
+              "md_ms": 4.326212000023588
+            },
+            {
+              "md_ms": 4.584219000093981
+            },
+            {
+              "md_ms": 4.285141000082149
+            }
+          ],
+          "avg_ms": 4.525499800047328,
+          "std_ms": 0.27232083815813546
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0026030368763557484,
+          "token_precision": 1,
+          "token_recall": 0.997716894977169,
+          "token_f1": 0.9988571428571429
+        },
+        "structure": {
+          "line_count": 34,
+          "line_f1": 0.8450704225352113,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 4,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2014_4.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/MARMOT/10.1.1.1.2014_4.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_0.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0106
+            },
+            {
+              "md_ms": 0.01
+            },
+            {
+              "md_ms": 0.01
+            },
+            {
+              "md_ms": 0.009
+            },
+            {
+              "md_ms": 0.0062
+            }
+          ],
+          "avg_ms": 0.00916,
+          "std_ms": 0.0015666524822052913
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1764
+            },
+            {
+              "md_ms": 0.1632
+            },
+            {
+              "md_ms": 0.1271
+            },
+            {
+              "md_ms": 0.105
+            },
+            {
+              "md_ms": 0.1098
+            }
+          ],
+          "avg_ms": 0.1363,
+          "std_ms": 0.028629355563826446
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2123
+            },
+            {
+              "md_ms": 0.1708
+            },
+            {
+              "md_ms": 0.1355
+            },
+            {
+              "md_ms": 0.1541
+            },
+            {
+              "md_ms": 0.1467
+            }
+          ],
+          "avg_ms": 0.16387999999999997,
+          "std_ms": 0.026790326612417394
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.8877180001009037
+            },
+            {
+              "md_ms": 4.041624000024058
+            },
+            {
+              "md_ms": 3.681541999981164
+            },
+            {
+              "md_ms": 3.7398460000304112
+            },
+            {
+              "md_ms": 3.6313530000597893
+            }
+          ],
+          "avg_ms": 3.796416600039265,
+          "std_ms": 0.14973644394239655
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0015060240963855422,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 10,
+          "line_f1": 0.8571428571428572,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 2,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_0.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_0.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_2.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.01
+            },
+            {
+              "md_ms": 0.008
+            },
+            {
+              "md_ms": 0.0081
+            },
+            {
+              "md_ms": 0.0078
+            },
+            {
+              "md_ms": 0.0093
+            }
+          ],
+          "avg_ms": 0.00864,
+          "std_ms": 0.0008593020423576335
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.167
+            },
+            {
+              "md_ms": 0.2045
+            },
+            {
+              "md_ms": 0.1622
+            },
+            {
+              "md_ms": 0.1604
+            },
+            {
+              "md_ms": 0.1421
+            }
+          ],
+          "avg_ms": 0.16724,
+          "std_ms": 0.020457624495527328
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2619
+            },
+            {
+              "md_ms": 0.1875
+            },
+            {
+              "md_ms": 0.1759
+            },
+            {
+              "md_ms": 0.1858
+            },
+            {
+              "md_ms": 0.1683
+            }
+          ],
+          "avg_ms": 0.19588,
+          "std_ms": 0.03373522787828771
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.511041999990084
+            },
+            {
+              "md_ms": 4.009800000062569
+            },
+            {
+              "md_ms": 4.433919000007336
+            },
+            {
+              "md_ms": 4.514935999964109
+            },
+            {
+              "md_ms": 4.743312999949012
+            }
+          ],
+          "avg_ms": 4.442601999994622,
+          "std_ms": 0.23989010495578927
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0073964497041420114,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 15,
+          "line_f1": 0.6857142857142857,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_2.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_2.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_3.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0068
+            },
+            {
+              "md_ms": 0.0066
+            },
+            {
+              "md_ms": 0.006
+            },
+            {
+              "md_ms": 0.005
+            },
+            {
+              "md_ms": 0.0064
+            }
+          ],
+          "avg_ms": 0.0061600000000000005,
+          "std_ms": 0.000637495098020369
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.1256
+            },
+            {
+              "md_ms": 0.1391
+            },
+            {
+              "md_ms": 0.1166
+            },
+            {
+              "md_ms": 0.1441
+            },
+            {
+              "md_ms": 0.2496
+            }
+          ],
+          "avg_ms": 0.15499999999999997,
+          "std_ms": 0.04829016463007762
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.1652
+            },
+            {
+              "md_ms": 0.1342
+            },
+            {
+              "md_ms": 0.1553
+            },
+            {
+              "md_ms": 0.1509
+            },
+            {
+              "md_ms": 0.1666
+            }
+          ],
+          "avg_ms": 0.15444,
+          "std_ms": 0.011718122716544656
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 5.384936000041307
+            },
+            {
+              "md_ms": 4.329410999957872
+            },
+            {
+              "md_ms": 4.170251999994434
+            },
+            {
+              "md_ms": 4.214529000023504
+            },
+            {
+              "md_ms": 4.49501599996438
+            }
+          ],
+          "avg_ms": 4.5188287999962995,
+          "std_ms": 0.4473683019950307
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0231023102310231,
+          "token_precision": 1,
+          "token_recall": 0.9871794871794872,
+          "token_f1": 0.9935483870967742
+        },
+        "structure": {
+          "line_count": 9,
+          "line_f1": 0.6086956521739131,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_3.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_3.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_4.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0094
+            },
+            {
+              "md_ms": 0.0098
+            },
+            {
+              "md_ms": 0.0095
+            },
+            {
+              "md_ms": 0.0084
+            },
+            {
+              "md_ms": 0.0105
+            }
+          ],
+          "avg_ms": 0.00952,
+          "std_ms": 0.0006794115100585216
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.2024
+            },
+            {
+              "md_ms": 0.2328
+            },
+            {
+              "md_ms": 0.2473
+            },
+            {
+              "md_ms": 0.2581
+            },
+            {
+              "md_ms": 0.2057
+            }
+          ],
+          "avg_ms": 0.22926000000000002,
+          "std_ms": 0.022119005402594396
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.3366
+            },
+            {
+              "md_ms": 0.2395
+            },
+            {
+              "md_ms": 0.2587
+            },
+            {
+              "md_ms": 0.2624
+            },
+            {
+              "md_ms": 0.2716
+            }
+          ],
+          "avg_ms": 0.27376,
+          "std_ms": 0.03311534991510735
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 5.9817809999458404
+            },
+            {
+              "md_ms": 4.7343449999743825
+            },
+            {
+              "md_ms": 5.100353999978324
+            },
+            {
+              "md_ms": 4.937206000022343
+            },
+            {
+              "md_ms": 5.608918000007179
+            }
+          ],
+          "avg_ms": 5.272520799985614,
+          "std_ms": 0.45780426412318553
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0050062578222778474,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 18,
+          "line_f1": 0.7999999999999999,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_4.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_4.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_5.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0112
+            },
+            {
+              "md_ms": 0.0121
+            },
+            {
+              "md_ms": 0.0092
+            },
+            {
+              "md_ms": 0.0099
+            },
+            {
+              "md_ms": 0.0105
+            }
+          ],
+          "avg_ms": 0.01058,
+          "std_ms": 0.0010067770358922572
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.2735
+            },
+            {
+              "md_ms": 0.2617
+            },
+            {
+              "md_ms": 0.2662
+            },
+            {
+              "md_ms": 0.2613
+            },
+            {
+              "md_ms": 0.3234
+            }
+          ],
+          "avg_ms": 0.27721999999999997,
+          "std_ms": 0.023503991150440825
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2798
+            },
+            {
+              "md_ms": 0.3008
+            },
+            {
+              "md_ms": 0.1907
+            },
+            {
+              "md_ms": 0.173
+            },
+            {
+              "md_ms": 0.1537
+            }
+          ],
+          "avg_ms": 0.21959999999999996,
+          "std_ms": 0.05927404153590339
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 5.306837000034648
+            },
+            {
+              "md_ms": 5.155243999979575
+            },
+            {
+              "md_ms": 5.500126000015371
+            },
+            {
+              "md_ms": 5.0680129999136625
+            },
+            {
+              "md_ms": 4.737752999972145
+            }
+          ],
+          "avg_ms": 5.15359459998308,
+          "std_ms": 0.25448709651860507
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.0025940337224383916,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 14,
+          "line_f1": 0.7999999999999999,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_5.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_5.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_6.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0056
+            },
+            {
+              "md_ms": 0.0032
+            },
+            {
+              "md_ms": 0.0046
+            },
+            {
+              "md_ms": 0.003
+            },
+            {
+              "md_ms": 0.0039
+            }
+          ],
+          "avg_ms": 0.00406,
+          "std_ms": 0.000954148835350125
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.0611
+            },
+            {
+              "md_ms": 0.0515
+            },
+            {
+              "md_ms": 0.0511
+            },
+            {
+              "md_ms": 0.0497
+            },
+            {
+              "md_ms": 0.0508
+            }
+          ],
+          "avg_ms": 0.05284,
+          "std_ms": 0.004173056433838393
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.0962
+            },
+            {
+              "md_ms": 0.065
+            },
+            {
+              "md_ms": 0.0801
+            },
+            {
+              "md_ms": 0.0613
+            },
+            {
+              "md_ms": 0.0862
+            }
+          ],
+          "avg_ms": 0.07776000000000001,
+          "std_ms": 0.013042177732265419
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 6.361528999946131
+            },
+            {
+              "md_ms": 4.094837000025109
+            },
+            {
+              "md_ms": 3.8687419998950645
+            },
+            {
+              "md_ms": 5.418834000010975
+            },
+            {
+              "md_ms": 5.4934710000225095
+            }
+          ],
+          "avg_ms": 5.047482599979958,
+          "std_ms": 0.9338617133112803
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.013824884792626729,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 5,
+          "line_f1": 0.6153846153846154,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_6.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064078_table_6.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064082_table_0.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0018
+            },
+            {
+              "md_ms": 0.0015
+            },
+            {
+              "md_ms": 0.0031
+            },
+            {
+              "md_ms": 0.0015
+            },
+            {
+              "md_ms": 0.0015
+            }
+          ],
+          "avg_ms": 0.0018799999999999997,
+          "std_ms": 0.0006209669878504009
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.0347
+            },
+            {
+              "md_ms": 0.0343
+            },
+            {
+              "md_ms": 0.0387
+            },
+            {
+              "md_ms": 0.0303
+            },
+            {
+              "md_ms": 0.0304
+            }
+          ],
+          "avg_ms": 0.03368,
+          "std_ms": 0.003124355933628561
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.049
+            },
+            {
+              "md_ms": 0.036
+            },
+            {
+              "md_ms": 0.0383
+            },
+            {
+              "md_ms": 0.0496
+            },
+            {
+              "md_ms": 0.0487
+            }
+          ],
+          "avg_ms": 0.04432,
+          "std_ms": 0.005906403304888687
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 5.505717999994886
+            },
+            {
+              "md_ms": 4.396412999994936
+            },
+            {
+              "md_ms": 5.293557000072724
+            },
+            {
+              "md_ms": 5.925265999962903
+            },
+            {
+              "md_ms": 4.192014999944149
+            }
+          ],
+          "avg_ms": 5.06259379999392,
+          "std_ms": 0.6626629137653393
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 4,
+          "line_f1": 1,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064082_table_0.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064082_table_0.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064082_table_1.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0126
+            },
+            {
+              "md_ms": 0.0134
+            },
+            {
+              "md_ms": 0.0168
+            },
+            {
+              "md_ms": 0.0191
+            },
+            {
+              "md_ms": 0.0157
+            }
+          ],
+          "avg_ms": 0.01552,
+          "std_ms": 0.0023455489762526805
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.3016
+            },
+            {
+              "md_ms": 0.2988
+            },
+            {
+              "md_ms": 0.2493
+            },
+            {
+              "md_ms": 0.2277
+            },
+            {
+              "md_ms": 0.3317
+            }
+          ],
+          "avg_ms": 0.28182,
+          "std_ms": 0.037826202558543985
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.4563
+            },
+            {
+              "md_ms": 0.4741
+            },
+            {
+              "md_ms": 0.4342
+            },
+            {
+              "md_ms": 0.4607
+            },
+            {
+              "md_ms": 0.363
+            }
+          ],
+          "avg_ms": 0.43766,
+          "std_ms": 0.0394772136808058
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.919043999962014
+            },
+            {
+              "md_ms": 6.373365999934322
+            },
+            {
+              "md_ms": 5.026260999898113
+            },
+            {
+              "md_ms": 5.120008000062626
+            },
+            {
+              "md_ms": 5.498012999964885
+            }
+          ],
+          "avg_ms": 5.387338399964392,
+          "std_ms": 0.5302153094001677
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.006218905472636816,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 22,
+          "line_f1": 0.6938775510204083,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/PUBTABLES/PMC1064082_table_1.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/PUBTABLES/PMC1064082_table_1.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X00016469670.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0128
+            },
+            {
+              "md_ms": 0.0115
+            },
+            {
+              "md_ms": 0.0121
+            },
+            {
+              "md_ms": 0.0121
+            },
+            {
+              "md_ms": 0.0115
+            }
+          ],
+          "avg_ms": 0.012,
+          "std_ms": 0.00048166378315169206
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.2683
+            },
+            {
+              "md_ms": 0.2679
+            },
+            {
+              "md_ms": 0.2261
+            },
+            {
+              "md_ms": 0.2457
+            },
+            {
+              "md_ms": 0.3037
+            }
+          ],
+          "avg_ms": 0.26234,
+          "std_ms": 0.02595115411691743
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.3988
+            },
+            {
+              "md_ms": 0.3377
+            },
+            {
+              "md_ms": 0.3695
+            },
+            {
+              "md_ms": 0.3191
+            },
+            {
+              "md_ms": 0.3584
+            }
+          ],
+          "avg_ms": 0.35669999999999996,
+          "std_ms": 0.027253990533498026
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.9219669999965845
+            },
+            {
+              "md_ms": 3.885740000100668
+            },
+            {
+              "md_ms": 4.293677000077878
+            },
+            {
+              "md_ms": 3.6908430000721637
+            },
+            {
+              "md_ms": 3.6518839999644115
+            }
+          ],
+          "avg_ms": 3.888822200042341,
+          "std_ms": 0.22818893974480983
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.07890743550834597,
+          "token_precision": 0.848,
+          "token_recall": 0.9724770642201835,
+          "token_f1": 0.9059829059829061
+        },
+        "structure": {
+          "line_count": 26,
+          "line_f1": 0.6181818181818182,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 1,
+            "pipes_lines_count": 5,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/SROIE2019/img/X00016469670.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/SROIE2019/img/X00016469670.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X00016469671.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0133
+            },
+            {
+              "md_ms": 0.0111
+            },
+            {
+              "md_ms": 0.0122
+            },
+            {
+              "md_ms": 0.0124
+            },
+            {
+              "md_ms": 0.0106
+            }
+          ],
+          "avg_ms": 0.01192,
+          "std_ms": 0.0009620810776644552
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.2872
+            },
+            {
+              "md_ms": 0.2281
+            },
+            {
+              "md_ms": 0.2184
+            },
+            {
+              "md_ms": 0.218
+            },
+            {
+              "md_ms": 0.2601
+            }
+          ],
+          "avg_ms": 0.24236,
+          "std_ms": 0.027188865368014167
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.3269
+            },
+            {
+              "md_ms": 0.285
+            },
+            {
+              "md_ms": 0.2597
+            },
+            {
+              "md_ms": 0.2581
+            },
+            {
+              "md_ms": 0.3174
+            }
+          ],
+          "avg_ms": 0.28941999999999996,
+          "std_ms": 0.028535549758152562
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 3.9871080000466463
+            },
+            {
+              "md_ms": 4.0319919999092235
+            },
+            {
+              "md_ms": 3.850550000038311
+            },
+            {
+              "md_ms": 4.404849000025024
+            },
+            {
+              "md_ms": 4.266815000050883
+            }
+          ],
+          "avg_ms": 4.108262800014018,
+          "std_ms": 0.20000689085557866
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.003389830508474576,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "structure": {
+          "line_count": 27,
+          "line_f1": 0.8928571428571429,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/SROIE2019/img/X00016469671.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/SROIE2019/img/X00016469671.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X51005200931.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0168
+            },
+            {
+              "md_ms": 0.0179
+            },
+            {
+              "md_ms": 0.0164
+            },
+            {
+              "md_ms": 0.0157
+            },
+            {
+              "md_ms": 0.0167
+            }
+          ],
+          "avg_ms": 0.0167,
+          "std_ms": 0.0007127411872482184
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.5009
+            },
+            {
+              "md_ms": 0.4238
+            },
+            {
+              "md_ms": 0.3787
+            },
+            {
+              "md_ms": 0.3667
+            },
+            {
+              "md_ms": 0.3785
+            }
+          ],
+          "avg_ms": 0.40972,
+          "std_ms": 0.04959775801384575
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.4334
+            },
+            {
+              "md_ms": 0.4506
+            },
+            {
+              "md_ms": 0.5071
+            },
+            {
+              "md_ms": 0.4187
+            },
+            {
+              "md_ms": 0.4407
+            }
+          ],
+          "avg_ms": 0.45010000000000006,
+          "std_ms": 0.03033961107199629
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.214144999991731
+            },
+            {
+              "md_ms": 3.9302869998891765
+            },
+            {
+              "md_ms": 3.757142000040403
+            },
+            {
+              "md_ms": 3.814716999954726
+            },
+            {
+              "md_ms": 4.263003000005483
+            }
+          ],
+          "avg_ms": 3.995858799976304,
+          "std_ms": 0.20645222787839596
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.06359649122807018,
+          "token_precision": 0.8756756756756757,
+          "token_recall": 0.9759036144578314,
+          "token_f1": 0.9230769230769231
+        },
+        "structure": {
+          "line_count": 39,
+          "line_f1": 0.691358024691358,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 1,
+            "pipes_lines_count": 6,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/SROIE2019/img/X51005200931.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/SROIE2019/img/X51005200931.post-2.md"
+      }
+    },
+    {
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X51005230605.txt",
+      "env": {
+        "os": "Ubuntu 24.04.2 LTS",
+        "dotnet": "9.0.0",
+        "python": "Python 3.12.10",
+        "markitdown": "File \u0022\u003Cstring\u003E\u0022, line 1\n    import markitdown, import importlib.metadata as m; print(getattr(markitdown,\u0027__version__\u0027,\u0027\u0027))\n                       ^^^^^^\nSyntaxError: invalid syntax"
+      },
+      "runs": {
+        "pre": {
+          "trials": [
+            {
+              "md_ms": 0.0106
+            },
+            {
+              "md_ms": 0.0107
+            },
+            {
+              "md_ms": 0.0156
+            },
+            {
+              "md_ms": 0.0168
+            },
+            {
+              "md_ms": 0.0152
+            }
+          ],
+          "avg_ms": 0.01378,
+          "std_ms": 0.0026095210288480143
+        },
+        "post-1S": {
+          "trials": [
+            {
+              "md_ms": 0.305
+            },
+            {
+              "md_ms": 0.2198
+            },
+            {
+              "md_ms": 0.2649
+            },
+            {
+              "md_ms": 0.2264
+            },
+            {
+              "md_ms": 0.1945
+            }
+          ],
+          "avg_ms": 0.24211999999999997,
+          "std_ms": 0.03869312083562142
+        },
+        "post-2": {
+          "trials": [
+            {
+              "md_ms": 0.2726
+            },
+            {
+              "md_ms": 0.2713
+            },
+            {
+              "md_ms": 0.2536
+            },
+            {
+              "md_ms": 0.2746
+            },
+            {
+              "md_ms": 0.2871
+            }
+          ],
+          "avg_ms": 0.27183999999999997,
+          "std_ms": 0.010714961502497346
+        },
+        "python-hot": {
+          "trials": [
+            {
+              "md_ms": 4.825528999958806
+            },
+            {
+              "md_ms": 4.545198999949207
+            },
+            {
+              "md_ms": 5.772064999973736
+            },
+            {
+              "md_ms": 5.654043000049569
+            },
+            {
+              "md_ms": 5.417718999979115
+            }
+          ],
+          "avg_ms": 5.242910999982087,
+          "std_ms": 0.47761932184176276
+        }
+      },
+      "quality_vs_python_hot": {
+        "text": {
+          "cer_char": 0.10638297872340426,
+          "token_precision": 0.8053097345132744,
+          "token_recall": 0.9680851063829787,
+          "token_f1": 0.8792270531400965
+        },
+        "structure": {
+          "line_count": 23,
+          "line_f1": 0.6530612244897959,
+          "list_items": 0,
+          "max_list_depth": 0,
+          "tables": {
+            "tables_count": 1,
+            "pipes_lines_count": 5,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "paths": {
+        "python_hot_md": "artifacts/validation/outputs/SROIE2019/img/X51005230605.python-hot.md",
+        "post2_md": "artifacts/validation/outputs/SROIE2019/img/X51005230605.post-2.md"
+      }
+    }
+  ],
+  "aggregate": {
+    "by_dataset": {
+      "FUNSD": {
+        "files": 4,
+        "md_ms_avg": {
+          "pre": 0.018545,
+          "post-1S": 0.28757,
+          "post-2": 0.40599500000000005,
+          "python-hot": 5.4201271499891845
+        },
+        "token_f1_avg": 0.9619070152608541,
+        "cer_avg": 0.03609778422181792,
+        "tables_count_sum": 2
+      },
+      "ICDAR": {
+        "files": 4,
+        "md_ms_avg": {
+          "pre": 0.060155,
+          "post-1S": 0.62391,
+          "post-2": 0.880845,
+          "python-hot": 6.331476399981284
+        },
+        "token_f1_avg": 1,
+        "cer_avg": 0.001218839350639414,
+        "tables_count_sum": 0
+      },
+      "MARMOT": {
+        "files": 4,
+        "md_ms_avg": {
+          "pre": 0.02526,
+          "post-1S": 0.40591,
+          "post-2": 0.79515,
+          "python-hot": 4.472478950020786
+        },
+        "token_f1_avg": 0.9995594869526758,
+        "cer_avg": 0.003178488572009354,
+        "tables_count_sum": 0
+      },
+      "PUBTABLES": {
+        "files": 8,
+        "md_ms_avg": {
+          "pre": 0.008190000000000001,
+          "post-1S": 0.16666999999999998,
+          "post-2": 0.1959125,
+          "python-hot": 4.835172199992144
+        },
+        "token_f1_avg": 0.9991935483870968,
+        "cer_avg": 0.007456108230191305,
+        "tables_count_sum": 0
+      },
+      "SROIE2019": {
+        "files": 4,
+        "md_ms_avg": {
+          "pre": 0.013600000000000001,
+          "post-1S": 0.289135,
+          "post-2": 0.34201499999999996,
+          "python-hot": 4.308963700003687
+        },
+        "token_f1_avg": 0.9270717205499814,
+        "cer_avg": 0.06306918399207374,
+        "tables_count_sum": 3
+      }
+    },
+    "global": {
+      "n_files": 24,
+      "md_ms_avg": {
+        "pre": 0.022323333333333334,
+        "post-1S": 0.3233108333333333,
+        "post-2": 0.469305,
+        "python-hot": 5.033898433329871
+      },
+      "token_f1_avg": 0.9811542199229507,
+      "cer_avg": 0.019746085432820505,
+      "tables_count_sum": 5
+    }
+  }
+}

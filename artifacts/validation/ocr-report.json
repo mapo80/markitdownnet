@@ -1,0 +1,173 @@
+{
+  "root": "dataset/validation",
+  "files": [
+    {
+      "image": "dataset/validation/FUNSD/images/82092117.png",
+      "txt": "dataset/validation/_ocr/FUNSD/images/82092117.txt",
+      "ocr_ms": 1702.6268,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/FUNSD/images/82200067_0069.png",
+      "txt": "dataset/validation/_ocr/FUNSD/images/82200067_0069.txt",
+      "ocr_ms": 2012.6414,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/FUNSD/images/82250337_0338.png",
+      "txt": "dataset/validation/_ocr/FUNSD/images/82250337_0338.txt",
+      "ocr_ms": 1485.4832,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/FUNSD/images/82251504.png",
+      "txt": "dataset/validation/_ocr/FUNSD/images/82251504.txt",
+      "ocr_ms": 1780.9065,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/ICDAR/cTDaR_t00014.jpg",
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00014.txt",
+      "ocr_ms": 8049.72,
+      "exit_code": 0,
+      "error": "Image too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!"
+    },
+    {
+      "image": "dataset/validation/ICDAR/cTDaR_t00015.jpg",
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00015.txt",
+      "ocr_ms": 9112.2205,
+      "exit_code": 0,
+      "error": "Image too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!"
+    },
+    {
+      "image": "dataset/validation/ICDAR/cTDaR_t00016.jpg",
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00016.txt",
+      "ocr_ms": 12299.8995,
+      "exit_code": 0,
+      "error": "Image too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!\nImage too small to scale!! (2x36 vs min width of 3)\nLine cannot be recognized!!"
+    },
+    {
+      "image": "dataset/validation/ICDAR/cTDaR_t00080.jpg",
+      "txt": "dataset/validation/_ocr/ICDAR/cTDaR_t00080.txt",
+      "ocr_ms": 10106.9742,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/MARMOT/10.1.1.1.2006_3.jpeg",
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2006_3.txt",
+      "ocr_ms": 4629.5792,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/MARMOT/10.1.1.1.2013_63.jpeg",
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2013_63.txt",
+      "ocr_ms": 1796.1608,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/MARMOT/10.1.1.1.2013_64.jpeg",
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2013_64.txt",
+      "ocr_ms": 1652.9221,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/MARMOT/10.1.1.1.2014_4.jpeg",
+      "txt": "dataset/validation/_ocr/MARMOT/10.1.1.1.2014_4.txt",
+      "ocr_ms": 2809.8529,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/PUBTABLES/PMC1064078_table_0.jpg",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_0.txt",
+      "ocr_ms": 1121.6385,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/PUBTABLES/PMC1064078_table_2.jpg",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_2.txt",
+      "ocr_ms": 1453.6425,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/PUBTABLES/PMC1064078_table_3.jpg",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_3.txt",
+      "ocr_ms": 1204.8405,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/PUBTABLES/PMC1064078_table_4.jpg",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_4.txt",
+      "ocr_ms": 1610.2844,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/PUBTABLES/PMC1064078_table_5.jpg",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_5.txt",
+      "ocr_ms": 1733.2356,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/PUBTABLES/PMC1064078_table_6.jpg",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064078_table_6.txt",
+      "ocr_ms": 1035.1219,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/PUBTABLES/PMC1064082_table_0.jpg",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064082_table_0.txt",
+      "ocr_ms": 545.8266,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/PUBTABLES/PMC1064082_table_1.jpg",
+      "txt": "dataset/validation/_ocr/PUBTABLES/PMC1064082_table_1.txt",
+      "ocr_ms": 1243.9623,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/SROIE2019/img/X00016469670.jpg",
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X00016469670.txt",
+      "ocr_ms": 1338.0528,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/SROIE2019/img/X00016469671.jpg",
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X00016469671.txt",
+      "ocr_ms": 1107.7468,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/SROIE2019/img/X51005200931.jpg",
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X51005200931.txt",
+      "ocr_ms": 1735.5393,
+      "exit_code": 0,
+      "error": null
+    },
+    {
+      "image": "dataset/validation/SROIE2019/img/X51005230605.jpg",
+      "txt": "dataset/validation/_ocr/SROIE2019/img/X51005230605.txt",
+      "ocr_ms": 1140.5526,
+      "exit_code": 0,
+      "error": null
+    }
+  ]
+}
