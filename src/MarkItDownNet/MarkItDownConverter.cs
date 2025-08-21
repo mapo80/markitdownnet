@@ -140,7 +140,7 @@ public class MarkItDownConverter
             _options.OcrDataPath ?? string.Empty,
             _options.OcrLanguages,
             EngineMode.LstmOnly);
-        engine.DefaultPageSegMode = PageSegMode.Auto;
+        engine.DefaultPageSegMode = _options.PageSegMode;
         using var page = engine.Process(pix);
         using var iter = page.GetIterator();
         iter.Begin();

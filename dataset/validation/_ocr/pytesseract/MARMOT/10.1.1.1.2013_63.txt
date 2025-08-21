@@ -1,0 +1,38 @@
+4s
+Table 1—Activity, employment, and unemployment rates forages 15-64, by sex and
+urban/rural location, 1990-95
+Cs
+Rate 1990 1991 199219931994 1995
+Activity rate (15-64)
+Urban Male no 108 698 108 105 699
+Female 24 203 19.1 203 202 195
+Total 473 457 444 457 454 448
+Rural Male 782 168 163 163 76.1 163
+Female 347 293 261 240 254 230
+Total 564 530 50.8 50.2 510 497
+Total Male 753 149 2 37 BS Ba
+Female 290 252 2.8 23 230 214
+Total 52.1 49.6 478 48.1 484 474
+Employment rate (15-64)**
+Urban Male 670 653 647 649 649 646
+Female 168 154 143 146 146 14.1
+Total 421 405 395 399 308 304
+Rural Male 145 na 18 109 107 1056
+Female 316 262 28 195 204 181
+Total 530 493 46.9 453 458 443
+Total Male 110 69.1 685 68.1 68.0 678
+Female 247 au 189 172 117 162
+Total 479 452 434 42.8 43.0 42.0
+Unemployment Rate (15-64)**
+Urban Male 69 MW 13 84 19 16
+Female 248 244 249 279 280 276
+Total na 14 na 127 124 119
+Rural Male 47 37 59 70 my 13
+Female 9.0 108 125 187 19.6 214
+Tatal 60 mM 16 98 10.1 107
+Total Male 57 66 63 16 1s 1s
+Female 147 159 173 27 2. 241
+Total 82 89 on nt i 13
+Jouce:CAPMAS.LFSS, SSCS
+Notes: Activity rate = labor force/population x 100 percent; employment rate = employment/population x
+100 percent; unemployment rate = unemployment/labor force x 100 percent

@@ -1,0 +1,61 @@
+09 these consume 0,99 CPU. That is, task3- misses
+deadlines and the inverted pendulum! falls down, This
+an explains the fact that the cost function in Figure 2 goes
+. to infinite. Note that under RM, the task is not
+Bod schedulable
+a. + EDP: EDF is « dynamic alorihm in open bop
+Which assigns priorities to tasks according to their
+
+schedulabiity condition is given by U = 1. For our
+wg simulations, since U <1, the task set is schedulable
+and the three pendulums can be controlled as it can be
+A seen in Figure 2: the accumulated cost reaches a finite
+a a oe a! value, which means that the deviation caused by each
+ii Ail sal aed perturbation thet affected each of the three pendulums
+could be adequately comected. ‘The performance
+with the difference in performance due 10 the we of sehieved by EDF is also given in Figure 2 in tems of
+different scheduling polices, which is the objective of our tie coat BocHonsreadting a valus oF W2754 at tho
+simulations. completion of the evaluation interval
+‘The perfomance of each pendulum is obtained by the
+following cost fmetion J, which measures the enor ¢,of 4 LER: LEF is a dynamie scheduling algorithm in
+the pendulum weighted with time ¢ closed-loop, which adjusts the schedule based on
+= fre2enae continuous feedback of each control loop. Under this
+vin= |ehom scheduler, inthe simulation we ebain thatthe thee
+Note that 1 sets the duration of the evaluation period, inverted pendulums can be perfectly controlled. As it
+‘hich typically should go fen the’ perturbation sirival can be seen in Figure 2 the cost function of LEF goes
+fine (0m the integral) wo the setling tine As higher blow the cost function of EDF, meaning that for this
+values the cost function gets, the worst the control palticular simple simulation set-up, LEF performs
+performance (because major deviations occur or because it better that EDP. Note that the final cost of LEF is
+fakes more time forthe inverted pendulum to recover from 0.2490
+the perturbations)
+C. Discussion
+B Results ‘The exact cost for each one of the three pendulums
+The simulation we run Keeps the following time under each scheduling algorithm is summarized in the
+sequence: at time =O, only the control task controlling the Table 1. RM fails in controlling the thitd pendulum, EDF
+fist pendulum is released. After executing alone, at time and LEF are able to control the three pendulums, However
+12. another contol task is released to control the second LEF gives the best control in terms of the cost function
+pendulum, Finally the third control task is released at time
+f4, The three controllers run in parallel until t=7. Before Tate 1, Cost forthe tac inverted pendulum under cash
+the release time of each control task, the corresponding different scheduling policy
+pendulum isin equilibrium, At release time of each control ———
+fask, the pendulum suffers a perturbation (of equal Scheduling Jy Sp
+magnitude for each pendulum). This simulation pattern is RM 00033009308
+repeated for different scheduling algorithm: RM, EDF and EDF 0033. 00930 0.1769
+LEF. During each experiment, the cost funtion presented LEF 000330812 _o.1645
+earlier and the resulting schedule are recorded. The cost
+function evaluation period goes from the beginning of each This results shows that scheduling polices that take
+simulation, =0, to the simulation completion, at t=7. For advantage of the application dynamics and are able to
+cach scheduling policy, the results we obtained are agjust the schedule accordingly ean provide, in. some
+summarized inthe following: Specific scenarios, better performance in terms of the
+application (control performance in our case).
++ RM: RMisastatic scheduling algorithm in open loop, For opertoop scheduling approaches we identified (see
+which assigns priorities to tasks according to their Section 1) three main negative aspects: low real CPU
+request rates. The cost function values for the three utilization, the lack of feedback mechanism and poor
+pendulums are shown in the Figure 2 (note that Figure gdaptability to the application dynamics. Our. strategy
+2 shows the accumulated cost function, 2, during the optimizes CPU utilization in the sense that control tasks
+evaluation period for each scheduling policy). Under are executed only when they are required. That i, they are
+RM the schedulability condition for our experiment is executed when the controlled plants suffer perturbations.
+given by U < 0.78, Taking into account that task Otherwise, they execute with the slowest possible rate in
+execution time is 4ms, until 4, the processor order to give room to other tasks with higher priorities. In
+utilization is 0.71 and the control performance is good. addition, our approach is based on the idea of feedback,
+From t4, the tree contol tasks run in parallel and which offers the possibilty of taking at run time the

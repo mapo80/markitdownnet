@@ -1,5 +1,7 @@
 namespace MarkItDownNet;
 
+using Tesseract;
+
 /// <summary>Runtime options for conversion.</summary>
 public class MarkItDownOptions
 {
@@ -8,6 +10,9 @@ public class MarkItDownOptions
 
     /// <summary>Languages for OCR, e.g. "eng" or "ita+eng".</summary>
     public string OcrLanguages { get; set; } = "eng";
+
+    /// <summary>Page segmentation mode used by Tesseract.</summary>
+    public PageSegMode PageSegMode { get; set; } = PageSegMode.SingleBlock;
 
     /// <summary>DPI used when rasterizing PDFs for OCR fallback.</summary>
     public int PdfRasterDpi { get; set; } = 300;
