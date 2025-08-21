@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Net;
+using System.Globalization;
 using MarkItDownNet;
 
 if (args.Length == 0)
@@ -59,19 +60,22 @@ static void BenchCommand(string[] args)
         results.Add(br);
     }
 
-    var python = results.FirstOrDefault(r => r.Mode == "python");
-    if (python != null)
-    {
-        foreach (var r in results.Where(r => r.Mode != "python"))
-            r.Similarity = CompareOutputs(r.Output, python.Output);
-    }
-
     var env = new {
         os = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
-        dotnet = Environment.Version.ToString()
+        dotnet = Environment.Version.ToString(),
+        python = GetPythonVersion(pythonExe)
     };
-    var output = new { environment = env, results = results };
-    var json = JsonSerializer.Serialize(output, new JsonSerializerOptions{WriteIndented=true});
+
+    var runs = results.Select(r => new {
+        mode = r.Mode,
+        trials = r.Trials.Select(t => new { md_ms = t }).ToArray(),
+        avg = new { md_ms = r.AvgMs },
+        stddev = new { md_ms = r.StdMs },
+        output = r.Output
+    }).ToArray();
+
+    var jsonObj = new { file = input, runs = runs, env = env };
+    var json = JsonSerializer.Serialize(jsonObj, new JsonSerializerOptions { WriteIndented = true });
     File.WriteAllText(outJson, json);
     File.WriteAllText(outHtml, HtmlReport(results));
     if (!string.IsNullOrEmpty(summaryMd))
@@ -82,10 +86,19 @@ static BenchResult RunMode(string mode, string input, string pythonExe, TextMode
 {
     string tempOut = Path.GetTempFileName();
     var times = new List<double>();
-    for (int i=0;i<5;i++)
+    var text = File.ReadAllText(input);
+
+    if (mode == "python")
     {
-        var sw = Stopwatch.StartNew();
-        if (mode == "python")
+        // warm-up run
+        var warmPsi = new ProcessStartInfo(pythonExe, $"tools/markitdown_ocr.py {input} -o {tempOut}")
+        {
+            RedirectStandardOutput = true,
+            RedirectStandardError = true
+        };
+        using (var warm = Process.Start(warmPsi)!) { warm.WaitForExit(); }
+
+        for (int i = 0; i < 5; i++)
         {
             var psi = new ProcessStartInfo(pythonExe, $"tools/markitdown_ocr.py {input} -o {tempOut}")
             {
@@ -93,64 +106,90 @@ static BenchResult RunMode(string mode, string input, string pythonExe, TextMode
                 RedirectStandardError = true
             };
             using var p = Process.Start(psi)!;
+            string outText = p.StandardOutput.ReadToEnd();
             p.WaitForExit();
+            var m = Regex.Match(outText, @"Markdown ms: ([0-9.]+)");
+            if (m.Success)
+                times.Add(double.Parse(m.Groups[1].Value, System.Globalization.CultureInfo.InvariantCulture));
         }
-        else
-        {
-            var text = File.ReadAllText(input);
-            var md = TextModeConverter.Convert(text, mode, config);
-            File.WriteAllText(tempOut, md);
-        }
-        sw.Stop();
-        times.Add(sw.Elapsed.TotalMilliseconds);
     }
+    else
+    {
+        // warm-up
+        TextModeConverter.Convert(text, mode, config);
+        string last = string.Empty;
+        for (int i = 0; i < 5; i++)
+        {
+            var sw = Stopwatch.StartNew();
+            last = TextModeConverter.Convert(text, mode, config);
+            sw.Stop();
+            times.Add(sw.Elapsed.TotalMilliseconds);
+        }
+        File.WriteAllText(tempOut, last);
+    }
+
     string outputPath = $"artifacts/outputs/{Path.GetFileNameWithoutExtension(input)}.{mode}.md";
     File.Copy(tempOut, outputPath, true);
     var avg = times.Average();
-    var std = Math.Sqrt(times.Select(t => Math.Pow(t-avg,2)).Average());
-    return new BenchResult{Mode=mode, Trials=times, AvgMs=avg, StdMs=std, Output=outputPath};
+    var std = Math.Sqrt(times.Select(t => Math.Pow(t - avg, 2)).Average());
+    return new BenchResult { Mode = mode, Trials = times, AvgMs = avg, StdMs = std, Output = outputPath };
 }
 
 static string HtmlReport(List<BenchResult> results)
 {
     var sb = new System.Text.StringBuilder();
-    sb.AppendLine("<html><body><table border='1'><tr><th>Mode</th><th>avg ms</th><th>std ms</th><th>F1</th><th>CER</th><th>LineRatio</th></tr>");
+    sb.AppendLine("<html><body><table border='1'><tr><th>Mode</th><th>md_ms avg</th><th>md_ms std</th></tr>");
     foreach (var r in results)
-    {
-        var f1 = r.Similarity?.F1.ToString("F2") ?? "-";
-        var cer = r.Similarity?.Cer.ToString("F2") ?? "-";
-        var lr = r.Similarity?.LineRatio.ToString("F2") ?? "-";
-        sb.AppendLine($"<tr><td>{r.Mode}</td><td>{r.AvgMs:F1}</td><td>{r.StdMs:F1}</td><td>{f1}</td><td>{cer}</td><td>{lr}</td></tr>");
-    }
-    sb.AppendLine("</table>");
-    var python = results.FirstOrDefault(r=>r.Mode=="python");
-    if (python != null)
-    {
-        var pyText = WebUtility.HtmlEncode(File.ReadAllText(python.Output));
-        foreach (var r in results.Where(r=>r.Mode!="python"))
-        {
-            var candText = WebUtility.HtmlEncode(File.ReadAllText(r.Output));
-            sb.AppendLine($"<h2>Python vs {r.Mode}</h2><table border='1'><tr><th>Python</th><th>{r.Mode}</th></tr><tr><td><pre>{pyText}</pre></td><td><pre>{candText}</pre></td></tr></table>");
-        }
-    }
-    sb.AppendLine("</body></html>");
+        sb.AppendLine($"<tr><td>{r.Mode}</td><td>{r.AvgMs:F1}</td><td>{r.StdMs:F1}</td></tr>");
+    sb.AppendLine("</table></body></html>");
     return sb.ToString();
 }
 
 static string SummaryMarkdown(List<BenchResult> results)
 {
     var sb = new System.Text.StringBuilder();
-    sb.AppendLine("## Executive summary");
-    foreach (var mode in new[]{"pre","post-v0","post-v01","post-v02","post-v03"})
+    sb.AppendLine("## Timing summary (md_ms)");
+    sb.AppendLine("| mode | avg md_ms | std md_ms |");
+    sb.AppendLine("| --- | --- | --- |");
+    foreach (var r in results)
+        sb.AppendLine($"| {r.Mode} | {r.AvgMs:F1} | {r.StdMs:F1} |");
+
+    var pre = results.FirstOrDefault(r=>r.Mode=="pre");
+    var post = results.FirstOrDefault(r=>r.Mode=="post-v0");
+    var py = results.FirstOrDefault(r=>r.Mode=="python");
+    if (pre!=null && post!=null)
     {
-        var r = results.FirstOrDefault(x=>x.Mode==mode);
-        if (r?.Similarity!=null)
-            sb.AppendLine($"- {mode}: token-F1 {r.Similarity.F1:F2}, CER {r.Similarity.Cer:F2}, line-ratio {r.Similarity.LineRatio:F2}, {r.AvgMs:F1}±{r.StdMs:F1} ms");
+        var delta = (post.AvgMs - pre.AvgMs) / pre.AvgMs * 100.0;
+        sb.AppendLine($"\npost-v0 vs pre: {delta:F1}%");
     }
-    var py = results.FirstOrDefault(x=>x.Mode=="python");
-    if(py!=null)
-        sb.AppendLine($"- python: {py.AvgMs:F1}±{py.StdMs:F1} ms");
+    if (py!=null && post!=null)
+    {
+        var delta = (post.AvgMs - py.AvgMs) / py.AvgMs * 100.0;
+        sb.AppendLine($"\npost-v0 vs python: {delta:F1}%");
+    }
     return sb.ToString();
+}
+
+static string GetPythonVersion(string pythonExe)
+{
+    try
+    {
+        var psi = new ProcessStartInfo(pythonExe, "--version")
+        {
+            RedirectStandardOutput = true,
+            RedirectStandardError = true
+        };
+        using var p = Process.Start(psi)!;
+        string output = p.StandardOutput.ReadToEnd();
+        string err = p.StandardError.ReadToEnd();
+        p.WaitForExit();
+        var ver = (output + err).Trim();
+        return ver;
+    }
+    catch
+    {
+        return "";
+    }
 }
 
 static string? GetOption(string[] args, string name)
