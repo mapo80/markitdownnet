@@ -56,20 +56,27 @@ static void Extract(Dictionary<string, string> o)
     var threads = o["--threads"];
     var engineOpt = o.GetValueOrDefault("--engine", "markitdownnet");
     var refresh = o.GetValueOrDefault("--refresh", engineOpt);
-    var doNet = engineOpt == "markitdownnet" || engineOpt == "both";
-    var doCli = engineOpt == "markitdownnet-cli" || engineOpt == "both";
-    var refNet = refresh.Contains("markitdownnet");
-    var refCli = refresh.Contains("markitdownnet-cli");
+    var pyExe = o.GetValueOrDefault("--python-exe", "python3");
+    bool Has(string opt, string val) => opt == "all" || opt.Split(',', StringSplitOptions.RemoveEmptyEntries).Contains(val);
+    var doNet = Has(engineOpt, "markitdownnet");
+    var doCli = Has(engineOpt, "markitdownnet-cli");
+    var doPy = Has(engineOpt, "pytesseract-cli");
+    var refNet = Has(refresh, "markitdownnet");
+    var refCli = Has(refresh, "markitdownnet-cli");
+    var refPy = Has(refresh, "pytesseract-cli");
 
     Environment.SetEnvironmentVariable("OMP_THREAD_LIMIT", threads);
 
     var netDir = Path.Combine(outDir, "markitdownnet");
     var cliDir = Path.Combine(outDir, "markitdownnet-cli");
+    var pyDir = Path.Combine(outDir, "pytesseract-cli");
     Directory.CreateDirectory(outDir);
     if (refNet && Directory.Exists(netDir)) Directory.Delete(netDir, true);
     if (refCli && Directory.Exists(cliDir)) Directory.Delete(cliDir, true);
+    if (refPy && Directory.Exists(pyDir)) Directory.Delete(pyDir, true);
     if (doNet) Directory.CreateDirectory(netDir);
     if (doCli) Directory.CreateDirectory(cliDir);
+    if (doPy) Directory.CreateDirectory(pyDir);
     var rasterRoot = Path.Combine("artifacts/_sanity/raster");
     Directory.CreateDirectory(rasterRoot);
 
@@ -88,7 +95,7 @@ static void Extract(Dictionary<string, string> o)
     var timings = File.Exists(timingsPath)
         ? JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, long>>>(File.ReadAllText(timingsPath))!
         : new Dictionary<string, Dictionary<string, long>>();
-    long totalNet = 0, totalCli = 0;
+    long totalNet = 0, totalCli = 0, totalPy = 0;
 
     foreach (var datasetPath in datasets)
     {
@@ -107,7 +114,7 @@ static void Extract(Dictionary<string, string> o)
             using var rpix = Pix.LoadFromFile(rasterPath);
             var depth = rpix.Depth;
 
-            long tNet = 0, tCli = 0;
+            long tNet = 0, tCli = 0, tPy = 0;
             if (doNet)
             {
                 var sw = Stopwatch.StartNew();
@@ -157,12 +164,41 @@ static void Extract(Dictionary<string, string> o)
                 timings[rel] = entryCli;
                 Console.WriteLine($"engine=cli file={dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} psm=6 oem=1 preserve_spaces=1 time_ms={tCli} raster={rasterPath}");
             }
+
+            if (doPy)
+            {
+                var sw = Stopwatch.StartNew();
+                var script = $"from PIL import Image; import pytesseract; p=r'''{rasterPath}'''; print(pytesseract.image_to_string(Image.open(p), lang='{langs}', config='--psm {psm} -c preserve_interword_spaces=1 -c user_defined_dpi=300'))";
+                var tmpPy = Path.GetTempFileName();
+                File.WriteAllText(tmpPy, script);
+                var psi = new ProcessStartInfo(pyExe)
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true
+                };
+                psi.ArgumentList.Add(tmpPy);
+                using var p = Process.Start(psi);
+                var output = p!.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+                File.Delete(tmpPy);
+                sw.Stop();
+                tPy = sw.ElapsedMilliseconds;
+                var outPyDir = Path.Combine(outDir, "pytesseract-cli", dataset);
+                Directory.CreateDirectory(outPyDir);
+                File.WriteAllText(Path.Combine(outPyDir, name), output.Trim());
+                totalPy += tPy;
+                var entryPy = timings.ContainsKey(rel) ? timings[rel] : new Dictionary<string, long>();
+                entryPy["pytesseract-cli"] = tPy;
+                timings[rel] = entryPy;
+                Console.WriteLine($"engine=pycli file={dataset}/{Path.GetFileName(file)} dpi=300 depth={depth} psm=6 oem=1 preserve_spaces=1 time_ms={tPy} raster={rasterPath}");
+            }
         }
     }
 
     File.WriteAllText(timingsPath, JsonSerializer.Serialize(timings, new JsonSerializerOptions { WriteIndented = true }));
     if (doNet) Console.WriteLine($"TOTAL markitdownnet {totalNet} ms");
     if (doCli) Console.WriteLine($"TOTAL markitdownnet-cli {totalCli} ms");
+    if (doPy) Console.WriteLine($"TOTAL pytesseract-cli {totalPy} ms");
     engine?.Dispose();
 }
 
@@ -195,9 +231,11 @@ static void Compare(Dictionary<string, string> o)
     var outJson = o["--out-json"];
     var outMd = o["--out-md"];
     var runCliSanity = o.ContainsKey("--run-cli-sanity");
+    var pyExe = o.GetValueOrDefault("--python-exe", "python3");
 
     var netDir = Path.Combine(ocrDir, "markitdownnet");
     var cliDir = Path.Combine(ocrDir, "markitdownnet-cli");
+    var pyDir = Path.Combine(ocrDir, "pytesseract-cli");
     var gtDir = Path.Combine(ocrDir, "pytesseract");
     var timings = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, long>>>(File.ReadAllText(Path.Combine(ocrDir, "timings.json")))!;
 
@@ -252,6 +290,26 @@ static void Compare(Dictionary<string, string> o)
                 };
             }
 
+            if (File.Exists(Path.Combine(pyDir, ds, name)))
+            {
+                var hyp = Normalize(File.ReadAllText(Path.Combine(pyDir, ds, name)));
+                var (tp, tr, tf) = TokenScores(gt, hyp);
+                var (lcRef, lcHyp, lf) = LineScores(gt, hyp);
+                var cer = Cer(gt, hyp);
+                timings.TryGetValue(rel, out var t);
+                runs["pytesseract-cli"] = new FileRun
+                {
+                    cer_char = cer,
+                    token_precision = tp,
+                    token_recall = tr,
+                    token_f1 = tf,
+                    line_count_ref = lcRef,
+                    line_count_hyp = lcHyp,
+                    line_f1 = lf,
+                    time_ms = t?["pytesseract-cli"] ?? 0
+                };
+            }
+
             files.Add(new FileMetrics { dataset = ds, file = Path.GetFileNameWithoutExtension(name), runs = runs });
         }
     }
@@ -276,6 +334,7 @@ static void Compare(Dictionary<string, string> o)
         }
     }
 
+    var engOrder = new[] { "markitdownnet", "markitdownnet-cli", "pytesseract-cli" };
     var runConfig = new Dictionary<string, object>
     {
         ["os"] = RuntimeInformation.OSDescription.Trim(),
@@ -285,7 +344,7 @@ static void Compare(Dictionary<string, string> o)
         ["psm"] = o.GetValueOrDefault("--psm", "6"),
         ["threads"] = o.GetValueOrDefault("--threads", "1"),
         ["timings_unit"] = "ms",
-        ["engines"] = global.Keys.ToArray()
+        ["engines"] = engOrder.Where(global.ContainsKey).ToArray()
     };
 
     if (global.ContainsKey("markitdownnet"))
@@ -317,6 +376,27 @@ static void Compare(Dictionary<string, string> o)
             eng_checksum = File.Exists(engPath) ? Checksum(engPath) : ""
         };
     }
+    if (global.ContainsKey("pytesseract-cli"))
+    {
+        var script = "import pytesseract, json; print(json.dumps({'pytesseract_version': getattr(pytesseract, '__version__', ''), 'tesseract_cmd': getattr(pytesseract, 'tesseract_cmd', '')}))";
+        var psi = new ProcessStartInfo(pyExe)
+        {
+            RedirectStandardOutput = true,
+            RedirectStandardError = true
+        };
+        psi.ArgumentList.Add("-c");
+        psi.ArgumentList.Add(script);
+        using var p = Process.Start(psi);
+        var output = p!.StandardOutput.ReadToEnd();
+        p.WaitForExit();
+        var info = new Dictionary<string, string>();
+        try { info = JsonSerializer.Deserialize<Dictionary<string, string>>(output.Trim()) ?? new(); } catch { }
+        runConfig["pytesseract-cli"] = new
+        {
+            pytesseract_version = info.GetValueOrDefault("pytesseract_version", ""),
+            tesseract_cmd = info.GetValueOrDefault("tesseract_cmd", "")
+        };
+    }
 
     var bench = new
     {
@@ -336,14 +416,16 @@ static void Compare(Dictionary<string, string> o)
     sb.AppendLine("# OCR Benchmark\n");
     sb.AppendLine("## Global");
     sb.AppendLine("| engine | CER | Token-F1 | line_F1 | n_files |");
-    foreach (var kv in bench.aggregate.global)
-        sb.AppendLine($"| {kv.Key} | {kv.Value.cer_avg:F4} | {kv.Value.token_f1_avg:F4} | {kv.Value.line_f1_avg:F4} | {kv.Value.n_files} |");
+    foreach (var eng in engOrder)
+        if (bench.aggregate.global.TryGetValue(eng, out var g))
+            sb.AppendLine($"| {eng} | {g.cer_avg:F4} | {g.token_f1_avg:F4} | {g.line_f1_avg:F4} | {g.n_files} |");
     sb.AppendLine();
     sb.AppendLine("## By dataset");
     sb.AppendLine("| dataset | engine | CER | Token-F1 | line_F1 | n_files |");
     foreach (var ds in bench.aggregate.by_dataset)
-        foreach (var eng in ds.Value)
-            sb.AppendLine($"| {ds.Key} | {eng.Key} | {eng.Value.cer_avg:F4} | {eng.Value.token_f1_avg:F4} | {eng.Value.line_f1_avg:F4} | {eng.Value.n_files} |");
+        foreach (var eng in engOrder)
+            if (ds.Value.TryGetValue(eng, out var m))
+                sb.AppendLine($"| {ds.Key} | {eng} | {m.cer_avg:F4} | {m.token_f1_avg:F4} | {m.line_f1_avg:F4} | {m.n_files} |");
     sb.AppendLine();
     sb.AppendLine("## Run config");
     foreach (var kv in runConfig)

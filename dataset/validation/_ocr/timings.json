@@ -1,98 +1,122 @@
 {
-  "FUNSD/82200067_0069.txt": {
-    "markitdownnet": 793,
-    "pytesseract": 2055
-  },
-  "FUNSD/82092117.txt": {
-    "markitdownnet": 588,
-    "pytesseract": 1963
-  },
-  "FUNSD/82250337_0338.txt": {
-    "markitdownnet": 477,
-    "pytesseract": 1845
-  },
-  "FUNSD/82251504.txt": {
-    "markitdownnet": 736,
-    "pytesseract": 2042
-  },
-  "SROIE2019/X00016469671.txt": {
-    "markitdownnet": 395,
-    "pytesseract": 1755
-  },
-  "SROIE2019/X51005230605.txt": {
-    "markitdownnet": 369,
-    "pytesseract": 1849
-  },
-  "SROIE2019/X51005200931.txt": {
-    "markitdownnet": 505,
-    "pytesseract": 2056
-  },
-  "SROIE2019/X00016469670.txt": {
-    "markitdownnet": 470,
-    "pytesseract": 1928
-  },
-  "ICDAR/cTDaR_t00080.txt": {
-    "markitdownnet": 2544,
-    "pytesseract": 5772
-  },
-  "ICDAR/cTDaR_t00015.txt": {
-    "markitdownnet": 3229,
-    "pytesseract": 4978
-  },
-  "ICDAR/cTDaR_t00014.txt": {
-    "markitdownnet": 2974,
-    "pytesseract": 4447
-  },
-  "ICDAR/cTDaR_t00016.txt": {
-    "markitdownnet": 3991,
-    "pytesseract": 5629
-  },
-  "PUBTABLES/PMC1064082_table_1.txt": {
-    "markitdownnet": 328,
-    "pytesseract": 1721
-  },
-  "PUBTABLES/PMC1064078_table_6.txt": {
-    "markitdownnet": 254,
-    "pytesseract": 1864
-  },
-  "PUBTABLES/PMC1064078_table_0.txt": {
-    "markitdownnet": 291,
-    "pytesseract": 1813
+  "PUBTABLES/PMC1064078_table_4.txt": {
+    "markitdownnet": 1160,
+    "markitdownnet-cli": 668,
+    "pytesseract-cli": 1315
   },
   "PUBTABLES/PMC1064078_table_3.txt": {
-    "markitdownnet": 301,
-    "pytesseract": 1844
-  },
-  "PUBTABLES/PMC1064082_table_0.txt": {
-    "markitdownnet": 119,
-    "pytesseract": 1539
-  },
-  "PUBTABLES/PMC1064078_table_4.txt": {
-    "markitdownnet": 2522,
-    "pytesseract": 1842
+    "markitdownnet": 268,
+    "markitdownnet-cli": 447,
+    "pytesseract-cli": 1132
   },
   "PUBTABLES/PMC1064078_table_5.txt": {
-    "markitdownnet": 503,
-    "pytesseract": 2071
+    "markitdownnet": 483,
+    "markitdownnet-cli": 642,
+    "pytesseract-cli": 1269
+  },
+  "PUBTABLES/PMC1064078_table_0.txt": {
+    "markitdownnet": 227,
+    "markitdownnet-cli": 394,
+    "pytesseract-cli": 1024
+  },
+  "PUBTABLES/PMC1064078_table_6.txt": {
+    "markitdownnet": 185,
+    "markitdownnet-cli": 370,
+    "pytesseract-cli": 1035
+  },
+  "PUBTABLES/PMC1064082_table_0.txt": {
+    "markitdownnet": 35,
+    "markitdownnet-cli": 227,
+    "pytesseract-cli": 863
+  },
+  "PUBTABLES/PMC1064082_table_1.txt": {
+    "markitdownnet": 267,
+    "markitdownnet-cli": 414,
+    "pytesseract-cli": 1118
   },
   "PUBTABLES/PMC1064078_table_2.txt": {
-    "markitdownnet": 2023,
-    "pytesseract": 1791
+    "markitdownnet": 275,
+    "markitdownnet-cli": 508,
+    "pytesseract-cli": 1146
   },
-  "MARMOT/10.1.1.1.2013_64.txt": {
-    "markitdownnet": 713,
-    "pytesseract": 1912
+  "FUNSD/82251504.txt": {
+    "markitdownnet": 494,
+    "markitdownnet-cli": 718,
+    "pytesseract-cli": 1331
   },
-  "MARMOT/10.1.1.1.2014_4.txt": {
-    "markitdownnet": 917,
-    "pytesseract": 2616
+  "FUNSD/82092117.txt": {
+    "markitdownnet": 505,
+    "markitdownnet-cli": 645,
+    "pytesseract-cli": 1349
+  },
+  "FUNSD/82250337_0338.txt": {
+    "markitdownnet": 448,
+    "markitdownnet-cli": 606,
+    "pytesseract-cli": 1280
+  },
+  "FUNSD/82200067_0069.txt": {
+    "markitdownnet": 672,
+    "markitdownnet-cli": 760,
+    "pytesseract-cli": 1426
+  },
+  "SROIE2019/X51005200931.txt": {
+    "markitdownnet": 421,
+    "markitdownnet-cli": 633,
+    "pytesseract-cli": 1297
+  },
+  "SROIE2019/X00016469671.txt": {
+    "markitdownnet": 298,
+    "markitdownnet-cli": 482,
+    "pytesseract-cli": 1112
+  },
+  "SROIE2019/X00016469670.txt": {
+    "markitdownnet": 356,
+    "markitdownnet-cli": 499,
+    "pytesseract-cli": 1106
+  },
+  "SROIE2019/X51005230605.txt": {
+    "markitdownnet": 228,
+    "markitdownnet-cli": 457,
+    "pytesseract-cli": 1216
+  },
+  "ICDAR/cTDaR_t00015.txt": {
+    "markitdownnet": 3068,
+    "markitdownnet-cli": 3604,
+    "pytesseract-cli": 6117
+  },
+  "ICDAR/cTDaR_t00014.txt": {
+    "markitdownnet": 2725,
+    "markitdownnet-cli": 3258,
+    "pytesseract-cli": 5652
+  },
+  "ICDAR/cTDaR_t00016.txt": {
+    "markitdownnet": 3461,
+    "markitdownnet-cli": 3916,
+    "pytesseract-cli": 6165
+  },
+  "ICDAR/cTDaR_t00080.txt": {
+    "markitdownnet": 2614,
+    "markitdownnet-cli": 2758,
+    "pytesseract-cli": 4116
   },
   "MARMOT/10.1.1.1.2006_3.txt": {
-    "markitdownnet": 1636,
-    "pytesseract": 3309
+    "markitdownnet": 1427,
+    "markitdownnet-cli": 1659,
+    "pytesseract-cli": 2234
+  },
+  "MARMOT/10.1.1.1.2014_4.txt": {
+    "markitdownnet": 770,
+    "markitdownnet-cli": 1032,
+    "pytesseract-cli": 1684
+  },
+  "MARMOT/10.1.1.1.2013_64.txt": {
+    "markitdownnet": 391,
+    "markitdownnet-cli": 622,
+    "pytesseract-cli": 1228
   },
   "MARMOT/10.1.1.1.2013_63.txt": {
-    "markitdownnet": 703,
-    "pytesseract": 2309
+    "markitdownnet": 478,
+    "markitdownnet-cli": 644,
+    "pytesseract-cli": 1370
   }
 }
