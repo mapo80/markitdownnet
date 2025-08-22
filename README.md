@@ -163,6 +163,20 @@ The [markitdown](https://github.com/mapo80/markitdown) project reports Docling d
 
 On these samples, MarkItDownNet completed Markdown conversion roughly an order of magnitude faster for PDFs and produced bounding boxes two orders of magnitude quicker than markitdown.
 
+## MD parity bench
+
+Generazione MD:
+
+```
+dotnet run --project tools/MarkItDownNet.Cli -- mdgen --txt-dir dataset/validation/_ocr/pytesseract-cli --out-dir dataset/validation/_md --engines markitdown,markitdownnet --python-exe python3
+```
+
+Confronto & report:
+
+```
+dotnet run --project tools/MarkItDownNet.Cli -- mdcompare --md-dir dataset/validation/_md --baseline markitdown --out-json artifacts/mdbench/bench-md.json --out-html artifacts/mdbench/bench-md.html --summary-md artifacts/mdbench/summary-md.md
+```
+
 ## License
 
 MIT
