@@ -177,6 +177,14 @@ Confronto & report:
 dotnet run --project tools/MarkItDownNet.Cli -- mdcompare --md-dir dataset/validation/_md --baseline markitdown --out-json artifacts/mdbench/bench-md.json --out-html artifacts/mdbench/bench-md.html --summary-md artifacts/mdbench/summary-md.md
 ```
 
+## MD parity STRICT (manifest + hash)
+
+Esegui il controllo completo (manifest, hash e metriche) con:
+
+```bash
+ bash tools/scripts/md_parity_strict.sh
+```
+
 ## License
 
 MIT
