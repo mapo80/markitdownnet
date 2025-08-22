@@ -1,0 +1,30 @@
+<h1>MD Parity Report</h1>
+<h2>Run config</h2>
+<pre>{"os":"Ubuntu 24.04.2 LTS","dotnet":"9.0.0","python":"Python 3.12.10","timings_unit":"ms"}</pre>
+<h2>Text metrics</h2>
+<table><tr><th>scope</th><th>CER</th><th>Token-F1</th><th>Line-F1</th><th>n_files</th></tr>
+<tr><td>global</td><td>0.000</td><td>1.000</td><td>1.000</td><td>24</td></tr>
+<tr><td>FUNSD</td><td>0.000</td><td>1.000</td><td>1.000</td><td>4</td></tr>
+<tr><td>ICDAR</td><td>0.000</td><td>1.000</td><td>1.000</td><td>4</td></tr>
+<tr><td>SROIE2019</td><td>0.000</td><td>1.000</td><td>1.000</td><td>4</td></tr>
+<tr><td>PUBTABLES</td><td>0.000</td><td>1.000</td><td>1.000</td><td>8</td></tr>
+<tr><td>MARMOT</td><td>0.000</td><td>1.000</td><td>1.000</td><td>4</td></tr>
+</table>
+<h2>Structure metrics</h2>
+<table><tr><th>scope</th><th>H1</th><th>H2</th><th>H3</th><th>list_items</th><th>max_list_depth</th><th>tables_count</th><th>pipes_lines_avg</th></tr>
+<tr><td>global</td><td>16</td><td>7</td><td>0</td><td>4</td><td>1</td><td>31</td><td>5.8</td></tr>
+<tr><td>FUNSD</td><td>5</td><td>2</td><td>0</td><td>0</td><td>0</td><td>5</td><td>1.2</td></tr>
+<tr><td>ICDAR</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>21</td><td>30.8</td></tr>
+<tr><td>SROIE2019</td><td>11</td><td>5</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0.2</td></tr>
+<tr><td>PUBTABLES</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0.1</td></tr>
+<tr><td>MARMOT</td><td>0</td><td>0</td><td>0</td><td>3</td><td>1</td><td>3</td><td>2.0</td></tr>
+</table>
+<h2>Sample diffs (worst 3 / best 3)</h2>
+<ol>
+<li>worst FUNSD/82250337_0338.md <a href='dataset/validation/_md/markitdown/FUNSD/82250337_0338.md'>ref</a> <a href='dataset/validation/_md/markitdownnet/FUNSD/82250337_0338.md'>hyp</a></li>
+<li>worst FUNSD/82092117.md <a href='dataset/validation/_md/markitdown/FUNSD/82092117.md'>ref</a> <a href='dataset/validation/_md/markitdownnet/FUNSD/82092117.md'>hyp</a></li>
+<li>worst FUNSD/82251504.md <a href='dataset/validation/_md/markitdown/FUNSD/82251504.md'>ref</a> <a href='dataset/validation/_md/markitdownnet/FUNSD/82251504.md'>hyp</a></li>
+<li>best FUNSD/82250337_0338.md <a href='dataset/validation/_md/markitdown/FUNSD/82250337_0338.md'>ref</a> <a href='dataset/validation/_md/markitdownnet/FUNSD/82250337_0338.md'>hyp</a></li>
+<li>best FUNSD/82092117.md <a href='dataset/validation/_md/markitdown/FUNSD/82092117.md'>ref</a> <a href='dataset/validation/_md/markitdownnet/FUNSD/82092117.md'>hyp</a></li>
+<li>best FUNSD/82251504.md <a href='dataset/validation/_md/markitdown/FUNSD/82251504.md'>ref</a> <a href='dataset/validation/_md/markitdownnet/FUNSD/82251504.md'>hyp</a></li>
+</ol>
