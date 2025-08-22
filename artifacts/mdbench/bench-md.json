@@ -3,634 +3,11 @@
   "run_config": {
     "os": "Ubuntu 24.04.2 LTS",
     "dotnet": "9.0.0",
-    "python": "Python 3.12.10",
-    "timings_unit": "ms"
+    "python": "3.12.10",
+    "timings_unit": "ms",
+    "strict": true
   },
   "files": [
-    {
-      "dataset": "FUNSD",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/FUNSD/82250337_0338.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/FUNSD/82250337_0338.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82250337_0338.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 207,
-          "hyp_tokens": 207,
-          "token_matches": 207,
-          "ref_chars": 1343,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 50,
-          "line_count_hyp": 50,
-          "line_f1": 1,
-          "line_matches": 50
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 2,
-            "h2": 1,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          },
-          "hyp_struct": {
-            "h1": 2,
-            "h2": 1,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          }
-        }
-      },
-      "timing_ms": 79
-    },
-    {
-      "dataset": "FUNSD",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/FUNSD/82092117.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/FUNSD/82092117.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82092117.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 201,
-          "hyp_tokens": 201,
-          "token_matches": 201,
-          "ref_chars": 1184,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 32,
-          "line_count_hyp": 32,
-          "line_f1": 1,
-          "line_matches": 32
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 2,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 3,
-            "pipes_lines_count": 3,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
-          },
-          "hyp_struct": {
-            "h1": 2,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 3,
-            "pipes_lines_count": 3,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
-          }
-        }
-      },
-      "timing_ms": 49
-    },
-    {
-      "dataset": "FUNSD",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/FUNSD/82251504.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/FUNSD/82251504.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82251504.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 128,
-          "hyp_tokens": 128,
-          "token_matches": 128,
-          "ref_chars": 803,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 35,
-          "line_count_hyp": 35,
-          "line_f1": 1,
-          "line_matches": 35
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 1,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          },
-          "hyp_struct": {
-            "h1": 1,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          }
-        }
-      },
-      "timing_ms": 22
-    },
-    {
-      "dataset": "FUNSD",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/FUNSD/82200067_0069.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/FUNSD/82200067_0069.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82200067_0069.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 124,
-          "hyp_tokens": 124,
-          "token_matches": 124,
-          "ref_chars": 617,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 33,
-          "line_count_hyp": 33,
-          "line_f1": 1,
-          "line_matches": 33
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 1,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 2,
-            "pipes_lines_count": 2,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 1,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 2,
-            "pipes_lines_count": 2,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
-          }
-        }
-      },
-      "timing_ms": 7
-    },
-    {
-      "dataset": "ICDAR",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/ICDAR/cTDaR_t00016.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/ICDAR/cTDaR_t00016.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00016.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 579,
-          "hyp_tokens": 579,
-          "token_matches": 579,
-          "ref_chars": 2108,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 44,
-          "line_count_hyp": 44,
-          "line_f1": 1,
-          "line_matches": 44
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 5,
-            "pipes_lines_count": 40,
-            "median_pipes_per_line": 3,
-            "max_pipes_per_line": 7
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 5,
-            "pipes_lines_count": 40,
-            "median_pipes_per_line": 3,
-            "max_pipes_per_line": 7
-          }
-        }
-      },
-      "timing_ms": 154
-    },
-    {
-      "dataset": "ICDAR",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/ICDAR/cTDaR_t00015.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/ICDAR/cTDaR_t00015.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00015.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 451,
-          "hyp_tokens": 451,
-          "token_matches": 451,
-          "ref_chars": 1894,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 36,
-          "line_count_hyp": 36,
-          "line_f1": 1,
-          "line_matches": 36
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 4,
-            "pipes_lines_count": 29,
-            "median_pipes_per_line": 3,
-            "max_pipes_per_line": 10
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 4,
-            "pipes_lines_count": 29,
-            "median_pipes_per_line": 3,
-            "max_pipes_per_line": 10
-          }
-        }
-      },
-      "timing_ms": 118
-    },
-    {
-      "dataset": "ICDAR",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/ICDAR/cTDaR_t00014.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/ICDAR/cTDaR_t00014.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00014.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 392,
-          "hyp_tokens": 392,
-          "token_matches": 392,
-          "ref_chars": 1667,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 38,
-          "line_count_hyp": 38,
-          "line_f1": 1,
-          "line_matches": 38
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 4,
-            "pipes_lines_count": 34,
-            "median_pipes_per_line": 3,
-            "max_pipes_per_line": 6
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 4,
-            "pipes_lines_count": 34,
-            "median_pipes_per_line": 3,
-            "max_pipes_per_line": 6
-          }
-        }
-      },
-      "timing_ms": 84
-    },
-    {
-      "dataset": "ICDAR",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/ICDAR/cTDaR_t00080.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/ICDAR/cTDaR_t00080.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00080.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 539,
-          "hyp_tokens": 539,
-          "token_matches": 539,
-          "ref_chars": 1798,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 56,
-          "line_count_hyp": 56,
-          "line_f1": 1,
-          "line_matches": 56
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 8,
-            "pipes_lines_count": 20,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 3
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 8,
-            "pipes_lines_count": 20,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 3
-          }
-        }
-      },
-      "timing_ms": 114
-    },
-    {
-      "dataset": "SROIE2019",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/SROIE2019/X51005200931.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/SROIE2019/X51005200931.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X51005200931.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 168,
-          "hyp_tokens": 168,
-          "token_matches": 168,
-          "ref_chars": 894,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 41,
-          "line_count_hyp": 41,
-          "line_f1": 1,
-          "line_matches": 41
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 5,
-            "h2": 1,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          },
-          "hyp_struct": {
-            "h1": 5,
-            "h2": 1,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          }
-        }
-      },
-      "timing_ms": 15
-    },
-    {
-      "dataset": "SROIE2019",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/SROIE2019/X00016469670.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/SROIE2019/X00016469670.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X00016469670.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 110,
-          "hyp_tokens": 110,
-          "token_matches": 110,
-          "ref_chars": 652,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 28,
-          "line_count_hyp": 28,
-          "line_f1": 1,
-          "line_matches": 28
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 1,
-            "h2": 2,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          },
-          "hyp_struct": {
-            "h1": 1,
-            "h2": 2,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          }
-        }
-      },
-      "timing_ms": 8
-    },
-    {
-      "dataset": "SROIE2019",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/SROIE2019/X51005230605.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/SROIE2019/X51005230605.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X51005230605.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 92,
-          "hyp_tokens": 92,
-          "token_matches": 92,
-          "ref_chars": 503,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 25,
-          "line_count_hyp": 25,
-          "line_f1": 1,
-          "line_matches": 25
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 3,
-            "h2": 1,
-            "h3": 0,
-            "list_items": 1,
-            "max_list_depth": 1,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          },
-          "hyp_struct": {
-            "h1": 3,
-            "h2": 1,
-            "h3": 0,
-            "list_items": 1,
-            "max_list_depth": 1,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          }
-        }
-      },
-      "timing_ms": 5
-    },
-    {
-      "dataset": "SROIE2019",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/SROIE2019/X00016469671.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/SROIE2019/X00016469671.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X00016469671.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 99,
-          "hyp_tokens": 99,
-          "token_matches": 99,
-          "ref_chars": 594,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 28,
-          "line_count_hyp": 28,
-          "line_f1": 1,
-          "line_matches": 28
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 2,
-            "h2": 1,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 1,
-            "pipes_lines_count": 1,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
-          },
-          "hyp_struct": {
-            "h1": 2,
-            "h2": 1,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 1,
-            "pipes_lines_count": 1,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
-          }
-        }
-      },
-      "timing_ms": 10
-    },
     {
       "dataset": "PUBTABLES",
       "paths": {
@@ -681,319 +58,12 @@
           }
         }
       },
-      "timing_ms": 11
-    },
-    {
-      "dataset": "PUBTABLES",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064078_table_3.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064078_table_3.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_3.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 69,
-          "hyp_tokens": 69,
-          "token_matches": 69,
-          "ref_chars": 294,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 13,
-          "line_count_hyp": 13,
-          "line_f1": 1,
-          "line_matches": 13
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          }
-        }
-      },
-      "timing_ms": 1
-    },
-    {
-      "dataset": "PUBTABLES",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064078_table_6.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064078_table_6.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_6.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 51,
-          "hyp_tokens": 51,
-          "token_matches": 51,
-          "ref_chars": 220,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 7,
-          "line_count_hyp": 7,
-          "line_f1": 1,
-          "line_matches": 7
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          }
-        }
-      },
-      "timing_ms": 1
-    },
-    {
-      "dataset": "PUBTABLES",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064082_table_0.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064082_table_0.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064082_table_0.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 13,
-          "hyp_tokens": 13,
-          "token_matches": 13,
-          "ref_chars": 71,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 3,
-          "line_count_hyp": 3,
-          "line_f1": 1,
-          "line_matches": 3
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          }
-        }
-      },
-      "timing_ms": 0
-    },
-    {
-      "dataset": "PUBTABLES",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064078_table_2.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064078_table_2.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_2.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 134,
-          "hyp_tokens": 134,
-          "token_matches": 134,
-          "ref_chars": 667,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 19,
-          "line_count_hyp": 19,
-          "line_f1": 1,
-          "line_matches": 19
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 1,
-            "pipes_lines_count": 1,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 1,
-            "pipes_lines_count": 1,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
-          }
-        }
-      },
-      "timing_ms": 8
-    },
-    {
-      "dataset": "PUBTABLES",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064078_table_0.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064078_table_0.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_0.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 109,
-          "hyp_tokens": 109,
-          "token_matches": 109,
-          "ref_chars": 618,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 10,
-          "line_count_hyp": 10,
-          "line_f1": 1,
-          "line_matches": 10
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          }
-        }
-      },
-      "timing_ms": 11
-    },
-    {
-      "dataset": "PUBTABLES",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064082_table_1.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064082_table_1.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064082_table_1.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 134,
-          "hyp_tokens": 134,
-          "token_matches": 134,
-          "ref_chars": 729,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 26,
-          "line_count_hyp": 26,
-          "line_f1": 1,
-          "line_matches": 26
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
-          }
-        }
-      },
-      "timing_ms": 10
+      "timing_ms": 51,
+      "hash": {
+        "ref_sha256": "6cc8a3f14fb48afd47596074439d9538c8cd53f3b25fbee2dbc6bffc02745298",
+        "hyp_sha256": "6cc8a3f14fb48afd47596074439d9538c8cd53f3b25fbee2dbc6bffc02745298",
+        "equal": true
+      }
     },
     {
       "dataset": "PUBTABLES",
@@ -1045,14 +115,19 @@
           }
         }
       },
-      "timing_ms": 10
+      "timing_ms": 20,
+      "hash": {
+        "ref_sha256": "907f846d0625af9979a912098c1063a8e26436277b161ac172468b951cc6f4a4",
+        "hyp_sha256": "907f846d0625af9979a912098c1063a8e26436277b161ac172468b951cc6f4a4",
+        "equal": true
+      }
     },
     {
-      "dataset": "MARMOT",
+      "dataset": "PUBTABLES",
       "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/MARMOT/10.1.1.1.2014_4.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/MARMOT/10.1.1.1.2014_4.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/MARMOT/10.1.1.1.2014_4.mdready.txt"
+        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064078_table_2.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064078_table_2.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_2.mdready.txt"
       },
       "metrics": {
         "text": {
@@ -1060,10 +135,694 @@
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "ref_tokens": 429,
-          "hyp_tokens": 429,
-          "token_matches": 429,
-          "ref_chars": 2336,
+          "ref_tokens": 134,
+          "hyp_tokens": 134,
+          "token_matches": 134,
+          "ref_chars": 667,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 19,
+          "line_count_hyp": 19,
+          "line_f1": 1,
+          "line_matches": 19
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 1,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 1,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "timing_ms": 18,
+      "hash": {
+        "ref_sha256": "3469eb171c9c1edcda2b82eb12efaff141522e6ba431253de82fef791dc0dd9d",
+        "hyp_sha256": "3469eb171c9c1edcda2b82eb12efaff141522e6ba431253de82fef791dc0dd9d",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064078_table_3.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064078_table_3.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_3.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 69,
+          "hyp_tokens": 69,
+          "token_matches": 69,
+          "ref_chars": 294,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 13,
+          "line_count_hyp": 13,
+          "line_f1": 1,
+          "line_matches": 13
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 2,
+      "hash": {
+        "ref_sha256": "c2ae42eb2c9a1e0c32d2766ba029790c2d157f2c3b9fdd167e311edd490b4c2b",
+        "hyp_sha256": "c2ae42eb2c9a1e0c32d2766ba029790c2d157f2c3b9fdd167e311edd490b4c2b",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064078_table_6.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064078_table_6.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_6.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 51,
+          "hyp_tokens": 51,
+          "token_matches": 51,
+          "ref_chars": 220,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 7,
+          "line_count_hyp": 7,
+          "line_f1": 1,
+          "line_matches": 7
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 1,
+      "hash": {
+        "ref_sha256": "7a8071883667bb266d4f2ddffde548fd4eba00f1859b1f9335fb1b1792e4a0ae",
+        "hyp_sha256": "7a8071883667bb266d4f2ddffde548fd4eba00f1859b1f9335fb1b1792e4a0ae",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064082_table_1.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064082_table_1.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064082_table_1.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 134,
+          "hyp_tokens": 134,
+          "token_matches": 134,
+          "ref_chars": 729,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 26,
+          "line_count_hyp": 26,
+          "line_f1": 1,
+          "line_matches": 26
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 11,
+      "hash": {
+        "ref_sha256": "73cf00330357c9e835818f236082a82323a78c8d68c7bca568d8bf3cecd2cbfd",
+        "hyp_sha256": "73cf00330357c9e835818f236082a82323a78c8d68c7bca568d8bf3cecd2cbfd",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064082_table_0.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064082_table_0.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064082_table_0.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 13,
+          "hyp_tokens": 13,
+          "token_matches": 13,
+          "ref_chars": 71,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 3,
+          "line_count_hyp": 3,
+          "line_f1": 1,
+          "line_matches": 3
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 0,
+      "hash": {
+        "ref_sha256": "460c2d859ca9b402f8939575b11771f0d6ba054c1c8e97c5c2b6bf4e732553d8",
+        "hyp_sha256": "460c2d859ca9b402f8939575b11771f0d6ba054c1c8e97c5c2b6bf4e732553d8",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "PUBTABLES",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/PUBTABLES/PMC1064078_table_0.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/PUBTABLES/PMC1064078_table_0.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/PUBTABLES/PMC1064078_table_0.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 109,
+          "hyp_tokens": 109,
+          "token_matches": 109,
+          "ref_chars": 618,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 10,
+          "line_count_hyp": 10,
+          "line_f1": 1,
+          "line_matches": 10
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 8,
+      "hash": {
+        "ref_sha256": "d9a4e207e2753762e332497b8194a1812c194673889caf7f52ed7e5c5c86b3e1",
+        "hyp_sha256": "d9a4e207e2753762e332497b8194a1812c194673889caf7f52ed7e5c5c86b3e1",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/SROIE2019/X00016469670.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/SROIE2019/X00016469670.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X00016469670.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 110,
+          "hyp_tokens": 110,
+          "token_matches": 110,
+          "ref_chars": 652,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "line_matches": 28
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 1,
+            "h2": 2,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 1,
+            "h2": 2,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 14,
+      "hash": {
+        "ref_sha256": "f1d4d949f09ce1716363840c1c4c074667851ef2c3ed4cf1686706cc83058b62",
+        "hyp_sha256": "f1d4d949f09ce1716363840c1c4c074667851ef2c3ed4cf1686706cc83058b62",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/SROIE2019/X00016469671.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/SROIE2019/X00016469671.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X00016469671.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 99,
+          "hyp_tokens": 99,
+          "token_matches": 99,
+          "ref_chars": 594,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 28,
+          "line_count_hyp": 28,
+          "line_f1": 1,
+          "line_matches": 28
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 2,
+            "h2": 1,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 1,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          },
+          "hyp_struct": {
+            "h1": 2,
+            "h2": 1,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 1,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "timing_ms": 7,
+      "hash": {
+        "ref_sha256": "88cdce65af5b0310b61fe2fa01dcbb8be5d23aa89186fe7927fd5cc44baa2922",
+        "hyp_sha256": "88cdce65af5b0310b61fe2fa01dcbb8be5d23aa89186fe7927fd5cc44baa2922",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/SROIE2019/X51005200931.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/SROIE2019/X51005200931.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X51005200931.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 168,
+          "hyp_tokens": 168,
+          "token_matches": 168,
+          "ref_chars": 894,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 41,
+          "line_count_hyp": 41,
+          "line_f1": 1,
+          "line_matches": 41
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 5,
+            "h2": 1,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 5,
+            "h2": 1,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 16,
+      "hash": {
+        "ref_sha256": "d9a53687a16a419f32e948ba6cc828f334c089cda5a3a711113eab0aeb30d576",
+        "hyp_sha256": "d9a53687a16a419f32e948ba6cc828f334c089cda5a3a711113eab0aeb30d576",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "SROIE2019",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/SROIE2019/X51005230605.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/SROIE2019/X51005230605.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/SROIE2019/X51005230605.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 92,
+          "hyp_tokens": 92,
+          "token_matches": 92,
+          "ref_chars": 503,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 25,
+          "line_count_hyp": 25,
+          "line_f1": 1,
+          "line_matches": 25
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 3,
+            "h2": 1,
+            "h3": 0,
+            "list_items": 1,
+            "max_list_depth": 1,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 3,
+            "h2": 1,
+            "h3": 0,
+            "list_items": 1,
+            "max_list_depth": 1,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 7,
+      "hash": {
+        "ref_sha256": "36c7e24d7223364ec49437bd9c894cc229df99f64e01c033ab9e99a515ac2539",
+        "hyp_sha256": "36c7e24d7223364ec49437bd9c894cc229df99f64e01c033ab9e99a515ac2539",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "ICDAR",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/ICDAR/cTDaR_t00016.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/ICDAR/cTDaR_t00016.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00016.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 579,
+          "hyp_tokens": 579,
+          "token_matches": 579,
+          "ref_chars": 2108,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 44,
+          "line_count_hyp": 44,
+          "line_f1": 1,
+          "line_matches": 44
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 5,
+            "pipes_lines_count": 40,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 7
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 5,
+            "pipes_lines_count": 40,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 7
+          }
+        }
+      },
+      "timing_ms": 142,
+      "hash": {
+        "ref_sha256": "7c4bf66d196060f3b53a1436ae403794af402fd147c298b0788c34413413b1ad",
+        "hyp_sha256": "7c4bf66d196060f3b53a1436ae403794af402fd147c298b0788c34413413b1ad",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "ICDAR",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/ICDAR/cTDaR_t00080.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/ICDAR/cTDaR_t00080.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00080.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 539,
+          "hyp_tokens": 539,
+          "token_matches": 539,
+          "ref_chars": 1798,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 56,
+          "line_count_hyp": 56,
+          "line_f1": 1,
+          "line_matches": 56
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 8,
+            "pipes_lines_count": 20,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 3
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 8,
+            "pipes_lines_count": 20,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 3
+          }
+        }
+      },
+      "timing_ms": 97,
+      "hash": {
+        "ref_sha256": "c5c693ef5d705585dcf93494d115a3b23e0004c1f99e1917fcb0ffcb7b1efe54",
+        "hyp_sha256": "c5c693ef5d705585dcf93494d115a3b23e0004c1f99e1917fcb0ffcb7b1efe54",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "ICDAR",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/ICDAR/cTDaR_t00015.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/ICDAR/cTDaR_t00015.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00015.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 451,
+          "hyp_tokens": 451,
+          "token_matches": 451,
+          "ref_chars": 1894,
           "char_distance": 0
         },
         "lines": {
@@ -1077,34 +836,39 @@
             "h1": 0,
             "h2": 0,
             "h3": 0,
-            "list_items": 1,
-            "max_list_depth": 1,
-            "tables_count": 2,
-            "pipes_lines_count": 7,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 4,
+            "pipes_lines_count": 29,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 10
           },
           "hyp_struct": {
             "h1": 0,
             "h2": 0,
             "h3": 0,
-            "list_items": 1,
-            "max_list_depth": 1,
-            "tables_count": 2,
-            "pipes_lines_count": 7,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 4,
+            "pipes_lines_count": 29,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 10
           }
         }
       },
-      "timing_ms": 152
+      "timing_ms": 111,
+      "hash": {
+        "ref_sha256": "cf6c9b8ed69e7f9d221db2f5e18436a7a93506ecdc7845d1b7d51071bc39f4b2",
+        "hyp_sha256": "cf6c9b8ed69e7f9d221db2f5e18436a7a93506ecdc7845d1b7d51071bc39f4b2",
+        "equal": true
+      }
     },
     {
-      "dataset": "MARMOT",
+      "dataset": "ICDAR",
       "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/MARMOT/10.1.1.1.2013_64.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/MARMOT/10.1.1.1.2013_64.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/MARMOT/10.1.1.1.2013_64.mdready.txt"
+        "ref_md": "dataset/validation/_md/markitdown/ICDAR/cTDaR_t00014.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/ICDAR/cTDaR_t00014.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/ICDAR/cTDaR_t00014.mdready.txt"
       },
       "metrics": {
         "text": {
@@ -1112,17 +876,17 @@
           "token_precision": 1,
           "token_recall": 1,
           "token_f1": 1,
-          "ref_tokens": 108,
-          "hyp_tokens": 108,
-          "token_matches": 108,
-          "ref_chars": 677,
+          "ref_tokens": 392,
+          "hyp_tokens": 392,
+          "token_matches": 392,
+          "ref_chars": 1667,
           "char_distance": 0
         },
         "lines": {
-          "line_count_ref": 21,
-          "line_count_hyp": 21,
+          "line_count_ref": 38,
+          "line_count_hyp": 38,
           "line_f1": 1,
-          "line_matches": 21
+          "line_matches": 38
         },
         "structure": {
           "ref_struct": {
@@ -1131,10 +895,10 @@
             "h3": 0,
             "list_items": 0,
             "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
+            "tables_count": 4,
+            "pipes_lines_count": 34,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 6
           },
           "hyp_struct": {
             "h1": 0,
@@ -1142,66 +906,19 @@
             "h3": 0,
             "list_items": 0,
             "max_list_depth": 0,
-            "tables_count": 0,
-            "pipes_lines_count": 0,
-            "median_pipes_per_line": 0,
-            "max_pipes_per_line": 0
+            "tables_count": 4,
+            "pipes_lines_count": 34,
+            "median_pipes_per_line": 3,
+            "max_pipes_per_line": 6
           }
         }
       },
-      "timing_ms": 8
-    },
-    {
-      "dataset": "MARMOT",
-      "paths": {
-        "ref_md": "dataset/validation/_md/markitdown/MARMOT/10.1.1.1.2006_3.md",
-        "hyp_md": "dataset/validation/_md/markitdownnet/MARMOT/10.1.1.1.2006_3.md",
-        "src_txt": "dataset/validation/_ocr/pytesseract-cli/MARMOT/10.1.1.1.2006_3.mdready.txt"
-      },
-      "metrics": {
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1,
-          "ref_tokens": 812,
-          "hyp_tokens": 812,
-          "token_matches": 812,
-          "ref_chars": 4918,
-          "char_distance": 0
-        },
-        "lines": {
-          "line_count_ref": 101,
-          "line_count_hyp": 101,
-          "line_f1": 1,
-          "line_matches": 101
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 2,
-            "max_list_depth": 1,
-            "tables_count": 1,
-            "pipes_lines_count": 1,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 2,
-            "max_list_depth": 1,
-            "tables_count": 1,
-            "pipes_lines_count": 1,
-            "median_pipes_per_line": 1,
-            "max_pipes_per_line": 1
-          }
-        }
-      },
-      "timing_ms": 677
+      "timing_ms": 98,
+      "hash": {
+        "ref_sha256": "7cc5d31f2436c10212bf7d8d9426a1f821f40152e9a33c8b50d1dded19f93b59",
+        "hyp_sha256": "7cc5d31f2436c10212bf7d8d9426a1f821f40152e9a33c8b50d1dded19f93b59",
+        "equal": true
+      }
     },
     {
       "dataset": "MARMOT",
@@ -1253,12 +970,454 @@
           }
         }
       },
-      "timing_ms": 58
+      "timing_ms": 40,
+      "hash": {
+        "ref_sha256": "c4f5838cfbfa9398e7eb9891760bca8b3173d4f90568d5f6a697f1ea0515acbd",
+        "hyp_sha256": "c4f5838cfbfa9398e7eb9891760bca8b3173d4f90568d5f6a697f1ea0515acbd",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "MARMOT",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/MARMOT/10.1.1.1.2013_64.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/MARMOT/10.1.1.1.2013_64.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/MARMOT/10.1.1.1.2013_64.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 108,
+          "hyp_tokens": 108,
+          "token_matches": 108,
+          "ref_chars": 677,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 21,
+          "line_count_hyp": 21,
+          "line_f1": 1,
+          "line_matches": 21
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 17,
+      "hash": {
+        "ref_sha256": "9aed060658d043c1fb6421f059170cc8be259082e648611de4440d5d84ea7b9a",
+        "hyp_sha256": "9aed060658d043c1fb6421f059170cc8be259082e648611de4440d5d84ea7b9a",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "MARMOT",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/MARMOT/10.1.1.1.2014_4.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/MARMOT/10.1.1.1.2014_4.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/MARMOT/10.1.1.1.2014_4.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 429,
+          "hyp_tokens": 429,
+          "token_matches": 429,
+          "ref_chars": 2336,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 36,
+          "line_count_hyp": 36,
+          "line_f1": 1,
+          "line_matches": 36
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 1,
+            "max_list_depth": 1,
+            "tables_count": 2,
+            "pipes_lines_count": 7,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 1,
+            "max_list_depth": 1,
+            "tables_count": 2,
+            "pipes_lines_count": 7,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "timing_ms": 188,
+      "hash": {
+        "ref_sha256": "11c381854368b3f61b2fa1a8e20aaff8ca34d62ed0ba7a45f47d67e98314f82a",
+        "hyp_sha256": "11c381854368b3f61b2fa1a8e20aaff8ca34d62ed0ba7a45f47d67e98314f82a",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "MARMOT",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/MARMOT/10.1.1.1.2006_3.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/MARMOT/10.1.1.1.2006_3.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/MARMOT/10.1.1.1.2006_3.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 812,
+          "hyp_tokens": 812,
+          "token_matches": 812,
+          "ref_chars": 4918,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 101,
+          "line_count_hyp": 101,
+          "line_f1": 1,
+          "line_matches": 101
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 2,
+            "max_list_depth": 1,
+            "tables_count": 1,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 2,
+            "max_list_depth": 1,
+            "tables_count": 1,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "timing_ms": 694,
+      "hash": {
+        "ref_sha256": "092c15694fdc3a1c046c6a7909e34f93d436dfa755caa9480222d7e93aad42c8",
+        "hyp_sha256": "092c15694fdc3a1c046c6a7909e34f93d436dfa755caa9480222d7e93aad42c8",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/FUNSD/82200067_0069.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/FUNSD/82200067_0069.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82200067_0069.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 124,
+          "hyp_tokens": 124,
+          "token_matches": 124,
+          "ref_chars": 617,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 33,
+          "line_count_hyp": 33,
+          "line_f1": 1,
+          "line_matches": 33
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 1,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 2,
+            "pipes_lines_count": 2,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 1,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 2,
+            "pipes_lines_count": 2,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "timing_ms": 10,
+      "hash": {
+        "ref_sha256": "cfabde60decb1267edc0f6f5685fc5dc38cf42c10fec137f08b8f0d1330a3c9b",
+        "hyp_sha256": "cfabde60decb1267edc0f6f5685fc5dc38cf42c10fec137f08b8f0d1330a3c9b",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/FUNSD/82250337_0338.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/FUNSD/82250337_0338.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82250337_0338.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 207,
+          "hyp_tokens": 207,
+          "token_matches": 207,
+          "ref_chars": 1343,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 50,
+          "line_count_hyp": 50,
+          "line_f1": 1,
+          "line_matches": 50
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 2,
+            "h2": 1,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 2,
+            "h2": 1,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 51,
+      "hash": {
+        "ref_sha256": "1e3bccada8e7f7902ab14c8725676e9985617e5e444a7d8d49e854383c23b63a",
+        "hyp_sha256": "1e3bccada8e7f7902ab14c8725676e9985617e5e444a7d8d49e854383c23b63a",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/FUNSD/82251504.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/FUNSD/82251504.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82251504.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 128,
+          "hyp_tokens": 128,
+          "token_matches": 128,
+          "ref_chars": 803,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 35,
+          "line_count_hyp": 35,
+          "line_f1": 1,
+          "line_matches": 35
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 1,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          },
+          "hyp_struct": {
+            "h1": 1,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 0,
+            "pipes_lines_count": 0,
+            "median_pipes_per_line": 0,
+            "max_pipes_per_line": 0
+          }
+        }
+      },
+      "timing_ms": 26,
+      "hash": {
+        "ref_sha256": "c948a5041e049c76c01edbaf2bc9bb4f0e6dceb93810cee95556baead6534e4a",
+        "hyp_sha256": "c948a5041e049c76c01edbaf2bc9bb4f0e6dceb93810cee95556baead6534e4a",
+        "equal": true
+      }
+    },
+    {
+      "dataset": "FUNSD",
+      "paths": {
+        "ref_md": "dataset/validation/_md/markitdown/FUNSD/82092117.md",
+        "hyp_md": "dataset/validation/_md/markitdownnet/FUNSD/82092117.md",
+        "src_txt": "dataset/validation/_ocr/pytesseract-cli/FUNSD/82092117.mdready.txt"
+      },
+      "metrics": {
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1,
+          "ref_tokens": 201,
+          "hyp_tokens": 201,
+          "token_matches": 201,
+          "ref_chars": 1184,
+          "char_distance": 0
+        },
+        "lines": {
+          "line_count_ref": 32,
+          "line_count_hyp": 32,
+          "line_f1": 1,
+          "line_matches": 32
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 2,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 3,
+            "pipes_lines_count": 3,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          },
+          "hyp_struct": {
+            "h1": 2,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 3,
+            "pipes_lines_count": 3,
+            "median_pipes_per_line": 1,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "timing_ms": 43,
+      "hash": {
+        "ref_sha256": "b24338adeaa5a105a397c91894ea3af8f04dd2436086f369d355d360e7c9d9b5",
+        "hyp_sha256": "b24338adeaa5a105a397c91894ea3af8f04dd2436086f369d355d360e7c9d9b5",
+        "equal": true
+      }
     }
   ],
   "aggregate": {
     "by_dataset": {
-      "FUNSD": {
+      "PUBTABLES": {
+        "n_files": 8,
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "lines": {
+          "line_count_ref": 114,
+          "line_count_hyp": 114,
+          "line_f1": 1
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 1,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 0.125,
+            "max_pipes_per_line": 1
+          },
+          "hyp_struct": {
+            "h1": 0,
+            "h2": 0,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 1,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 0.125,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "SROIE2019": {
         "n_files": 4,
         "text": {
           "cer_char": 0,
@@ -1267,31 +1426,31 @@
           "token_f1": 1
         },
         "lines": {
-          "line_count_ref": 150,
-          "line_count_hyp": 150,
+          "line_count_ref": 122,
+          "line_count_hyp": 122,
           "line_f1": 1
         },
         "structure": {
           "ref_struct": {
-            "h1": 5,
-            "h2": 2,
+            "h1": 11,
+            "h2": 5,
             "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 5,
-            "pipes_lines_count": 5,
-            "median_pipes_per_line": 0.5,
+            "list_items": 1,
+            "max_list_depth": 1,
+            "tables_count": 1,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 0.25,
             "max_pipes_per_line": 1
           },
           "hyp_struct": {
-            "h1": 5,
-            "h2": 2,
+            "h1": 11,
+            "h2": 5,
             "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 5,
-            "pipes_lines_count": 5,
-            "median_pipes_per_line": 0.5,
+            "list_items": 1,
+            "max_list_depth": 1,
+            "tables_count": 1,
+            "pipes_lines_count": 1,
+            "median_pipes_per_line": 0.25,
             "max_pipes_per_line": 1
           }
         }
@@ -1334,82 +1493,6 @@
           }
         }
       },
-      "SROIE2019": {
-        "n_files": 4,
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1
-        },
-        "lines": {
-          "line_count_ref": 122,
-          "line_count_hyp": 122,
-          "line_f1": 1
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 11,
-            "h2": 5,
-            "h3": 0,
-            "list_items": 1,
-            "max_list_depth": 1,
-            "tables_count": 1,
-            "pipes_lines_count": 1,
-            "median_pipes_per_line": 0.25,
-            "max_pipes_per_line": 1
-          },
-          "hyp_struct": {
-            "h1": 11,
-            "h2": 5,
-            "h3": 0,
-            "list_items": 1,
-            "max_list_depth": 1,
-            "tables_count": 1,
-            "pipes_lines_count": 1,
-            "median_pipes_per_line": 0.25,
-            "max_pipes_per_line": 1
-          }
-        }
-      },
-      "PUBTABLES": {
-        "n_files": 8,
-        "text": {
-          "cer_char": 0,
-          "token_precision": 1,
-          "token_recall": 1,
-          "token_f1": 1
-        },
-        "lines": {
-          "line_count_ref": 114,
-          "line_count_hyp": 114,
-          "line_f1": 1
-        },
-        "structure": {
-          "ref_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 1,
-            "pipes_lines_count": 1,
-            "median_pipes_per_line": 0.125,
-            "max_pipes_per_line": 1
-          },
-          "hyp_struct": {
-            "h1": 0,
-            "h2": 0,
-            "h3": 0,
-            "list_items": 0,
-            "max_list_depth": 0,
-            "tables_count": 1,
-            "pipes_lines_count": 1,
-            "median_pipes_per_line": 0.125,
-            "max_pipes_per_line": 1
-          }
-        }
-      },
       "MARMOT": {
         "n_files": 4,
         "text": {
@@ -1443,6 +1526,44 @@
             "max_list_depth": 1,
             "tables_count": 3,
             "pipes_lines_count": 8,
+            "median_pipes_per_line": 0.5,
+            "max_pipes_per_line": 1
+          }
+        }
+      },
+      "FUNSD": {
+        "n_files": 4,
+        "text": {
+          "cer_char": 0,
+          "token_precision": 1,
+          "token_recall": 1,
+          "token_f1": 1
+        },
+        "lines": {
+          "line_count_ref": 150,
+          "line_count_hyp": 150,
+          "line_f1": 1
+        },
+        "structure": {
+          "ref_struct": {
+            "h1": 5,
+            "h2": 2,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 5,
+            "pipes_lines_count": 5,
+            "median_pipes_per_line": 0.5,
+            "max_pipes_per_line": 1
+          },
+          "hyp_struct": {
+            "h1": 5,
+            "h2": 2,
+            "h3": 0,
+            "list_items": 0,
+            "max_list_depth": 0,
+            "tables_count": 5,
+            "pipes_lines_count": 5,
             "median_pipes_per_line": 0.5,
             "max_pipes_per_line": 1
           }

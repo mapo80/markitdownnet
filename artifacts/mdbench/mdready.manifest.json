@@ -1,0 +1,128 @@
+{
+  "schema": "mdready-manifest@1",
+  "generated_utc": "2025-08-22T08:33:53.8253920Z",
+  "files": [
+    {
+      "rel": "FUNSD/82092117.mdready.txt",
+      "sha256": "ab9f0adee7332dac06f1a2d60b66b6d66d9b94863ee7c12c35c06e67233828a2",
+      "bytes": 1515
+    },
+    {
+      "rel": "FUNSD/82200067_0069.mdready.txt",
+      "sha256": "103ba1aa484ee0576ed49496529b64f6cface22e12d33f097c4da5fd4e58616d",
+      "bytes": 870
+    },
+    {
+      "rel": "FUNSD/82250337_0338.mdready.txt",
+      "sha256": "9d7cbbd1cc0d88849875e26c110e4f647b0a8fbee303165f5cd0722702b14d3e",
+      "bytes": 1648
+    },
+    {
+      "rel": "FUNSD/82251504.mdready.txt",
+      "sha256": "65ced107d31cc5e96e70eb01a51b2f8244774ec6ace0712d8b15220e284aeec5",
+      "bytes": 1076
+    },
+    {
+      "rel": "ICDAR/cTDaR_t00014.mdready.txt",
+      "sha256": "7cc5d31f2436c10212bf7d8d9426a1f821f40152e9a33c8b50d1dded19f93b59",
+      "bytes": 2933
+    },
+    {
+      "rel": "ICDAR/cTDaR_t00015.mdready.txt",
+      "sha256": "cf6c9b8ed69e7f9d221db2f5e18436a7a93506ecdc7845d1b7d51071bc39f4b2",
+      "bytes": 2583
+    },
+    {
+      "rel": "ICDAR/cTDaR_t00016.mdready.txt",
+      "sha256": "7c4bf66d196060f3b53a1436ae403794af402fd147c298b0788c34413413b1ad",
+      "bytes": 3634
+    },
+    {
+      "rel": "ICDAR/cTDaR_t00080.mdready.txt",
+      "sha256": "c5c693ef5d705585dcf93494d115a3b23e0004c1f99e1917fcb0ffcb7b1efe54",
+      "bytes": 3773
+    },
+    {
+      "rel": "MARMOT/10.1.1.1.2006_3.mdready.txt",
+      "sha256": "092c15694fdc3a1c046c6a7909e34f93d436dfa755caa9480222d7e93aad42c8",
+      "bytes": 5609
+    },
+    {
+      "rel": "MARMOT/10.1.1.1.2013_63.mdready.txt",
+      "sha256": "c4f5838cfbfa9398e7eb9891760bca8b3173d4f90568d5f6a697f1ea0515acbd",
+      "bytes": 1902
+    },
+    {
+      "rel": "MARMOT/10.1.1.1.2013_64.mdready.txt",
+      "sha256": "9aed060658d043c1fb6421f059170cc8be259082e648611de4440d5d84ea7b9a",
+      "bytes": 968
+    },
+    {
+      "rel": "MARMOT/10.1.1.1.2014_4.mdready.txt",
+      "sha256": "11c381854368b3f61b2fa1a8e20aaff8ca34d62ed0ba7a45f47d67e98314f82a",
+      "bytes": 2800
+    },
+    {
+      "rel": "PUBTABLES/PMC1064078_table_0.mdready.txt",
+      "sha256": "d9a4e207e2753762e332497b8194a1812c194673889caf7f52ed7e5c5c86b3e1",
+      "bytes": 923
+    },
+    {
+      "rel": "PUBTABLES/PMC1064078_table_2.mdready.txt",
+      "sha256": "3469eb171c9c1edcda2b82eb12efaff141522e6ba431253de82fef791dc0dd9d",
+      "bytes": 784
+    },
+    {
+      "rel": "PUBTABLES/PMC1064078_table_3.mdready.txt",
+      "sha256": "c2ae42eb2c9a1e0c32d2766ba029790c2d157f2c3b9fdd167e311edd490b4c2b",
+      "bytes": 374
+    },
+    {
+      "rel": "PUBTABLES/PMC1064078_table_4.mdready.txt",
+      "sha256": "6cc8a3f14fb48afd47596074439d9538c8cd53f3b25fbee2dbc6bffc02745298",
+      "bytes": 1417
+    },
+    {
+      "rel": "PUBTABLES/PMC1064078_table_5.mdready.txt",
+      "sha256": "907f846d0625af9979a912098c1063a8e26436277b161ac172468b951cc6f4a4",
+      "bytes": 892
+    },
+    {
+      "rel": "PUBTABLES/PMC1064078_table_6.mdready.txt",
+      "sha256": "7a8071883667bb266d4f2ddffde548fd4eba00f1859b1f9335fb1b1792e4a0ae",
+      "bytes": 239
+    },
+    {
+      "rel": "PUBTABLES/PMC1064082_table_0.mdready.txt",
+      "sha256": "460c2d859ca9b402f8939575b11771f0d6ba054c1c8e97c5c2b6bf4e732553d8",
+      "bytes": 151
+    },
+    {
+      "rel": "PUBTABLES/PMC1064082_table_1.mdready.txt",
+      "sha256": "73cf00330357c9e835818f236082a82323a78c8d68c7bca568d8bf3cecd2cbfd",
+      "bytes": 1697
+    },
+    {
+      "rel": "SROIE2019/X00016469670.mdready.txt",
+      "sha256": "3f752faaf5ba3e4dc0414f114c685e900f98c6a67927a90ccbd46ba6dbe23e7f",
+      "bytes": 735
+    },
+    {
+      "rel": "SROIE2019/X00016469671.mdready.txt",
+      "sha256": "69c5618621aa3b8adf5577f12ed8664de872164e611a5b2f82b78d2f07141355",
+      "bytes": 671
+    },
+    {
+      "rel": "SROIE2019/X51005200931.mdready.txt",
+      "sha256": "81190e136e2a79029096e3f862eb763ab9442fe32196918cadf58379499779a5",
+      "bytes": 1218
+    },
+    {
+      "rel": "SROIE2019/X51005230605.mdready.txt",
+      "sha256": "2c0675f2e4e46fcd6056571e669000c22781830326797a3781b5e3634eadacc2",
+      "bytes": 700
+    }
+  ],
+  "total_files": 24,
+  "total_bytes": 39112
+}
