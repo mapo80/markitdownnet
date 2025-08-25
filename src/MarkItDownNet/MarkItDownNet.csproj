@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RapidOcrNet\RapidOcrNet\RapidOcrNet.csproj" />
+    <ProjectReference Include="..\..\rc\RapidOcrNet\RapidOcrNet.csproj" />
   </ItemGroup>
 
   <ItemGroup>

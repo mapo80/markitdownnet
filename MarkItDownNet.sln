@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1373335-A37
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkItDownNet", "src\MarkItDownNet\MarkItDownNet.csproj", "{CC583AE0-BA2D-407F-B8A6-C01E804141D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidOcrNet", "src\RapidOcrNet\RapidOcrNet\RapidOcrNet.csproj", "{0C59ACD9-727D-424F-A5DB-A879828250EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidOcrNet", "rc\RapidOcrNet\RapidOcrNet.csproj", "{0C59ACD9-727D-424F-A5DB-A879828250EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B651CF8E-1DD9-41DC-8D4B-A9791749EBC6}"
 EndProject
