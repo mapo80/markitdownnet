@@ -55,6 +55,18 @@
 		<None Update="models\en_PP-OCRv3_rec_infer_opt.onnx">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="models\it_mobile_v2.0_rec_infer.onnx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="models\latin_PP-OCRv3_mobile_rec_infer.onnx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="models\it_dict.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>		
+		<None Update="models\latin_dict.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>		
 	</ItemGroup>
 
 </Project>
