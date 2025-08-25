@@ -27,8 +27,6 @@
     <!-- Bundled native libraries for Linux (x64) -->
     <None Include="runtimes/linux-x64/native/*" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="runtimes/linux-x64/native" />
     <None Include="runtimes/linux-x64/native/*" CopyToOutputDirectory="PreserveNewest" TargetPath="x64/%(Filename)%(Extension)" />
-    <None Include="..\RapidOcrNet\models\rec\it_mobile_v2.0_rec_infer.onnx" CopyToOutputDirectory="PreserveNewest" Link="models\rec\it_mobile_v2.0_rec_infer.onnx" />
-    <None Include="..\RapidOcrNet\models\labels\it_dict.txt" CopyToOutputDirectory="PreserveNewest" Link="models\labels\it_dict.txt" />
   </ItemGroup>
 
 </Project>
