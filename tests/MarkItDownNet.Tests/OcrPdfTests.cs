@@ -40,6 +40,7 @@ public class OcrPdfTests
         var options = new MarkItDownOptions
         {
             OcrDataPath = "/usr/share/tesseract-ocr/5/tessdata",
+            OcrLanguage = "eng",
             NormalizeMarkdown = false
         };
         var converter = new MarkItDownConverter(options);

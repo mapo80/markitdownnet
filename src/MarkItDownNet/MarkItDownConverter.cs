@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Markdig;
 using Serilog;
+using RapidOcrNet;
 using Tesseract;
 using UglyToad.PdfPig;
 using UglyToad.PdfPig.Content;
@@ -110,12 +111,27 @@ public class MarkItDownConverter
             using (bitmap)
             {
                 pages.Add(new Page(pages.Count + 1, bitmap.Width, bitmap.Height));
-                using var image = SKImage.FromBitmap(bitmap);
-                using var data = image.Encode(SKEncodedImageFormat.Png, 100);
-                using var pix = Pix.LoadFromMemory(data.ToArray());
-                var result = ProcessPix(pix, pages.Count, ct);
-                lines.AddRange(result.lines);
-                words.AddRange(result.words);
+                switch (_options.OcrEngine)
+                {
+                    case OcrEngine.RapidOcr:
+                    {
+                        var rapidResult = ProcessBitmapWithRapidOcr(bitmap, pages.Count, ct);
+                        lines.AddRange(rapidResult.lines);
+                        words.AddRange(rapidResult.words);
+                        break;
+                    }
+                    case OcrEngine.Tesseract:
+                    default:
+                    {
+                        using var image = SKImage.FromBitmap(bitmap);
+                        using var data = image.Encode(SKEncodedImageFormat.Png, 100);
+                        using var pix = Pix.LoadFromMemory(data.ToArray());
+                        var tessResult = ProcessPixWithTesseract(pix, pages.Count, ct);
+                        lines.AddRange(tessResult.lines);
+                        words.AddRange(tessResult.words);
+                        break;
+                    }
+                }
             }
         }
 
@@ -125,14 +141,29 @@ public class MarkItDownConverter
 
     private MarkItDownResult ProcessImage(string path, CancellationToken ct)
     {
-        using var pix = Pix.LoadFromFile(path);
-        var (lines, words) = ProcessPix(pix, 1, ct);
-        var pages = new List<Page> { new Page(1, pix.Width, pix.Height) };
-        var markdown = BuildMarkdown(lines);
-        return new MarkItDownResult(markdown, pages, lines, words);
+        switch (_options.OcrEngine)
+        {
+            case OcrEngine.RapidOcr:
+                using (var bitmap = SKBitmap.Decode(path))
+                {
+                    var (lines, words) = ProcessBitmapWithRapidOcr(bitmap, 1, ct);
+                    var pages = new List<Page> { new Page(1, bitmap.Width, bitmap.Height) };
+                    var markdown = BuildMarkdown(lines);
+                    return new MarkItDownResult(markdown, pages, lines, words);
+                }
+            case OcrEngine.Tesseract:
+            default:
+                using (var pix = Pix.LoadFromFile(path))
+                {
+                    var (lines, words) = ProcessPixWithTesseract(pix, 1, ct);
+                    var pages = new List<Page> { new Page(1, pix.Width, pix.Height) };
+                    var markdown = BuildMarkdown(lines);
+                    return new MarkItDownResult(markdown, pages, lines, words);
+                }
+        }
     }
 
-    private (List<Line> lines, List<Word> words) ProcessPix(Pix pix, int pageNumber, CancellationToken ct)
+    private (List<Line> lines, List<Word> words) ProcessPixWithTesseract(Pix pix, int pageNumber, CancellationToken ct)
     {
         var lines = new List<Line>();
         var words = new List<Word>();
@@ -151,7 +182,7 @@ public class MarkItDownConverter
 
         using var engine = new TesseractEngine(
             _options.OcrDataPath ?? string.Empty,
-            _options.OcrLanguages,
+            _options.OcrLanguage,
             EngineMode.LstmOnly);
         engine.SetVariable("user_defined_dpi", "300");
         engine.SetVariable("preserve_interword_spaces", "1");
@@ -189,9 +220,68 @@ public class MarkItDownConverter
         return (lines, words);
     }
 
+    private (List<Line> lines, List<Word> words) ProcessBitmapWithRapidOcr(SKBitmap bitmap, int pageNumber, CancellationToken ct)
+    {
+        var lines = new List<Line>();
+        var words = new List<Word>();
+
+        using var ocr = new RapidOcr();
+        var lang = _options.OcrLanguage.ToLowerInvariant();
+        if (lang == "ita")
+        {
+            var models = Path.Combine(AppContext.BaseDirectory, "models");
+            var det = Path.Combine(models, "en_PP-OCRv3_det_infer_opt.onnx");
+            var cls = Path.Combine(models, "ch_ppocr_mobile_v2.0_cls_infer_opt.onnx");
+            var rec = Path.Combine(models, "rec", "it_mobile_v2.0_rec_infer.onnx");
+            var keys = Path.Combine(models, "labels", "it_dict.txt");
+            ocr.InitModels(det, cls, rec, keys, 0);
+        }
+        else
+        {
+            ocr.InitModels();
+        }
+
+        try
+        {
+            var result = ocr.Detect(bitmap, RapidOcrOptions.Default);
+            if (result?.TextBlocks == null)
+            {
+                _logger.Warning("RapidOCR returned no text blocks");
+                return (lines, words);
+            }
+
+            foreach (var block in result.TextBlocks)
+            {
+                ct.ThrowIfCancellationRequested();
+                var text = block.GetText();
+                if (string.IsNullOrWhiteSpace(text))
+                    continue;
+                var bbox = Normalize(block.BoxPoints, bitmap.Width, bitmap.Height);
+                lines.Add(new Line(pageNumber, text, bbox));
+                words.Add(new Word(pageNumber, text, bbox));
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "RapidOCR detection failed");
+        }
+
+        return (lines, words);
+    }
+
     private static BoundingBox Normalize(Rect rect, int width, int height)
     {
         return new BoundingBox((double)rect.X1 / width, (double)rect.Y1 / height, (double)rect.Width / width, (double)rect.Height / height);
+    }
+
+    private static BoundingBox Normalize(SKPointI[] points, int width, int height)
+    {
+        var minX = points.Min(p => p.X);
+        var maxX = points.Max(p => p.X);
+        var minY = points.Min(p => p.Y);
+        var maxY = points.Max(p => p.Y);
+        return new BoundingBox((double)minX / width, (double)minY / height,
+            (double)(maxX - minX) / width, (double)(maxY - minY) / height);
     }
 
     private static IEnumerable<IEnumerable<Word>> GroupWordsIntoLines(IReadOnlyList<Word> words)

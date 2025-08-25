@@ -13,14 +13,22 @@
     <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="SkiaSharp" Version="3.119.0" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
     <PackageReference Include="Tesseract" Version="5.2.0" />
     <PackageReference Include="PdfPig" Version="0.1.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RapidOcrNet\RapidOcrNet\RapidOcrNet.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Bundled native libraries for Linux (x64) -->
     <None Include="runtimes/linux-x64/native/*" CopyToOutputDirectory="PreserveNewest" Pack="true" PackagePath="runtimes/linux-x64/native" />
     <None Include="runtimes/linux-x64/native/*" CopyToOutputDirectory="PreserveNewest" TargetPath="x64/%(Filename)%(Extension)" />
+    <None Include="..\RapidOcrNet\models\rec\it_mobile_v2.0_rec_infer.onnx" CopyToOutputDirectory="PreserveNewest" Link="models\rec\it_mobile_v2.0_rec_infer.onnx" />
+    <None Include="..\RapidOcrNet\models\labels\it_dict.txt" CopyToOutputDirectory="PreserveNewest" Link="models\labels\it_dict.txt" />
   </ItemGroup>
 
 </Project>

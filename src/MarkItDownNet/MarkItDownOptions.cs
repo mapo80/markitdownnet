@@ -5,11 +5,14 @@ using Tesseract;
 /// <summary>Runtime options for conversion.</summary>
 public class MarkItDownOptions
 {
+    /// <summary>OCR engine to use.</summary>
+    public OcrEngine OcrEngine { get; set; } = OcrEngine.Tesseract;
+
     /// <summary>Path to Tesseract language data (TESSDATA_PREFIX).</summary>
     public string? OcrDataPath { get; set; }
 
-    /// <summary>Languages for OCR, e.g. "eng" or "ita+eng".</summary>
-    public string OcrLanguages { get; set; } = "ita";
+    /// <summary>Language for OCR (three-letter code such as "eng" or "ita").</summary>
+    public string OcrLanguage { get; set; } = "eng";
 
     /// <summary>Page segmentation mode used by Tesseract.</summary>
     public PageSegMode PageSegMode { get; set; } = PageSegMode.SingleBlock;

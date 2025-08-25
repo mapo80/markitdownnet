@@ -1,0 +1,29 @@
+{
+  "recognition": {
+    "primary": {
+      "name": "it_mobile_v2.0_rec_infer",
+      "url": "https://paddleocr.bj.bcebos.com/dygraph_v2.0/multilingual/it_mobile_v2.0_rec_infer.tar",
+      "tar_sha256": "8db373d73c3fbf6bb0b4db70f927e6c42d6dfd26c4f651204ab9bf7b2d42a143",
+      "onnx": "models/rec/it_mobile_v2.0_rec_infer.onnx",
+      "onnx_sha256": "6a37a6ce533203c1fac840a4da161f9734f90c38f1c65d68e14aed6614310bd5",
+      "opset": 14,
+      "converter": "2025-08-21 20:37:59 [INFO]\tpaddle2onnx-1.3.1 with python>=3.8, paddlepaddle>=2.0.0"
+    },
+    "fallback": {
+      "name": "latin_PP-OCRv3_mobile_rec",
+      "url_dir": "https://huggingface.co/PaddlePaddle/latin_PP-OCRv3_mobile_rec/resolve/main",
+      "onnx": "models/rec/latin_PP-OCRv3_mobile_rec_infer.onnx",
+      "onnx_sha256": "e986ac261c2fe3118879d76d68a00186540911838543da9a0a6e7dd096b965b2",
+      "opset": 14
+    },
+    "latin_v3": {
+      "name": "latin_PP-OCRv3_mobile_rec",
+      "primary_url": "https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/latin_PP-OCRv3_mobile_rec_infer.tar",
+      "fallback_url": "https://paddleocr.bj.bcebos.com/PP-OCRv3/multilingual/latin_PP-OCRv3_rec_infer.tar",
+      "onnx": "models/rec/latin_PP-OCRv3_mobile_rec_infer.onnx",
+      "onnx_sha256": "e986ac261c2fe3118879d76d68a00186540911838543da9a0a6e7dd096b965b2",
+      "opset": 14,
+      "converter": "2025-08-21 21:47:11 [INFO]\tpaddle2onnx-1.3.1 with python>=3.8, paddlepaddle>=2.0.0"
+    }
+  }
+}

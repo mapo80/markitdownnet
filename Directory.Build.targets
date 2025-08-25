@@ -1,0 +1,6 @@
+<Project>
+  <ItemGroup>
+    <PackageReference Update="SkiaSharp" Version="3.119.0" />
+    <PackageReference Update="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
+  </ItemGroup>
+</Project>
