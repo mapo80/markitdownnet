@@ -26,6 +26,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\MarkItDownNet\MarkItDownNet.csproj" />
     <ProjectReference Include="..\..\src\RapidLayoutNet\RapidLayoutNet.csproj" />
+    <ProjectReference Include="..\..\src\RapidTableNet\RapidTableNet.csproj" />
   </ItemGroup>
 
 </Project>

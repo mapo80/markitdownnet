@@ -1,0 +1,34 @@
+namespace RapidTableNet;
+
+internal static class TableCharacters
+{
+    internal static string[] Get(TableModel model) => model switch
+    {
+        TableModel.SlanetPlus => SlanetPlus,
+        TableModel.PpStructureMobileV2 => PpStructure,
+        _ => SlanetPlus
+    };
+
+    private static readonly string[] SlanetPlus =
+    [
+        "<thead>", "</thead>", "<tbody>", "</tbody>", "<tr>", "</tr>", "<td", ">", "</td>",
+        " colspan=\"2\"", " colspan=\"3\"", " colspan=\"4\"", " colspan=\"5\"", " colspan=\"6\"",
+        " colspan=\"7\"", " colspan=\"8\"", " colspan=\"9\"", " colspan=\"10\"", " colspan=\"11\"",
+        " colspan=\"12\"", " colspan=\"13\"", " colspan=\"14\"", " colspan=\"15\"", " colspan=\"16\"",
+        " colspan=\"17\"", " colspan=\"18\"", " colspan=\"19\"", " colspan=\"20\"",
+        " rowspan=\"2\"", " rowspan=\"3\"", " rowspan=\"4\"", " rowspan=\"5\"", " rowspan=\"6\"",
+        " rowspan=\"7\"", " rowspan=\"8\"", " rowspan=\"9\"", " rowspan=\"10\"", " rowspan=\"11\"",
+        " rowspan=\"12\"", " rowspan=\"13\"", " rowspan=\"14\"", " rowspan=\"15\"", " rowspan=\"16\"",
+        " rowspan=\"17\"", " rowspan=\"18\"", " rowspan=\"19\"", " rowspan=\"20\"", "<td></td>"
+    ];
+
+    private static readonly string[] PpStructure =
+    [
+        "<thead>", "</thead>", "<tbody>", "</tbody>", "<tr>", "</tr>", "<td", ">", "</td>",
+        " colspan=\"2\"", " colspan=\"3\"", " colspan=\"4\"", " colspan=\"5\"", " colspan=\"6\"",
+        " colspan=\"7\"", " colspan=\"8\"", " colspan=\"9\"", " colspan=\"10\"", " colspan=\"11\"",
+        " colspan=\"12\"", " colspan=\"13\"", " colspan=\"14\"", " colspan=\"15\"", " colspan=\"16\"",
+        " colspan=\"17\"", " colspan=\"18\"", " colspan=\"19\"", " colspan=\"20\"", " rowspan=\"2\"",
+        " rowspan=\"3\""
+    ];
+}
