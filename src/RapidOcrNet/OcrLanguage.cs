@@ -3,5 +3,6 @@ namespace RapidOcrNet;
 public enum OcrLanguage
 {
     English,
-    Italian
+    Italian,
+    Latin
 }
