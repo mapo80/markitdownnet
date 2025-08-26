@@ -40,7 +40,7 @@ namespace RapidOcrNet
             string recBase = version switch
             {
                 OcrVersion.V3 => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv3_mobile_rec_infer.onnx"),
-                OcrVersion.V4 => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv3_rec_infer.onnx"),
+                OcrVersion.V4 => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv3_mobile_rec_infer.onnx"),
                 _ => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv5_rec_mobile_infer.onnx")
             };
 
