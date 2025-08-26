@@ -36,6 +36,7 @@ public class RapidLayoutTests : IDisposable
         using var bmp = SKBitmap.Decode(path);
         var boxes = _detector.Detect(bmp, 0.3f);
         Assert.NotEmpty(boxes);
+        Assert.DoesNotContain(boxes, b => b.Label == LayoutLabel.Unknown);
         foreach (var b in boxes)
         {
             Assert.InRange(b.X1, 0, bmp.Width);
@@ -60,5 +61,6 @@ public class RapidLayoutTests : IDisposable
         using var bmp = SKBitmap.Decode(path);
         var boxes = _detector.Detect(bmp, 0.3f);
         Assert.Contains(boxes, b => b.Label == LayoutLabel.Table);
+        Assert.Contains(boxes, b => b.Label == LayoutLabel.Text);
     }
 }
