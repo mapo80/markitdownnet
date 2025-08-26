@@ -15,6 +15,9 @@ public class MarkItDownOptions
     /// <summary>Language for OCR.</summary>
     public OcrLanguage OcrLanguage { get; set; } = OcrLanguage.English;
 
+    /// <summary>Version of the RapidOCR ONNX models.</summary>
+    public OcrVersion OcrModelVersion { get; set; } = OcrVersion.V5;
+
     /// <summary>Page segmentation mode used by Tesseract.</summary>
     public PageSegMode PageSegMode { get; set; } = PageSegMode.SingleBlock;
 

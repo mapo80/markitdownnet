@@ -64,7 +64,7 @@ var options = new MarkItDownOptions
 {
     OcrDataPath = "/usr/share/tesseract-ocr/5/tessdata",
     OcrEngine = OcrEngine.Tesseract, // or OcrEngine.RapidOcr
-    OcrLanguage = "eng",
+    OcrLanguage = OcrLanguage.English,
     PdfRasterDpi = 300
 };
 var converter = new MarkItDownConverter(options);
@@ -78,7 +78,7 @@ Console.WriteLine(result.Markdown);
 
 * `OcrEngine` – OCR engine to use (`Tesseract` or `RapidOcr`)
 * `OcrDataPath` – location of Tesseract language data (`TESSDATA_PREFIX`)
-* `OcrLanguage` – language code passed to the OCR engine (e.g. `ita` or `eng`)
+* `OcrLanguage` – language passed to the OCR engine (`English`, `Italian`, `Latin`)
 * `PdfRasterDpi` – DPI for rasterising PDFs during OCR fallback
 * `MinimumNativeWordThreshold` – minimum words before OCR is triggered
 * `NormalizeMarkdown` – toggle Markdig normalisation

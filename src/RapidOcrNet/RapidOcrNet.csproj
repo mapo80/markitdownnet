@@ -15,31 +15,28 @@
 <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="models\ch_ppocr_mobile_v2.0_cls_infer_opt.onnx">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="models\en_dict.txt">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="models\en_PP-OCRv3_det_infer_opt.onnx">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="models\en_PP-OCRv3_rec_infer_opt.onnx">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="models\it_mobile_v2.0_rec_infer.onnx">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="models\latin_PP-OCRv3_mobile_rec_infer.onnx">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-		<None Update="models\it_dict.txt">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>		
-		<None Update="models\latin_dict.txt">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>		
-	</ItemGroup>
+        <ItemGroup>
+                <None Update="models/v2/ch_ppocr_mobile_v2.0_cls_infer_opt.onnx">
+                        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                </None>
+                <None Update="models/v3/ch_PP-OCRv3_det_infer.onnx">
+                        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                </None>
+                <None Update="models/v3/latin_PP-OCRv3_mobile_rec_infer.onnx">
+                        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                </None>
+                <None Update="models/v4/ch_PP-OCRv4_det_infer.onnx">
+                        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                </None>
+                <None Update="models/v4/latin_PP-OCRv3_rec_infer.onnx">
+                        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                </None>
+                <None Update="models/v5/ch_PP-OCRv5_mobile_det.onnx">
+                        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                </None>
+                <None Update="models/v5/latin_PP-OCRv5_rec_mobile_infer.onnx">
+                        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+                </None>
+        </ItemGroup>
 
 </Project>

@@ -182,7 +182,11 @@ public class MarkItDownConverter
         pix8.YRes = 300;
         _logger.Information("pix.depth={Depth} converted={Converted} xdpi={Xdpi} ydpi={Ydpi}", depth, converted, pix8.XRes, pix8.YRes);
 
-        var tessLang = _options.OcrLanguage == OcrLanguage.Italian ? "ita" : "eng";
+        var tessLang = _options.OcrLanguage switch
+        {
+            OcrLanguage.Italian => "ita",
+            _ => "eng"
+        };
         using var engine = new TesseractEngine(
             _options.OcrDataPath ?? string.Empty,
             tessLang,
@@ -229,7 +233,7 @@ public class MarkItDownConverter
         var words = new List<Word>();
 
         using var ocr = new RapidOcr();
-        ocr.InitModels(_options.OcrLanguage, 0);
+        ocr.InitModels(_options.OcrLanguage, _options.OcrModelVersion, Environment.ProcessorCount);
 
         try
         {

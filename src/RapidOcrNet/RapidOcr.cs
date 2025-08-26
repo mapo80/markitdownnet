@@ -14,38 +14,47 @@ namespace RapidOcrNet
         private readonly TextRecognizer _textRecognizer = new TextRecognizer();
 
         /// <summary>
-        /// Initialize models based on the selected language.
+        /// Initialize models based on the selected language and model version.
         /// </summary>
-        public void InitModels(OcrLanguage language = OcrLanguage.English, int numThread = 0)
+        public void InitModels(
+            OcrLanguage language = OcrLanguage.English,
+            OcrVersion version = OcrVersion.V5,
+            int numThread = 0)
         {
             var modelsDir = Path.Combine(AppContext.BaseDirectory, "models");
 
-            string detPath = Path.Combine(modelsDir, "en_PP-OCRv3_det_infer_opt.onnx");
-            string clsPath = Path.Combine(modelsDir, "ch_ppocr_mobile_v2.0_cls_infer_opt.onnx");
-            string recPath;
-            string keysPath;
-
-            switch (language)
+            string versionDir = version switch
             {
-                case OcrLanguage.Italian:
-                    recPath = Path.Combine(modelsDir, "it_mobile_v2.0_rec_infer.onnx");
-                    keysPath = Path.Combine(modelsDir, "latin_dict.txt");
-                    break;
-                case OcrLanguage.English:
-                default:
-                    recPath = Path.Combine(modelsDir, "en_PP-OCRv3_rec_infer_opt.onnx");
-                    keysPath = Path.Combine(modelsDir, "en_dict.txt");
-                    break;
-            }
+                OcrVersion.V3 => "v3",
+                OcrVersion.V4 => "v4",
+                _ => "v5"
+            };
 
-            InitModelsInternal(detPath, clsPath, recPath, keysPath, numThread);
+            string detPath = version switch
+            {
+                OcrVersion.V3 => Path.Combine(modelsDir, versionDir, "ch_PP-OCRv3_det_infer.onnx"),
+                OcrVersion.V4 => Path.Combine(modelsDir, versionDir, "ch_PP-OCRv4_det_infer.onnx"),
+                _ => Path.Combine(modelsDir, versionDir, "ch_PP-OCRv5_mobile_det.onnx")
+            };
+
+            string recBase = version switch
+            {
+                OcrVersion.V3 => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv3_mobile_rec_infer.onnx"),
+                OcrVersion.V4 => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv3_rec_infer.onnx"),
+                _ => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv5_rec_mobile_infer.onnx")
+            };
+
+            string recPath = recBase;
+            string clsPath = Path.Combine(modelsDir, "v2", "ch_ppocr_mobile_v2.0_cls_infer_opt.onnx");
+
+            InitModelsInternal(detPath, clsPath, recPath, numThread);
         }
 
-        private void InitModelsInternal(string detPath, string clsPath, string recPath, string keysPath, int numThread)
+        private void InitModelsInternal(string detPath, string clsPath, string recPath, int numThread)
         {
             _textDetector.InitModel(detPath, numThread);
             _textClassifier.InitModel(clsPath, numThread);
-            _textRecognizer.InitModel(recPath, keysPath, numThread);
+            _textRecognizer.InitModel(recPath, numThread);
         }
 
         public int LabelCount => _textRecognizer.LabelCount;
