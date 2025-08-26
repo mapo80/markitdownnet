@@ -14,55 +14,42 @@ namespace RapidOcrNet
         private readonly TextRecognizer _textRecognizer = new TextRecognizer();
 
         /// <summary>
-        /// Initialize using default models (english).
+        /// Initialize models based on the selected language.
         /// </summary>
-        public void InitModels(int numThread = 0)
+        public void InitModels(OcrLanguage language = OcrLanguage.English, int numThread = 0)
         {
-            const string modelsFolderName = "models";
+            var modelsDir = Path.Combine(AppContext.BaseDirectory, "models");
 
-            string detPath = Path.Combine(modelsFolderName, "en_PP-OCRv3_det_infer_opt.onnx");
-            string clsPath = Path.Combine(modelsFolderName, "ch_ppocr_mobile_v2.0_cls_infer_opt.onnx");
-            string recPath = Path.Combine(modelsFolderName, "en_PP-OCRv3_rec_infer_opt.onnx");
+            string detPath = Path.Combine(modelsDir, "en_PP-OCRv3_det_infer_opt.onnx");
+            string clsPath = Path.Combine(modelsDir, "ch_ppocr_mobile_v2.0_cls_infer_opt.onnx");
+            string recPath;
+            string keysPath;
 
-            string keysPath = Path.Combine(modelsFolderName, "en_dict.txt");
+            switch (language)
+            {
+                case OcrLanguage.Italian:
+                    recPath = Path.Combine(modelsDir, "it_mobile_v2.0_rec_infer.onnx");
+                    keysPath = Path.Combine(modelsDir, "latin_dict.txt");
+                    break;
+                case OcrLanguage.English:
+                default:
+                    recPath = Path.Combine(modelsDir, "en_PP-OCRv3_rec_infer_opt.onnx");
+                    keysPath = Path.Combine(modelsDir, "en_dict.txt");
+                    break;
+            }
 
-            InitModels(detPath, clsPath, recPath, keysPath, numThread);
+            InitModelsInternal(detPath, clsPath, recPath, keysPath, numThread);
         }
 
-        public void InitModels(string detPath, string? clsPath, string recPath, string? keysPath, int numThread)
+        private void InitModelsInternal(string detPath, string clsPath, string recPath, string keysPath, int numThread)
         {
             _textDetector.InitModel(detPath, numThread);
-            if (!string.IsNullOrEmpty(clsPath))
-            {
-                _textClassifier.InitModel(clsPath, numThread);
-            }
+            _textClassifier.InitModel(clsPath, numThread);
             _textRecognizer.InitModel(recPath, keysPath, numThread);
         }
 
-        public void InitModels(string detPath, string? clsPath, string recPath, int numThread)
-            => InitModels(detPath, clsPath, recPath, null, numThread);
-
         public int LabelCount => _textRecognizer.LabelCount;
         public int ModelClassCount => _textRecognizer.ModelClassCount;
-
-        public static string AutoDiscoverLabelFile(string recPath)
-        {
-            var recDir = Path.GetDirectoryName(recPath) ?? string.Empty;
-            var modelsDir = Path.GetFullPath(Path.Combine(recDir, ".."));
-            if (recPath.Contains("latin_PP-OCRv3_mobile_rec"))
-                return Path.Combine(modelsDir, "labels", "latin_dict.txt");
-            if (recPath.Contains("it_mobile_v2.0_rec"))
-                return Path.Combine(modelsDir, "labels", "it_dict.txt");
-            if (Path.GetFileName(recPath).Contains("ch_"))
-                return Path.Combine(modelsDir, "rec", "ppocr_keys_v1.txt"); // Chinese models use original dictionary
-            var en = Path.Combine(modelsDir, "labels", "en_dict.txt");
-            if (File.Exists(en))
-            {
-                Console.WriteLine($"WARN No dictionary provided; using {en}");
-                return en;
-            }
-            throw new FileNotFoundException("No dictionary provided and english dictionary not found. Specify RAPIDOCR_KEYS or RapidOcr:LabelFile.");
-        }
 
         public OcrResult Detect(string img, RapidOcrOptions options)
         {

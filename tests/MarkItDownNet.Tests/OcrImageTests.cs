@@ -2,13 +2,15 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using MarkItDownNet;
+using RapidOcrNet;
 using SkiaSharp;
+using Xunit;
 
 namespace MarkItDownNet.Tests;
 
 public class OcrImageTests
 {
-    [Fact]
+    [SkippableFact]
     public async Task Can_extract_text_from_simple_png()
     {
         using var surface = SKSurface.Create(new SKImageInfo(120, 40));
@@ -29,19 +31,12 @@ public class OcrImageTests
         var options = new MarkItDownOptions
         {
             OcrDataPath = "/usr/share/tesseract-ocr/5/tessdata",
-            OcrLanguage = "eng",
+            OcrLanguage = OcrLanguage.English,
             NormalizeMarkdown = false
         };
+        Skip.IfNot(Directory.Exists(options.OcrDataPath), "Tesseract data not found");
         var converter = new MarkItDownConverter(options);
-        MarkItDownResult result;
-        try
-        {
-            result = await converter.ConvertAsync(temp, "image/png");
-        }
-        catch (Exception)
-        {
-            return;
-        }
+        var result = await converter.ConvertAsync(temp, "image/png");
 
         Assert.Contains("hi", result.Markdown.ToLowerInvariant());
     }

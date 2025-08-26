@@ -17,8 +17,8 @@ namespace RapidOcrNet
         private readonly float[] _meanValues = [127.5F, 127.5F, 127.5F];
         private readonly float[] _normValues = [1.0F / 127.5F, 1.0F / 127.5F, 1.0F / 127.5F];
 
-        private InferenceSession _angleNet;
-        private string _inputName;
+        private InferenceSession _angleNet = null!;
+        private string _inputName = null!;
 
         public void InitModel(string path, int numThread)
         {
@@ -80,7 +80,7 @@ namespace RapidOcrNet
         {
             var sw = System.Diagnostics.Stopwatch.StartNew();
             Tensor<float> inputTensors;
-            using (var angleImg = src.Resize(new SKSizeI(AngleDstWidth, AngleDstHeight), SKFilterQuality.High))
+            using (var angleImg = src.Resize(new SKSizeI(AngleDstWidth, AngleDstHeight), new SKSamplingOptions(SKFilterMode.Linear)))
             {
                 inputTensors = OcrUtils.SubtractMeanNormalize(angleImg, _meanValues, _normValues);
             }

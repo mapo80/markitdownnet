@@ -5,13 +5,14 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using MarkItDownNet;
+using RapidOcrNet;
 using Xunit;
 
 namespace MarkItDownNet.Tests;
 
 public class OcrPdfTests
 {
-    [Fact]
+    [SkippableFact]
     public async Task OcrTestPdfMatchesGroundTruth()
     {
         using var http = new HttpClient();
@@ -40,16 +41,12 @@ public class OcrPdfTests
         var options = new MarkItDownOptions
         {
             OcrDataPath = "/usr/share/tesseract-ocr/5/tessdata",
-            OcrLanguage = "eng",
+            OcrLanguage = OcrLanguage.English,
             NormalizeMarkdown = false
         };
+        Skip.IfNot(Directory.Exists(options.OcrDataPath), "Tesseract data not found");
         var converter = new MarkItDownConverter(options);
-        MarkItDownResult result;
-        try {
-            result = await converter.ConvertAsync(pdfPath, "application/pdf");
-        } catch (Exception) {
-            return;
-        }
+        var result = await converter.ConvertAsync(pdfPath, "application/pdf");
 
         string Norm(string s) => s.Replace("\n", string.Empty).Replace(" ", string.Empty);
         Assert.Contains(Norm(expectedMarkdown), Norm(result.Markdown));

@@ -33,8 +33,8 @@ namespace RapidOcrNet
 
     public sealed class TextLine
     {
-        public string[]? Chars { get; init; }
-        public float[]? CharScores { get; init; }
+        public string[] Chars { get; init; } = Array.Empty<string>();
+        public float[] CharScores { get; init; } = Array.Empty<float>();
         public float Time { get; set; }
 
         public override string ToString()

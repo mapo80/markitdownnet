@@ -105,7 +105,9 @@ public class MarkItDownConverter
         // Rasterize PDF into images using PDFtoImage
         var renderOptions = new RenderOptions { Dpi = _options.PdfRasterDpi };
         using var stream = File.OpenRead(path);
+#pragma warning disable CA1416
         foreach (var bitmap in Conversion.ToImages(stream, leaveOpen: false, password: null, renderOptions))
+#pragma warning restore CA1416
         {
             ct.ThrowIfCancellationRequested();
             using (bitmap)
@@ -180,9 +182,10 @@ public class MarkItDownConverter
         pix8.YRes = 300;
         _logger.Information("pix.depth={Depth} converted={Converted} xdpi={Xdpi} ydpi={Ydpi}", depth, converted, pix8.XRes, pix8.YRes);
 
+        var tessLang = _options.OcrLanguage == OcrLanguage.Italian ? "ita" : "eng";
         using var engine = new TesseractEngine(
             _options.OcrDataPath ?? string.Empty,
-            _options.OcrLanguage,
+            tessLang,
             EngineMode.LstmOnly);
         engine.SetVariable("user_defined_dpi", "300");
         engine.SetVariable("preserve_interword_spaces", "1");
@@ -226,20 +229,7 @@ public class MarkItDownConverter
         var words = new List<Word>();
 
         using var ocr = new RapidOcr();
-        var lang = _options.OcrLanguage.ToLowerInvariant();
-        if (lang == "ita")
-        {
-            var models = Path.Combine(AppContext.BaseDirectory, "models");
-            var det = Path.Combine(models, "en_PP-OCRv3_det_infer_opt.onnx");
-            var cls = Path.Combine(models, "ch_ppocr_mobile_v2.0_cls_infer_opt.onnx");
-            var rec = Path.Combine(models, "rec", "it_mobile_v2.0_rec_infer.onnx");
-            var keys = Path.Combine(models, "labels", "it_dict.txt");
-            ocr.InitModels(det, cls, rec, keys, 0);
-        }
-        else
-        {
-            ocr.InitModels();
-        }
+        ocr.InitModels(_options.OcrLanguage, 0);
 
         try
         {

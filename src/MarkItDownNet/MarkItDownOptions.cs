@@ -1,5 +1,6 @@
 namespace MarkItDownNet;
 
+using RapidOcrNet;
 using Tesseract;
 
 /// <summary>Runtime options for conversion.</summary>
@@ -11,8 +12,8 @@ public class MarkItDownOptions
     /// <summary>Path to Tesseract language data (TESSDATA_PREFIX).</summary>
     public string? OcrDataPath { get; set; }
 
-    /// <summary>Language for OCR (three-letter code such as "eng" or "ita").</summary>
-    public string OcrLanguage { get; set; } = "eng";
+    /// <summary>Language for OCR.</summary>
+    public OcrLanguage OcrLanguage { get; set; } = OcrLanguage.English;
 
     /// <summary>Page segmentation mode used by Tesseract.</summary>
     public PageSegMode PageSegMode { get; set; } = PageSegMode.SingleBlock;
