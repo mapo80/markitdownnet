@@ -1,0 +1,16 @@
+{
+  "layout_time_ms": 121.8675,
+  "tables": [
+    {
+      "box": [
+        58.31236,
+        312.28497,
+        1195.3623,
+        560.4444
+      ],
+      "recognition_time_ms": 149.0084,
+      "cell_count": 16,
+      "token_count": 28
+    }
+  ]
+}
