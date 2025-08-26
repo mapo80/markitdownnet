@@ -9,17 +9,6 @@ public sealed class LayoutDetector : IDisposable
     private readonly float[] MeanValues = [0.485F * 255F, 0.456F * 255F, 0.406F * 255F];
     private readonly float[] NormValues = [1.0F / 0.229F / 255.0F, 1.0F / 0.224F / 255.0F, 1.0F / 0.225F / 255.0F];
 
-    private static readonly Dictionary<int, LayoutLabel> LabelMap = new()
-    {
-        [0] = LayoutLabel.Text,
-        [1] = LayoutLabel.Title,
-        [2] = LayoutLabel.List,
-        [3] = LayoutLabel.Table,
-        [4] = LayoutLabel.Figure,
-        // Some model variants emit 8 for tables.
-        [8] = LayoutLabel.Table
-    };
-
     private InferenceSession? _session;
     private string _imageInput = string.Empty;
     private string _scaleInput = string.Empty;
@@ -77,10 +66,9 @@ public sealed class LayoutDetector : IDisposable
         {
             int offset = i * 6;
             int rawLabel = (int)boxTensor[offset];
-            if (!LabelMap.TryGetValue(rawLabel, out var label))
-            {
-                label = LayoutLabel.Unknown;
-            }
+            LayoutLabel label = Enum.IsDefined(typeof(LayoutLabel), rawLabel)
+                ? (LayoutLabel)rawLabel
+                : LayoutLabel.Unknown;
 
             float score = boxTensor[offset + 1];
             if (score < scoreThreshold) continue;
