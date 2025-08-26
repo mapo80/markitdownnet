@@ -1,4 +1,5 @@
 using MarkItDownNet;
+using RapidOcrNet;
 using System.Diagnostics;
 using Tesseract;
 
@@ -15,7 +16,7 @@ var tessData = Environment.GetEnvironmentVariable("TESSDATA_PREFIX");
 var options = new MarkItDownOptions
 {
     OcrDataPath = tessData,
-    OcrLanguage = "ita",
+    OcrLanguage = OcrLanguage.Italian,
     OcrEngine = engine == "rapidocr" ? OcrEngine.RapidOcr : OcrEngine.Tesseract,
 };
 var converter = new MarkItDownConverter(options);

@@ -17,24 +17,20 @@ namespace RapidOcrNet
         private const int CrnnDstHeight = 48;
         //private const int CrnnCols = 6625;
 
-        private InferenceSession _crnnNet;
-        private string[] _keys;
-        private string _inputName;
+        private InferenceSession _crnnNet = null!;
+        private string[] _keys = null!;
+        private string _inputName = null!;
         public int LabelCount { get; private set; }
         public int ModelClassCount { get; private set; }
 
-        public void InitModel(string path, string? keysPath, int numThread)
+        public void InitModel(string path, string keysPath, int numThread)
         {
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException($"Recognizer model file does not exist: '{path}'.");
             }
 
-            if (string.IsNullOrEmpty(keysPath))
-            {
-                keysPath = RapidOcr.AutoDiscoverLabelFile(path);
-            }
-            if (!File.Exists(keysPath))
+            if (string.IsNullOrEmpty(keysPath) || !File.Exists(keysPath))
             {
                 throw new FileNotFoundException($"Recognizer keys file does not exist: '{keysPath}'.");
             }
@@ -54,7 +50,7 @@ namespace RapidOcrNet
             LabelCount = _keys.Length - 1; // dictionary lines without CTC blank
             if (ModelClassCount != _keys.Length)
             {
-                throw new InvalidDataException($"Dictionary mismatch: model classes={ModelClassCount}, labels={LabelCount}+blank. Use a dictionary that matches the recognizer (latin_dict.txt per latin, it_dict.txt per it).");
+                throw new InvalidDataException($"Dictionary mismatch: model classes={ModelClassCount}, labels={LabelCount}+blank. Use a dictionary that matches the recognizer (en_dict.txt for English, latin_dict.txt for Italian).");
             }
         }
 
@@ -94,7 +90,7 @@ namespace RapidOcrNet
             int dstWidth = (int)(src.Width * scale);
 
             Tensor<float> inputTensors;
-            using (SKBitmap srcResize = src.Resize(new SKSizeI(dstWidth, CrnnDstHeight), SKFilterQuality.High))
+            using (SKBitmap srcResize = src.Resize(new SKSizeI(dstWidth, CrnnDstHeight), new SKSamplingOptions(SKFilterMode.Linear)))
             {
                 inputTensors = OcrUtils.SubtractMeanNormalize(srcResize, MeanValues, NormValues);
             }

@@ -15,8 +15,8 @@ namespace RapidOcrNet
         private readonly float[] MeanValues = [0.485F * 255F, 0.456F * 255F, 0.406F * 255F];
         private readonly float[] NormValues = [1.0F / 0.229F / 255.0F, 1.0F / 0.224F / 255.0F, 1.0F / 0.225F / 255.0F];
 
-        private InferenceSession _dbNet;
-        private string _inputName;
+        private InferenceSession _dbNet = null!;
+        private string _inputName = null!;
 
         public void InitModel(string path, int numThread)
         {
@@ -40,7 +40,7 @@ namespace RapidOcrNet
             float unClipRatio)
         {
             Tensor<float> inputTensors;
-            using (var srcResize = src.Resize(new SKSizeI(scale.DstWidth, scale.DstHeight), SKFilterQuality.High))
+            using (var srcResize = src.Resize(new SKSizeI(scale.DstWidth, scale.DstHeight), new SKSamplingOptions(SKFilterMode.Linear)))
             {
                 inputTensors = OcrUtils.SubtractMeanNormalize(srcResize, MeanValues, NormValues);
             }
@@ -63,7 +63,7 @@ namespace RapidOcrNet
                 System.Diagnostics.Debug.WriteLine(ex.Message + ex.StackTrace);
             }
 
-            return null;
+            return Array.Empty<TextBox>();
         }
 
         private static SKPoint[][] FindContours(byte[] array, int rows, int cols)

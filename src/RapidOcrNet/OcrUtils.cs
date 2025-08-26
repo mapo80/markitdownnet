@@ -76,7 +76,6 @@ namespace RapidOcrNet
             using (var paint = new SKPaint())
             {
                 paint.IsAntialias = true;
-                paint.FilterQuality = SKFilterQuality.High;
 
                 canvas.Clear(SKColors.White);
                 canvas.DrawBitmap(src, new SKPoint(padding, padding), paint);
@@ -221,10 +220,9 @@ namespace RapidOcrNet
             using (var paint = new SKPaint())
             {
                 paint.IsAntialias = true;
-                paint.FilterQuality = SKFilterQuality.High;
 
                 canvas.SetMatrix(m);
-                canvas.DrawBitmap(imgCrop, 0, 0, paint);
+                canvas.DrawBitmap(imgCrop, new SKPoint(0, 0), paint);
                 canvas.Restore();
             }
 
@@ -251,11 +249,10 @@ namespace RapidOcrNet
             using (var paint = new SKPaint())
             {
                 paint.IsAntialias = true;
-                paint.FilterQuality = SKFilterQuality.High;
 
                 canvas.Translate(rotated.Width, rotated.Height);
                 canvas.RotateDegrees(180);
-                canvas.DrawBitmap(src, 0, 0, paint);
+                canvas.DrawBitmap(src, new SKPoint(0, 0), paint);
                 canvas.Restore();
             }
 
@@ -273,11 +270,10 @@ namespace RapidOcrNet
             using (var paint = new SKPaint())
             {
                 paint.IsAntialias = true;
-                paint.FilterQuality = SKFilterQuality.High;
 
                 canvas.Translate(rotated.Width, 0);
                 canvas.RotateDegrees(90);
-                canvas.DrawBitmap(src, 0, 0, paint);
+                canvas.DrawBitmap(src, new SKPoint(0, 0), paint);
                 canvas.Restore();
             }
             /*

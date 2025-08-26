@@ -179,7 +179,7 @@ namespace RapidOcrNet
             /// <summary>
             /// Vertices.
             /// </summary>
-            internal List<SKPoint> points;
+            internal List<SKPoint> points = new();
 
             /// <summary>
             /// Unique ID, starts from 2.
