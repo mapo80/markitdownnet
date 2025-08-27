@@ -6,8 +6,8 @@ namespace RapidStructureNet;
 public sealed record StructureOptions
 {
     /// <summary>
-    /// When true the pipeline will attempt to detect page orientation.
-    /// Currently this feature is not implemented and orientation will always be 0.
+    /// When true the pipeline attempts to detect page orientation and enables angle-aware OCR.
+    /// Without an <see cref="IOrientationDetector"/> the orientation angle will remain 0.
     /// </summary>
     public bool DetectOrientation { get; init; } = false;
 

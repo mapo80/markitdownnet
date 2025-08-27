@@ -95,6 +95,18 @@ public class RapidStructureTests : IDisposable
         return bmp;
     }
 
+    private sealed class FakeOrientationDetector : IOrientationDetector
+    {
+        public int Calls { get; private set; }
+        private readonly float _angle;
+        public FakeOrientationDetector(float angle) => _angle = angle;
+        public float Detect(SKBitmap image)
+        {
+            Calls++;
+            return _angle;
+        }
+    }
+
     [Theory]
     [MemberData(nameof(TrainingImages))]
     public void Analyze_returns_regions_with_normalised_boxes(string path)
@@ -152,6 +164,30 @@ public class RapidStructureTests : IDisposable
         long expectedTable = result.Regions.Where(r => r.Type == LayoutLabel.Table && r.Table != null)
                                            .Sum(r => r.Table!.TotalTimeMs);
         Assert.Equal(expectedTable, result.TableTimeMs);
+    }
+
+    [Fact]
+    public void Orientation_detector_not_called_when_disabled()
+    {
+        string path = Path.Combine(TrainingDir, "sample_invoice.png");
+        using var bmp = DecodeColor(path);
+        var fake = new FakeOrientationDetector(90);
+        var structure = new RapidStructure(_layout, new RapidOcrEngine(_ocr), _table, fake);
+        var result = structure.Analyze(bmp, new StructureOptions { DetectOrientation = false });
+        Assert.Equal(0f, result.Orientation);
+        Assert.Equal(0, fake.Calls);
+    }
+
+    [Fact]
+    public void Orientation_detector_called_when_enabled()
+    {
+        string path = Path.Combine(TrainingDir, "sample_invoice.png");
+        using var bmp = DecodeColor(path);
+        var fake = new FakeOrientationDetector(90);
+        var structure = new RapidStructure(_layout, new RapidOcrEngine(_ocr), _table, fake);
+        var result = structure.Analyze(bmp, new StructureOptions { DetectOrientation = true });
+        Assert.Equal(90f, result.Orientation);
+        Assert.Equal(1, fake.Calls);
     }
 
     [Fact]

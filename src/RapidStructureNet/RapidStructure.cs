@@ -16,28 +16,36 @@ public sealed class RapidStructure
     private readonly LayoutDetector _layoutDetector;
     private readonly IOcrEngine _ocr;
     private readonly TableRecognizer _tableRecognizer;
+    private readonly IOrientationDetector? _orientationDetector;
 
-    public RapidStructure(LayoutDetector layoutDetector, IOcrEngine ocr, TableRecognizer tableRecognizer)
+    public RapidStructure(LayoutDetector layoutDetector, IOcrEngine ocr, TableRecognizer tableRecognizer, IOrientationDetector? orientationDetector = null)
     {
         _layoutDetector = layoutDetector;
         _ocr = ocr;
         _tableRecognizer = tableRecognizer;
+        _orientationDetector = orientationDetector;
     }
 
     /// <summary>
     /// Analyse a page image and return detected regions along with the full OCR result.
-    /// Orientation detection is wired but not yet implemented; the returned orientation
-    /// angle will always be zero for now.
+    /// Orientation detection can be enabled via <see cref="StructureOptions.DetectOrientation"/>.
     /// </summary>
     public StructureResult Analyze(SKBitmap image, StructureOptions? structureOptions = null, RapidOcrOptions? ocrOptions = null)
     {
         structureOptions ??= new StructureOptions();
         ocrOptions ??= RapidOcrOptions.Default;
-        // Disable angle classification until orientation handling is implemented
-        ocrOptions = ocrOptions with { DoAngle = false };
+        ocrOptions = ocrOptions with { DoAngle = structureOptions.DetectOrientation };
 
-        float orientation = 0f; // placeholder – orientation detection not yet implemented
-        SKBitmap working = image; // no rotation applied
+        float orientation = 0f;
+        SKBitmap working = image;
+        if (structureOptions.DetectOrientation && _orientationDetector != null)
+        {
+            orientation = _orientationDetector.Detect(image);
+            if (orientation % 360 != 0)
+            {
+                working = Rotate(image, orientation);
+            }
+        }
 
         // Detect layout regions
         var sw = Stopwatch.StartNew();
@@ -112,5 +120,25 @@ public sealed class RapidStructure
         }
         return filtered;
     }
-}
 
+    private static SKBitmap Rotate(SKBitmap src, float angle)
+    {
+        angle %= 360;
+        if (angle == 0) return src;
+        SKBitmap dst;
+        if (angle == 90 || angle == 270)
+            dst = new SKBitmap(src.Height, src.Width);
+        else
+            dst = new SKBitmap(src.Width, src.Height);
+
+        using var canvas = new SKCanvas(dst);
+        canvas.Translate(dst.Width / 2f, dst.Height / 2f);
+        canvas.RotateDegrees(angle);
+        canvas.Translate(-src.Width / 2f, -src.Height / 2f);
+        canvas.DrawBitmap(src, 0, 0);
+        canvas.Flush();
+        return dst;
+    }
+
+    // Bounding boxes are returned in the coordinate space of the possibly rotated image.
+}

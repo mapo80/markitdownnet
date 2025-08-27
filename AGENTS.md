@@ -71,3 +71,8 @@ Indicare quindi il percorso tramite `OcrDataPath`.
   unused modules and reuse a single model across images. Send each image path
   over `stdin` and read a JSON blob with both layout labels and markdown.
 - Use this script to compare .NET Markdown output with the Python reference.
+
+## Orientation hooks
+- Set `StructureOptions.DetectOrientation` to enable angle-aware OCR and invoke an optional
+  `IOrientationDetector` to rotate pages. Until a detector is provided the orientation
+  will remain at `0` degrees.
