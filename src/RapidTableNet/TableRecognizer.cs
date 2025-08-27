@@ -1,6 +1,7 @@
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using SkiaSharp;
+using System.Diagnostics;
 
 namespace RapidTableNet;
 
@@ -24,7 +25,8 @@ public sealed class TableRecognizer : IDisposable
         {
             GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_EXTENDED,
             InterOpNumThreads = numThread,
-            IntraOpNumThreads = numThread
+            IntraOpNumThreads = numThread,
+            LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_ERROR
         };
 
         _session = new InferenceSession(path, options);
@@ -40,16 +42,26 @@ public sealed class TableRecognizer : IDisposable
             throw new InvalidOperationException("Model not initialised.");
         }
 
+        var sw = Stopwatch.StartNew();
         var (tensor, shape) = TablePreprocessor.Process(src);
+        long pre = sw.ElapsedMilliseconds;
+
+        sw.Restart();
         IReadOnlyCollection<NamedOnnxValue> inputs = new NamedOnnxValue[]
         {
             NamedOnnxValue.CreateFromTensor(_inputName, tensor)
         };
         using var results = _session.Run(inputs);
+        long infer = sw.ElapsedMilliseconds;
+
+        sw.Restart();
         var bboxPreds = results[0].AsTensor<float>();
         var structProbs = results[1].AsTensor<float>();
         var (structure, boxes) = _decoder.Decode(bboxPreds, structProbs, shape);
-        return new TableResult(structure, boxes);
+        string html = string.Concat(structure);
+        long decode = sw.ElapsedMilliseconds;
+
+        return new TableResult(structure, boxes, html, pre, infer, decode);
     }
 
     public void Dispose()

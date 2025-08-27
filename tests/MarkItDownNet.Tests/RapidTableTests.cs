@@ -1,3 +1,4 @@
+using System;
 using RapidLayoutNet;
 using RapidTableNet;
 using SkiaSharp;
@@ -9,6 +10,12 @@ public class RapidTableTests : IDisposable
     private readonly LayoutDetector _layout;
     private readonly TableRecognizer _table;
     private static readonly string TrainingDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "dataset", "training"));
+
+    static RapidTableTests()
+    {
+        Environment.SetEnvironmentVariable("ORT_LOG_VERBOSITY_LEVEL", "0");
+        Environment.SetEnvironmentVariable("ORT_LOG_SEVERITY_LEVEL", "3");
+    }
 
     public RapidTableTests()
     {
@@ -41,6 +48,11 @@ public class RapidTableTests : IDisposable
         var result = _table.Detect(tableBmp);
         Assert.NotEmpty(result.Structure);
         Assert.NotEmpty(result.CellBoxes);
+        Assert.False(string.IsNullOrWhiteSpace(result.Html));
+        Assert.True(result.PreprocessTimeMs >= 0);
+        Assert.True(result.InferenceTimeMs > 0);
+        Assert.True(result.DecodeTimeMs > 0);
+        Assert.Equal(result.PreprocessTimeMs + result.InferenceTimeMs + result.DecodeTimeMs, result.TotalTimeMs);
     }
 
     [Fact]
