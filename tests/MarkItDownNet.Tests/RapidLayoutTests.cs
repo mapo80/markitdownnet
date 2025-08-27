@@ -1,3 +1,4 @@
+using System;
 using RapidLayoutNet;
 using SkiaSharp;
 
@@ -7,6 +8,12 @@ public class RapidLayoutTests : IDisposable
 {
     private readonly LayoutDetector _detector;
     private static readonly string TrainingDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "dataset", "training"));
+
+    static RapidLayoutTests()
+    {
+        Environment.SetEnvironmentVariable("ORT_LOG_VERBOSITY_LEVEL", "0");
+        Environment.SetEnvironmentVariable("ORT_LOG_SEVERITY_LEVEL", "3");
+    }
 
     public RapidLayoutTests()
     {
@@ -62,5 +69,14 @@ public class RapidLayoutTests : IDisposable
         var boxes = _detector.Detect(bmp, 0.3f);
         Assert.Contains(boxes, b => b.Label == LayoutLabel.Table);
         Assert.Contains(boxes, b => b.Label == LayoutLabel.Text);
+    }
+
+    [Fact]
+    public void Returns_empty_with_high_threshold()
+    {
+        string path = Path.Combine(TrainingDir, "busta_paga_internet.jpeg");
+        using var bmp = SKBitmap.Decode(path);
+        var boxes = _detector.Detect(bmp, 1.1f);
+        Assert.Empty(boxes);
     }
 }

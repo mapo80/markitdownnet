@@ -24,7 +24,8 @@ public sealed class LayoutDetector : IDisposable
         {
             GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_EXTENDED,
             InterOpNumThreads = numThread,
-            IntraOpNumThreads = numThread
+            IntraOpNumThreads = numThread,
+            LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_ERROR
         };
 
         _session = new InferenceSession(path, options);

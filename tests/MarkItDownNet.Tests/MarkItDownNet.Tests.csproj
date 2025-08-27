@@ -28,6 +28,8 @@
     <ProjectReference Include="..\..\src\MarkItDownNet\MarkItDownNet.csproj" />
     <ProjectReference Include="..\..\src\RapidLayoutNet\RapidLayoutNet.csproj" />
     <ProjectReference Include="..\..\src\RapidTableNet\RapidTableNet.csproj" />
+    <ProjectReference Include="..\..\src\RapidOcrNet\RapidOcrNet.csproj" />
+    <ProjectReference Include="..\..\src\RapidStructureNet\RapidStructureNet.csproj" />
   </ItemGroup>
 
 </Project>
