@@ -75,9 +75,9 @@ public static class StructureMarkdownBuilder
                         string html = region.Table.Html.Trim();
                         if (!html.StartsWith("<table", StringComparison.OrdinalIgnoreCase))
                         {
-                            sb.AppendLine("<table>");
+                            sb.AppendLine("<table><tbody>");
                             sb.AppendLine(html);
-                            sb.AppendLine("</table>");
+                            sb.AppendLine("</tbody></table>");
                         }
                         else
                         {

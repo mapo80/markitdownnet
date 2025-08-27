@@ -191,6 +191,41 @@ public class RapidStructureTests : IDisposable
     }
 
     [Fact]
+    public void Orientation_detector_rotates_boxes()
+    {
+        string path = Path.Combine(TrainingDir, "sample_invoice.png");
+        using var bmp = DecodeColor(path);
+        using var rot = Rotate90(bmp);
+
+        string clsModel = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "src", "RapidOcrNet", "models", "v2", "ch_ppocr_mobile_v2.0_cls_infer_opt.onnx"));
+        using var detector = new RapidOcrOrientationDetector(clsModel);
+        var structure = new RapidStructure(_layout, new RapidOcrEngine(_ocr), _table, detector);
+        var rotatedResult = structure.Analyze(rot, new StructureOptions { DetectOrientation = true });
+        Assert.Equal(270f, rotatedResult.Orientation);
+
+        Assert.NotEmpty(rotatedResult.Regions);
+        Assert.All(rotatedResult.Regions, r =>
+        {
+            Assert.InRange(r.BBox.Left, 0, 1);
+            Assert.InRange(r.BBox.Top, 0, 1);
+            Assert.InRange(r.BBox.Right, 0, 1);
+            Assert.InRange(r.BBox.Bottom, 0, 1);
+        });
+    }
+
+    private static SKBitmap Rotate90(SKBitmap src)
+    {
+        var dst = new SKBitmap(src.Height, src.Width);
+        using var canvas = new SKCanvas(dst);
+        canvas.Translate(dst.Width / 2f, dst.Height / 2f);
+        canvas.RotateDegrees(90);
+        canvas.Translate(-src.Width / 2f, -src.Height / 2f);
+        canvas.DrawBitmap(src, 0, 0);
+        canvas.Flush();
+        return dst;
+    }
+
+    [Fact]
     public void Fallbacks_to_table_when_layout_empty()
     {
         string path = Path.Combine(TrainingDir, "sample_invoice.png");
@@ -322,7 +357,7 @@ public class RapidStructureTests : IDisposable
         Assert.StartsWith(pythonSnippet[..len], oursSnippet);
     }
 
-    private static Process? _ppServer = StartPpstructureServer();
+    private static Process? _ppServer;
 
     private static Process? StartPpstructureServer()
     {
@@ -363,6 +398,8 @@ for line in sys.stdin:
 
     private static (List<string>? types, string? markdown) QueryPpstructure(string imagePath)
     {
+        if (Environment.GetEnvironmentVariable("ENABLE_PPSTRUCTURE") != "1")
+            return (null, null);
         try
         {
             if (_ppServer == null || _ppServer.HasExited)

@@ -71,8 +71,10 @@ Indicare quindi il percorso tramite `OcrDataPath`.
   unused modules and reuse a single model across images. Send each image path
   over `stdin` and read a JSON blob with both layout labels and markdown.
 - Use this script to compare .NET Markdown output with the Python reference.
+- Set `ENABLE_PPSTRUCTURE=1` before running tests to enable these comparisons; otherwise the Python helper is skipped.
 
 ## Orientation hooks
 - Set `StructureOptions.DetectOrientation` to enable angle-aware OCR and invoke an optional
-  `IOrientationDetector` to rotate pages. Until a detector is provided the orientation
-  will remain at `0` degrees.
+  `IOrientationDetector` to rotate pages. `RapidOcrOrientationDetector` uses the
+  `ch_ppocr_mobile_v2.0_cls_infer_opt.onnx` model to return 0/90/180/270 angles and all
+  bounding boxes are mapped back to the original image space.
