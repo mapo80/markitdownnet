@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Collections.Generic;
 using RapidLayoutNet;
@@ -356,6 +357,17 @@ public class MarkdownBuilderTests
 
         string md = StructureMarkdownBuilder.Build(result).Replace("\r", "");
         Assert.Contains("<table><tbody><tr><td>x</td></tr></tbody></table>\n<div align=\"center\">Table caption</div>", md);
+    }
+
+    [Fact]
+    public void Build_wraps_table_html_when_missing_tags()
+    {
+        var tableHtml = "<tr><td>1</td></tr>";
+        var table = new TableResult(new[] { tableHtml }, Array.Empty<float[]>(), tableHtml, 0, 0, 0);
+        var region = new StructureRegion(LayoutLabel.Table, new SKRect(0, 0, 1, 1), 1, 0, null, table, null);
+        var result = new StructureResult(new[] { region }, new OcrResult { TextBlocks = Array.Empty<TextBlock>(), DbNetTime = 0, DetectTime = 0, StrRes = string.Empty }, 0, 0, 0, 0);
+        string md = StructureMarkdownBuilder.Build(result).Replace("\r", "");
+        Assert.Equal("<table><tbody>\n<tr><td>1</td></tr>\n</tbody></table>", md.Trim());
     }
 
     [Fact]
