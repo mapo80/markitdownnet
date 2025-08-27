@@ -8,4 +8,9 @@
   <ItemGroup>
     <ProjectReference Include="../../src/RapidOcrNet/RapidOcrNet.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="rapidocr_python.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

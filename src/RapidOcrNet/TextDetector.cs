@@ -29,7 +29,8 @@ namespace RapidOcrNet
             {
                 GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_EXTENDED,
                 InterOpNumThreads = numThread,
-                IntraOpNumThreads = numThread
+                IntraOpNumThreads = numThread,
+                LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_ERROR
             };
 
             _dbNet = new InferenceSession(path, op);

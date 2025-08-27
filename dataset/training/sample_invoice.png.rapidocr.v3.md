@@ -1,18 +1,24 @@
-ACME S.P.A.
-Fattura / Invoice
-Invoice Number: INV-2025-001
-Date: 2025-08-09
+A CM E
+S.p.A.
+Fattura/
+/Invoice
+Invoice
+Num ber:
+INV-2025-001
+Date:
+2025-08-09
 Q.ta
-Prezzo
 Descrizione
+Prezz0
 Totale
-2
-Prodotto A
-£ 10,00
-£ 20,00
-1
-Prodotto B
-£ 15,00
-£ 15,00
+3
+Prodotto
+10,00
+£20,00
+4
+Prodotto
+£15,00
+£15,00
+B
 TOTALE
-£ 35,00
+£35,00

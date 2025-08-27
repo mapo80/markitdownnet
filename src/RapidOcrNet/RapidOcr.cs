@@ -26,21 +26,14 @@ namespace RapidOcrNet
             string versionDir = version switch
             {
                 OcrVersion.V3 => "v3",
-                OcrVersion.V4 => "v4",
                 _ => "v5"
             };
 
-            string detPath = version switch
-            {
-                OcrVersion.V3 => Path.Combine(modelsDir, versionDir, "ch_PP-OCRv3_det_infer.onnx"),
-                OcrVersion.V4 => Path.Combine(modelsDir, versionDir, "ch_PP-OCRv4_det_infer.onnx"),
-                _ => Path.Combine(modelsDir, versionDir, "ch_PP-OCRv5_mobile_det.onnx")
-            };
+            string detPath = Path.Combine(modelsDir, versionDir, "Multilingual_PP-OCRv3_det_infer.onnx");
 
             string recBase = version switch
             {
-                OcrVersion.V3 => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv3_mobile_rec_infer.onnx"),
-                OcrVersion.V4 => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv3_mobile_rec_infer.onnx"),
+                OcrVersion.V3 => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv3_rec_infer.onnx"),
                 _ => Path.Combine(modelsDir, versionDir, "latin_PP-OCRv5_rec_mobile_infer.onnx")
             };
 

@@ -31,7 +31,8 @@ namespace RapidOcrNet
             {
                 GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_EXTENDED,
                 InterOpNumThreads = numThread,
-                IntraOpNumThreads = numThread
+                IntraOpNumThreads = numThread,
+                LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_ERROR
             };
             _angleNet = new InferenceSession(path, op);
             _inputName = _angleNet.InputMetadata.Keys.First();

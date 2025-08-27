@@ -1,131 +1,134 @@
-Datore dilavoro:
+Datoredilavor
 Collaboratore:
-Rossi Cristina
-Tosticku Beata
-Vitaliano Rotellini167
-Via Venezia3
-00128 RomaRN
-00147Roma (RM)
-Cod.Fisc.:
+c sia
+TostickuBeata
+ROsl
+167
+Vitaliano
+Rotellini,
+ViaVenezia
+00128
+ROMA
+RM
+00147Roma
+RM
 Cod.Fisc.
-3s
+Cod.Fisc.:
+S
+Data
 Scad.T.Determ.
+g s
+ScattoPreced.
+s
 
-Pross.cao
-auoznss
-Scatto Preced.
-Mese di retribuzione:
-3
+Assunzione
+Mesediretribuzione:
 01/08/2010
 01/08/2016
 01/08/2018
-Codice INPS
-ndennisost e alggi
-Agosto 2017
-aed%
-n
-Base Oraria
-Conenza
-Pranzo:
-
-
-cgsawopdde
+Indennita
 B
-IS
-0.00
-19,7926
-00'0
-0.00
-Str.Fott
-assged
+Agosto2017
+%Partime
+Coniverza
+BaseOraria
+Livello
+oy
+rapp.domerics
+OUEd
 
-Scatti Anz
-nd Assorb
-Acc.FutA.
-Retbuzion Tole
-5.48
-910.00
-195
-1.801,13
-Ratto 13a:
-Ra FR
-Rateri
-pod
-Descrizione
+00'0
+00 0
+19,7926
+ScattiAnz
+S F
+asgeed
+zunpu
+ndAssorb.
+Acc.FutA
+RetnbuzioneTotale
+795.65
+95,48
+9100
+1.301,13
+RatFerie
+
+TFR
+Cod
+Cttttsste
 Tempo
 Valore
-Competenze
 Trattenute
+Oreordinarie
 1.801,13
-Ore ordinarie
-2
-14941
-17,00
+10'l0
+ooean
 19,7926
-Ore non lavorate
-8
-000
+2 121
+lavorate
+30,00
 21,358312
-640,75
-Lavoro supplementare
-00
-00's
-966
+8
+920 9
+Lavoro
+supplementare
+10
 Festivita
+00's
 19,7926
-O0
-1,00
+96'86
+00
+00'
 5.48
-5,48
-Ind.sost.vitto/alloggio su assenze
-WEBCOLFcom2008-2017
-qusweBed od
+Ind.sos.ittoallgio
+548
+suassenze
+BAN
+aa ee
 Contanti
-Codice IBAN
-Contr.crico coll.
-Cas.sa Colf
+aie
+mpo Lordo
+Contr.caricocol
+
+H.L
 Haratonh
-ArrotPrec
-Arrot Attu
-Impor Lordo
-H.Lavorae
-Netto da Pagare
-120
+Arrot.Prec.
+ArrotAttua
+NettodaPagare
 2.209,85
 25,00
 110,00
-10000
-0
-naaes
-Fe rrea
-Ratti 13a
-Ferie Anno Corr.
-Ferie Godute
-npsa y
+100,00
+028
+14'0
+SeimanINPSreribuite
+FeriArrera
+FeriAnnoCorr.
+FeriGodute
+Frie ue
+Ratei13a
 2.185,00
-
-Oore
+1S 1S 1S.1S
 15,17
-0
-5717
-200
+e
+57,17
+Ore
 42,00
-a
-ao
-sisi
-IS
-Si
+oe
+2,00
+Ore:
 Progr.lmp.Lordo
-Prog.iINPS Coll.
+Prog.INPSC
 Prog.CassaColf
-Pr.GGMalatta
-TFR Anno Prec.
-TFR Anro Corr.
-Retribuz.a TFR
-Progr.Retr.TFR
-20'1207
+Pr.GG.Malatta
+TFRAnnoPrec
+TFRAnnoCorr.
+Retrbuz.aTFR
+t i
+TRR
+1.024,02
 1.000,00
 1.689,66
-5.976,01
-54,44
+5.976.01
+54.44
 13.82423

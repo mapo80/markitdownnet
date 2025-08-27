@@ -18,13 +18,15 @@ var images = Directory.EnumerateFiles(datasetDir)
     .OrderBy(f => f)
     .ToList();
 
-var versions = new[] { OcrVersion.V3, OcrVersion.V4, OcrVersion.V5 };
-var timingTable = new Dictionary<string, Dictionary<OcrVersion, long>>();
+var versions = new[] { OcrVersion.V3, OcrVersion.V5 };
+var timingTable = new Dictionary<string, Dictionary<string, long>>();
+var pyExe = Environment.GetEnvironmentVariable("PYTHON") ?? "python3";
+var pyScript = Path.Combine(AppContext.BaseDirectory, "rapidocr_python.py");
 
 foreach (var image in images)
 {
     var baseName = Path.GetFileName(image);
-    var timings = new Dictionary<OcrVersion, long>();
+    var timings = new Dictionary<string, long>();
 
     foreach (var version in versions)
     {
@@ -48,10 +50,26 @@ foreach (var image in images)
             sum += sw.ElapsedMilliseconds;
         }
         var avg = sum / 5;
-        timings[version] = avg;
+        timings[version.ToString().ToLower()] = avg;
 
         var outPath = $"{image}.rapidocr.{version.ToString().ToLower()}.md";
         File.WriteAllText(outPath, text ?? string.Empty);
+    }
+
+    if (File.Exists(pyScript))
+    {
+        var psi = new ProcessStartInfo(pyExe, $"{pyScript} \"{image}\"")
+        {
+            RedirectStandardOutput = true,
+            RedirectStandardError = true
+        };
+        var sw = Stopwatch.StartNew();
+        using var p = Process.Start(psi);
+        var pyText = p!.StandardOutput.ReadToEnd();
+        p.WaitForExit();
+        sw.Stop();
+        File.WriteAllText($"{image}.rapidocr.python.md", pyText.Trim());
+        timings["python"] = sw.ElapsedMilliseconds;
     }
 
     timingTable[baseName] = timings;
@@ -60,10 +78,10 @@ foreach (var image in images)
 // write markdown table
 var mdPath = Path.Combine(datasetDir, "rapidocr_timings.md");
 using var swMd = new StreamWriter(mdPath);
-swMd.WriteLine("|image|v3_ms|v4_ms|v5_ms|");
+swMd.WriteLine("|image|v3_ms|v5_ms|python_ms|");
 swMd.WriteLine("|---|---|---|---|");
 foreach (var kv in timingTable)
 {
-    var row = $"|{kv.Key}|{kv.Value[OcrVersion.V3]}|{kv.Value[OcrVersion.V4]}|{kv.Value[OcrVersion.V5]}|";
+    var row = $"|{kv.Key}|{kv.Value["v3"]}|{kv.Value["v5"]}|{kv.Value["python"]}|";
     swMd.WriteLine(row);
 }

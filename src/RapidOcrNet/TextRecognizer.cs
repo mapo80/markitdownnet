@@ -36,7 +36,8 @@ namespace RapidOcrNet
             {
                 GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_EXTENDED,
                 InterOpNumThreads = numThread,
-                IntraOpNumThreads = numThread
+                IntraOpNumThreads = numThread,
+                LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_ERROR
             };
 
             _crnnNet = new InferenceSession(path, op);
@@ -122,16 +123,24 @@ namespace RapidOcrNet
             return new TextLine() { Chars = Array.Empty<string>(), CharScores = Array.Empty<float>(), Time = sw.ElapsedMilliseconds };
         }
 
+        private static bool IsChinese(string c)
+        {
+            if (string.IsNullOrEmpty(c))
+            {
+                return false;
+            }
+            var ch = c[0];
+            return ch >= '\u4e00' && ch <= '\u9fff';
+        }
+
         private TextLine ScoreToTextLine(ReadOnlySpan<float> srcData, int h, int w)
         {
-            int lastIndex = 0;
-            var scores = new List<float>();
-            var chars = new List<string>();
-
+            var textIndex = new int[h];
+            var textProb = new float[h];
             for (int i = 0; i < h; i++)
             {
                 int maxIndex = 0;
-                float maxValue = -1000F;
+                float maxValue = float.NegativeInfinity;
                 for (int j = 0; j < w; j++)
                 {
                     int idx = i * w + j;
@@ -141,20 +150,85 @@ namespace RapidOcrNet
                         maxValue = srcData[idx];
                     }
                 }
+                textIndex[i] = maxIndex;
+                textProb[i] = maxValue;
+            }
 
-                if (maxIndex > 0 && maxIndex < _keys.Length && !(i > 0 && maxIndex == lastIndex))
+            var selection = new bool[h];
+            selection[0] = true;
+            for (int i = 1; i < h; i++)
+            {
+                selection[i] = textIndex[i] != textIndex[i - 1];
+            }
+            for (int i = 0; i < h; i++)
+            {
+                selection[i] &= textIndex[i] != 0;
+            }
+
+            var validCols = new List<int>();
+            var chars = new List<string>();
+            var scores = new List<float>();
+            for (int i = 0; i < h; i++)
+            {
+                if (selection[i])
                 {
-                    scores.Add(maxValue);
-                    chars.Add(_keys[maxIndex]);
+                    validCols.Add(i);
+                    chars.Add(_keys[textIndex[i]]);
+                    scores.Add(textProb[i]);
+                }
+            }
+
+            var colWidth = new int[validCols.Count];
+            if (validCols.Count > 0)
+            {
+                colWidth[0] = Math.Min(IsChinese(chars[0]) ? 3 : 2, validCols[0]);
+                for (int k = 1; k < validCols.Count; k++)
+                {
+                    colWidth[k] = validCols[k] - validCols[k - 1];
+                }
+            }
+
+            var finalChars = new List<string>();
+            var finalScores = new List<float>();
+            string? state = null;
+            var wordChars = new List<string>();
+            var wordScores = new List<float>();
+            for (int k = 0; k < chars.Count; k++)
+            {
+                var currentState = IsChinese(chars[k]) ? "cn" : "en&num";
+                if (state == null)
+                {
+                    state = currentState;
                 }
 
-                lastIndex = maxIndex;
+                if (state != currentState || (k > 0 && colWidth[k] > 4))
+                {
+                    if (wordChars.Count > 0)
+                    {
+                        finalChars.AddRange(wordChars);
+                        finalScores.AddRange(wordScores);
+                        finalChars.Add(" ");
+                        finalScores.Add(1.0f);
+                        wordChars.Clear();
+                        wordScores.Clear();
+                    }
+                    state = currentState;
+                }
+
+                wordChars.Add(chars[k]);
+                wordScores.Add(scores[k]);
+            }
+
+            if (wordChars.Count > 0)
+            {
+                finalChars.AddRange(wordChars);
+                finalScores.AddRange(wordScores);
             }
 
             return new TextLine
             {
-                Chars = chars.ToArray(),
-                CharScores = scores.ToArray()
+                Chars = finalChars.ToArray(),
+                CharScores = finalScores.ToArray()
             };
         }
 
